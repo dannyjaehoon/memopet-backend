@@ -1,18 +1,24 @@
 package com.memopet.memopet.domain.pet.service;
 
+import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.dto.BlockRequestDto;
 import com.memopet.memopet.domain.pet.dto.BlockListWrapper;
 import com.memopet.memopet.domain.pet.dto.BlockeResponseDto;
 import com.memopet.memopet.domain.pet.dto.BlockedListResponseDto;
 import com.memopet.memopet.domain.pet.entity.Blocked;
 import com.memopet.memopet.domain.pet.entity.Pet;
+import com.memopet.memopet.domain.pet.entity.PetStatus;
 import com.memopet.memopet.domain.pet.repository.BlockedRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +27,20 @@ public class BlockedService {
 
     private final BlockedRepository blockedRepository;
     private final PetRepository petRepository;
+    private final PetService petService;
+    private final MemberRepository memberRepository;
     /**
      * 차단한 펫 리스트
      */
     @Transactional(readOnly = true)
-    public BlockListWrapper blockedPetList(Pageable pageable, Long blockerPetId) {
+    public BlockListWrapper blockedPetList(Pageable pageable, Long blockerPetId, String email) {
+        boolean validatePetResult=petService.validatePetRequest(email, blockerPetId);
+        if (!validatePetResult) {
+            return BlockListWrapper.builder()
+                    .message("Pet not available or not active.")
+                    .decCode('0')
+                    .build();
+        }
         try {
             Page<BlockedListResponseDto> result = blockedRepository.findBlockedPets(blockerPetId, pageable);
             return BlockListWrapper.builder()
@@ -35,7 +50,7 @@ public class BlockedService {
         } catch (Exception e) {
             return BlockListWrapper.builder()
                     .decCode('0')
-                    .errorDescription("Error: "+ e.getMessage())
+                    .message("Error: "+ e.getMessage())
                     .build();
         }
 
@@ -45,7 +60,14 @@ public class BlockedService {
     /**
      * 차단
      */
-    public BlockeResponseDto blockApet(BlockRequestDto blockRequestDTO) {
+    public BlockeResponseDto blockApet(BlockRequestDto blockRequestDTO, String email) {
+        boolean validatePetResult=petService.validatePetRequest(email, blockRequestDTO.getBlockerPetId());
+        if (!validatePetResult) {
+            return BlockeResponseDto.builder()
+                    .message("Pet not available or not active.")
+                    .decCode('0')
+                    .build();
+        }
         try {
             Pet blockedPet = validateBlockRequest(blockRequestDTO);
 
@@ -73,6 +95,7 @@ public class BlockedService {
     }
 
 
+
     /**
      * 차단 메서드 에 사용 되는 차단 검증 메서드
      */
@@ -96,7 +119,14 @@ public class BlockedService {
     /**
      * 차단 취소
      */
-    public BlockeResponseDto unblockAPet(Long blockerPetId, Long blockedPetId) {
+    public BlockeResponseDto unblockAPet(Long blockerPetId, Long blockedPetId,String email) {
+        boolean validatePetResult=petService.validatePetRequest(email, blockerPetId);
+        if (!validatePetResult) {
+            return BlockeResponseDto.builder()
+                    .message("Pet not available or not active.")
+                    .decCode('0')
+                    .build();
+        }
         try {
             // Check if the blocking relationship already exists
             if (!blockedRepository.existsByPetIds(blockerPetId, blockedPetId)) {

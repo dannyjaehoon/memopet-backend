@@ -3,6 +3,7 @@ package com.memopet.memopet.domain.pet.controller;
 
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.service.MemoryService;
+import com.memopet.memopet.domain.pet.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ import java.util.List;
 public class MemoryController {
 
     private final MemoryService memoryService;
+    private final PetService petService;
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/memory")

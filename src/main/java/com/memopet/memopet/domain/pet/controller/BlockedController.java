@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,7 @@ import java.time.LocalDate;
 @RequestMapping("/api/block")
 @Validated
 public class BlockedController {
-    private final PetRepository petRepository;
     private final BlockedService blockedService;
-    private final MemberRepository memberRepository;
-    private final SpeciesRepository speciesRepository;
-    private final PasswordEncoder passwordEncoder;
 
 
     /**
@@ -40,8 +37,9 @@ public class BlockedController {
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/{petId}")
-    public BlockListWrapper blockedPetList(@PageableDefault(size = 20,page = 0) Pageable pageable, @PathVariable @Param("blockerPetId") Long petId) {
-        return blockedService.blockedPetList(pageable,petId);
+    public BlockListWrapper blockedPetList(@PageableDefault(size = 20,page = 0) Pageable pageable, @PathVariable @Param("blockerPetId") Long petId, Authentication authentication) {
+
+        return blockedService.blockedPetList(pageable,petId, authentication.getName());
     }
 
     /**
@@ -49,8 +47,8 @@ public class BlockedController {
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PostMapping("")
-    public BlockeResponseDto BlockAPet(@RequestBody @Valid BlockRequestDto blockRequestDTO) {
-        return blockedService.blockApet(blockRequestDTO);
+    public BlockeResponseDto BlockAPet(@RequestBody @Valid BlockRequestDto blockRequestDTO, Authentication authentication) {
+        return blockedService.blockApet(blockRequestDTO, authentication.getName());
     }
 
     /**
@@ -58,8 +56,8 @@ public class BlockedController {
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @DeleteMapping("/{petId}/{blockedPetId}")
-    public BlockeResponseDto CancelBlocking(@PathVariable @Param("blockerPetId")Long petId, @PathVariable Long blockedPetId) {
-        return blockedService.unblockAPet(petId, blockedPetId);
+    public BlockeResponseDto CancelBlocking(@PathVariable @Param("blockerPetId")Long petId, @PathVariable Long blockedPetId, Authentication authentication) {
+        return blockedService.unblockAPet(petId, blockedPetId,authentication.getName());
     }
 
 

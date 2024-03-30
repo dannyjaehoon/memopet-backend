@@ -11,5 +11,5 @@ public class BlockListWrapper {
     private Page<BlockedListResponseDto> petList;
     @JsonProperty("dec_code")
     private char decCode;
-    private String errorDescription;
+    private String message;
 }

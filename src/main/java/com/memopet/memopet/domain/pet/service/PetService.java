@@ -6,6 +6,7 @@ import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
 import com.memopet.memopet.global.common.service.S3Uploader;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -32,6 +34,8 @@ public class PetService {
     private final CommentRepository commentRepository;
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
+    private final MemoryRepository memoryRepository;
+    private final MemoryImageRepository memoryImageRepository;
 
 
     @Transactional(readOnly = false)
@@ -225,6 +229,9 @@ public class PetService {
 
         return petRepository.switchPetProfile(petSwitchRequestDTO.getPetId());
     }
+    /**
+     * 펫 프로필 삭제 -Pet(deletedDate)
+     */
 
     @Transactional(readOnly = false)
     public PetProfileResponseDto deletePetProfile(PetDeleteRequestDto petDeleteRequestDTO) {
@@ -237,18 +244,74 @@ public class PetService {
             if (!passwordEncoder.matches(petDeleteRequestDTO.getPassword(), member.get().getPassword())) {
                 return new PetProfileResponseDto('0',"비밀번호를 다시 입력하세요.");
             }
-
+            Pet deletePet = petRepository.getReferenceById(petDeleteRequestDTO.getPetId());
+            if (!member.get().getPets().contains(deletePet)) {
+                return new PetProfileResponseDto('0',"존재하지않거나 나의 프로필이 아닙니다.");
+            }
             // Attempt to delete the pet profile
             boolean deletionSuccessful = petRepository.deleteAPet(member.get().getId(), petDeleteRequestDTO.getPetId());
 
             if (!deletionSuccessful) {
                 return new PetProfileResponseDto('0',"프로필 삭제를 실패했습니다.");
             }
-
+            deletePetsAssociate(deletePet);
             return new PetProfileResponseDto('1',"프로필이 삭제되었습니다.");
         } catch (Exception e) {
             return new PetProfileResponseDto('0',"프로필 삭제를 실패하였습니다.");
         }
+
+    }
+
+
+    private void deletePetsAssociate(Pet pet) {
+        try {
+            s3Uploader.deleteS3(pet.getPetProfileUrl());
+            s3Uploader.deleteS3(pet.getBackImgUrl());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        //memory,comment,images-deleted date
+        //images in s3 - delete
+        List<Memory> deletePetMemory = memoryRepository.findByPetIds(Collections.singletonList(pet.getId()));
+        for (Memory memory:deletePetMemory){
+            deleteMemoryAndAssociatedEntities(memory);
+
+        }
+
+
+
+    }
+
+    private void deleteMemoryAndAssociatedEntities(Memory memory) {
+        memory.updateDeleteDate(LocalDateTime.now());
+        List<MemoryImage> images = memoryImageRepository.findByMemoryId(memory.getId());
+        for (MemoryImage img : images) {
+            img.updateDeletedDate(LocalDateTime.now());
+            try {
+                s3Uploader.deleteS3(img.getUrl());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        List<Comment> comments = commentRepository.findByMemory(memory);
+        for (Comment comment : comments) {
+            comment.updateDeleteDate(LocalDateTime.now());
+        }
+    }
+    public boolean validatePetRequest(String email, Long petId) {
+        Member member= memberRepository.findByEmail(email);
+        if (member == null) {
+            return false;
+        }
+        List<Pet> pets = member.getPets();
+        for (Pet pet : pets) {
+            if (pet.getId().equals(petId)&& pet.getPetStatus().equals(PetStatus.ACTIVE)) {
+                return true;
+            }
+        }
+        return false;
 
     }
 }

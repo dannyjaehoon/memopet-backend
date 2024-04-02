@@ -35,4 +35,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("select c from Comment c where c.parentCommentId = :parentCommentId and c.deletedDate IS NULL")
     Page<Comment> findByParentCommentId(@Param("parentCommentId") Long parentCommentId, PageRequest pageRequest);
+
+
+    List<Comment> findByMemory(Memory memory);
 }

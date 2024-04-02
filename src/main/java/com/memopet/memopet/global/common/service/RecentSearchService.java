@@ -1,6 +1,5 @@
 package com.memopet.memopet.global.common.service;
 
-import com.memopet.memopet.domain.pet.dto.BlockListResponseDto;
 import com.memopet.memopet.domain.pet.dto.SearchMemoryCommentResponseDto;
 import com.memopet.memopet.domain.pet.dto.SearchPetCommentResponseDto;
 import com.memopet.memopet.domain.pet.entity.*;
@@ -28,7 +27,6 @@ public class RecentSearchService {
     private final RecentSearchRepository recentSearchRepository;
     private final FollowRepository followRepository;
     private final MemoryImageRepository memoryImageRepository;
-    private final BlockedRepository blockedRepository;
     private final BlockedService blockedService;
     private final MemoryRepository memoryRepository;
     private final PetRepository petRepository;

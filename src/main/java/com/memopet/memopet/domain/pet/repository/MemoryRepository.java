@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,4 +50,5 @@ public interface MemoryRepository extends JpaRepository<Memory, Long> {
 
     @Query(value = "select * from memory where pet_id not in ?1 and (memory_title like %?2% or memory_desc like %?2%) and deleted_date IS NULL order by created_date desc", nativeQuery = true)
     Slice<Memory> findMemoryBySearchText(List<Long> petIds, String searchText, PageRequest pageRequest);
+    Collection<Object> findByPetId(Long petId);
 }

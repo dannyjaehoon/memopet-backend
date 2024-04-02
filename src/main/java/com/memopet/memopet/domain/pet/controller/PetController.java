@@ -74,7 +74,13 @@ public class PetController {
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/pet/profiles/{petId}")
-    public PetListWrapper petsList(@PageableDefault(size = 5, page = 0) Pageable pageable, @PathVariable Long petId) {
+    public PetListWrapper petsList(@PageableDefault(size = 5, page = 0) Pageable pageable, @PathVariable Long petId,Authentication authentication) {
+        boolean validatePetResult = petService.validatePetRequest(authentication.getName(), petId);
+        if (!validatePetResult) {
+            return PetListWrapper.builder()
+                    .decCode('0')
+                    .message("Pet not available or not active.").build();
+        }
         return petService.profileList(pageable, petId);
     }
 
@@ -85,7 +91,10 @@ public class PetController {
     @PatchMapping("/pet")
     public PetProfileResponseDto switchProfile(@RequestBody PetSwitchRequestDto petSwitchResponseDTO) {
         boolean isSwitched = petService.switchProfile(petSwitchResponseDTO);
-        return PetProfileResponseDto.builder().decCode(isSwitched ? '1' : '0').build();
+        if (isSwitched) {
+            return PetProfileResponseDto.builder().decCode('1').message("Pet has been switched.").build();
+        }
+        return PetProfileResponseDto.builder().decCode('0').message("Failed to switch pet").build();
 
     }
 
@@ -93,7 +102,7 @@ public class PetController {
      * 펫 프로필 삭제
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @PostMapping("/pet")
+    @DeleteMapping("/pet")
     public PetProfileResponseDto deletePetProfile(@RequestBody PetDeleteRequestDto petDeleteRequestDTO) {
         return petService.deletePetProfile(petDeleteRequestDTO);
     }

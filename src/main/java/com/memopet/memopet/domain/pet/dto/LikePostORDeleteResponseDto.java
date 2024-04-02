@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FollowOrLikePostORDeleteResponseDto {
+public class LikePostORDeleteResponseDto {
 
     @JsonProperty("dec_code")
     private char decCode;

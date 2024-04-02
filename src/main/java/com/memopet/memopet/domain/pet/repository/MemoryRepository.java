@@ -5,7 +5,9 @@ import com.memopet.memopet.domain.pet.entity.Memory;
 import com.memopet.memopet.domain.pet.entity.Pet;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,6 +25,9 @@ public interface MemoryRepository extends JpaRepository<Memory, Long> {
 
     @Query(value = "select * from memory where memory_id in ?1 and deleted_date IS NULL", nativeQuery = true)
     List<Memory> findByMemoryIds(List<Long> memory_ids);
+
+    @Query(value = "select * from memory where memory_id in ?1 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
+    Page<Memory> findByMemoryIdsWithPagination(List<Long> memory_ids,Pageable pageable);
     @Query(value = "select * from memory where memory_id in ?1 and created_date >= ?2 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
     List<Memory> findByRecentMemoryIds(List<Long> memory_ids, LocalDateTime localDateTime);
     @Query(value = "select * from memory where pet_id in ?1 and deleted_date IS NULL", nativeQuery = true)
@@ -31,8 +36,17 @@ public interface MemoryRepository extends JpaRepository<Memory, Long> {
     @Query(value="select * from memory where pet_id = ?1 and deleted_date IS NULL order by created_date desc limit 1", nativeQuery = true)
     Optional<Memory> findTheRecentMomoryByPetId(Long id);
 
+    @Query(value="select * from memory where memory_id in ?1 and created_date between ?2 and ?3 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
+    Page<Memory> findMonthMomoriesByPetIdWithPagination(List<Long> memoryIds, LocalDateTime firstDayOfMonth, LocalDateTime lastDayOfMonth, Pageable pageable);
+
     @Query(value="select * from memory where pet_id = ?1 and created_date between ?2 and ?3 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
-    Page<Memory> findMonthMomoriesByPetId(Long petId, LocalDateTime firstDayOfMonth, LocalDateTime lastDayOfMonth, Pageable pageable);
+    List<Memory> findMonthMomoriesByPetId(Long petId, LocalDateTime firstDayOfMonth, LocalDateTime lastDayOfMonth);
 
+    Page<Memory> findMemoriesByPetId(Long petId, Pageable pageable);
 
+    @Query(value = "select * from memory where memory_id in ?1 and created_date >= ?2 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
+    Page<Memory> findByRecentMemoryIdsWithPagination(List<Long> filteredMemoryIds, LocalDateTime localDateTime, PageRequest pageRequest);
+
+    @Query(value = "select * from memory where pet_id not in ?1 and (memory_title like %?2% or memory_desc like %?2%) and deleted_date IS NULL order by created_date desc", nativeQuery = true)
+    Slice<Memory> findMemoryBySearchText(List<Long> petIds, String searchText, PageRequest pageRequest);
 }

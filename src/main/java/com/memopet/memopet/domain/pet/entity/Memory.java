@@ -59,6 +59,9 @@ public class Memory extends FirstCreatedEntity {
     public void updateAudience(Audience audience) {
         this.audience = audience;
     }
+
+    public void updateLikesCount(int count) {this.likeCount =count;}
+
 }
 
 

@@ -2,10 +2,7 @@ package com.memopet.memopet.domain.pet.service;
 
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.*;
-import com.memopet.memopet.domain.pet.repository.LikesRepository;
-import com.memopet.memopet.domain.pet.repository.MemoryImageRepository;
-import com.memopet.memopet.domain.pet.repository.MemoryRepository;
-import com.memopet.memopet.domain.pet.repository.PetRepository;
+import com.memopet.memopet.domain.pet.repository.*;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,19 +23,77 @@ import java.util.UUID;
 public class MemoryService {
     private final MemoryRepository memoryRepository;
     private final MemoryImageRepository memoryImageRepository;
+    private final BlockedService blockedService;
     private final LikesRepository likesRepository;
+    private final FollowRepository followRepository;
     private final PetRepository petRepository;
     private final S3Uploader s3Uploader;
 
-    public MemoryResponseDto findMemoryByMemoryId(Long memoryId) {
-        Optional<Memory> memory1 = memoryRepository.findById(memoryId);
-        Memory memory;
-        MemoryResponseDto memoryResponseDto;
-        if(memory1.isPresent()) {
-            memory = memory1.get();
-        } else {
-            return memoryResponseDto = MemoryResponseDto.builder().build();
+    /**
+     *
+     * memory_id = 3 가 조회할 추억 id
+     * pet_id = 2 가 사용자 pet_id
+     * 로직 :
+     * 1. memory_id = 3로 추억 조회 후 추억의 접근권한(모두, 친구, 비공개) 확인
+     * 친구 : pet_id = 2가 memory_id=3의 친구인지 확인
+     * 비공개 : 자기자신 외에는 전부 비공개 (추억의 소유주에게만 노출)
+     *
+     * 2. 추억의 주인(memory_id = 3)이 조회자(pet_id = 2)를 차단된 상태라면 비노출
+     *
+     * @param likedMemoryRequestDto
+     * @return
+     */
+    public MemoryResponseDto findMemoryByMemoryId(MemoryRequestDto memoryRequestDto) {
+
+        // 사용자의 차단한 펫 id 가져오기
+        BlockListResponseDto blockListResponseDto = blockedService.blockedPetList(memoryRequestDto.getPetId());
+        List<Blocked> petList = blockListResponseDto.getPetList();
+
+        Optional<Memory> memory1 = memoryRepository.findById(memoryRequestDto.getMemoryId());
+
+        if(!memory1.isPresent()) return MemoryResponseDto.builder().build();
+        Memory memory = memory1.get();
+
+        // 차단된 프로필 목록이 있을때
+        if(petList != null) {
+            //차단된 계정중에서 해당 추억을 소유를 했다면 노출하면안됨
+            for(Blocked blocked : petList) {
+                if(blocked.getBlockedPet().getId() == memory.getPet().getId()) return MemoryResponseDto.builder().build();
+            }
         }
+
+        // 추억 공개 제한이 친구일때
+        if(memory.getAudience().equals(Audience.FRIEND)) {
+            System.out.println("친구");
+            List<Follow> followList = followRepository.findByPetId(memory.getPet());
+
+            if(memory.getPet().getId() == memoryRequestDto.getPetId()) {
+                return createMemory(memory);
+            } else if(followList != null){
+                for(Follow follow : followList) {
+                    // 등록된 추억의 pet_id 의 친구랑 사용자 프로필 계정이랑 친구인지 확인
+                    // 등록된 추억의 pet_id는 1, 1이 친구 추가를 한 1,2,3
+                    // 사용자는 pet_id가 2임. 따라서 조회가능
+                    if(follow.getPetId() == memoryRequestDto.getPetId()) {
+                        return createMemory(memory);
+                    }
+                }
+            }
+
+            // 자기자신 또는 친구가 없다면 빈값으로 보내줌
+            return MemoryResponseDto.builder().build();
+        }
+
+        // 추억 공개 제한이 비공개
+        if(memory.getAudience().equals(Audience.ME) && memory.getPet().getId() != memoryRequestDto.getPetId()) {
+            System.out.println("비공개");
+            return MemoryResponseDto.builder().build();
+        }
+
+        return createMemory(memory);
+    }
+
+    public MemoryResponseDto createMemory(Memory memory) {
         // 추억 이미지 가져오기
         List<MemoryImage> memoryImages = memoryImageRepository.findByMemoryId(memory.getId());
         Queue<MemoryImage> q = new LinkedList<>();
@@ -47,40 +102,53 @@ public class MemoryService {
             q.offer(memoryImage);
         });
 
-        memoryResponseDto = MemoryResponseDto.builder()
-                            .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
-                            .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
-                            .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
-                            .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
-                            .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
-                            .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
-                            .memoryId(memory.getId())
-                            .memoryTitle(memory.getTitle())
-                            .memoryDescription(memory.getMemoryDescription())
-                            .memoryDate(memory.getMemoryDate())
-                            .build();
+        MemoryResponseDto memoryResponseDto = MemoryResponseDto.builder()
+                .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
+                .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
+                .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
+                .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
+                .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
+                .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
+                .memoryId(memory.getId())
+                .memoryTitle(memory.getTitle())
+                .memoryDescription(memory.getMemoryDescription())
+                .memoryDate(memory.getMemoryDate())
+                .build();
 
         return memoryResponseDto;
     }
 
-
+    /**
+     *
+     * pet_id = 2 가 조회자
+     * 로직 :
+     * 1. pet_id = 2가 좋아요를 누른 추억 조회 후 각 추억의 접근권한(모두, 친구, 비공개) 로 확인
+     * 친구 : pet_id = 2가 1의 친구인지 확인
+     * 비공개 : 자기자신 외에는 전부 비공개 (pet_id = 1 인 경우외만 노출)
+     *
+     * 2. 각 추억의 주인(pet_id)가 조회자(pet_id = 2)에게 차단된 상태라면 비노출
+     *
+     * @param likedMemoryRequestDto
+     * @return
+     */
     public LikedMemoryResponseDto findLikedMemoriesByPetId(LikedMemoryRequestDto likedMemoryRequestDto) {
+
         List<Long> memoryIds = new ArrayList<>();
         List<MemoryResponseDto> memoriesContent = new ArrayList<>();
 
         Optional<Pet> pet = petRepository.findById(likedMemoryRequestDto.getPetId());
 
-        // get likes by pet id
-        PageRequest pageRequest = PageRequest.of(likedMemoryRequestDto.getCurrentPage()-1, likedMemoryRequestDto.getDataCounts());
-        if(!pet.isPresent()) {
-            return LikedMemoryResponseDto.builder().totalPages(0).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
-        }
+        if(!pet.isPresent()) return LikedMemoryResponseDto.builder().totalPages(0).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
 
-        Page<Likes> page = likesRepository.findLikesByPetId(pet.get().getId(), pageRequest);
+        List<Likes> likesLs = likesRepository.findLikesByPetId(pet.get().getId());
+
+        if(likesLs == null) return LikedMemoryResponseDto.builder().totalPages(0).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
+
         Queue<MemoryImage> q = new LinkedList<>();
-        List<MemoryImage> memoryImages = null;
+        List<Long> filteredMemoryIds = new ArrayList<>();
 
-        List<Likes> likesLs = page.getContent();
+
+
         if(likesLs != null) {
             for (Likes like : likesLs) {
                 memoryIds.add(like.getMemoryId().getId());
@@ -88,44 +156,86 @@ public class MemoryService {
 
             List<Memory> memories = memoryRepository.findByMemoryIds(memoryIds);
 
-            for (Memory m : memories) {
-                memoryImages = memoryImageRepository.findByMemoryId(m.getId());
-                memoryImages.forEach(memoryImage -> {
-                    q.offer(memoryImage);
-                });
+            // 사용자의 차단한 펫 id 가져오기
+            BlockListResponseDto blockListResponseDto = blockedService.blockedPetList(likedMemoryRequestDto.getPetId());
+            List<Blocked> petList = blockListResponseDto.getPetList();
 
-                memoriesContent.add(MemoryResponseDto.builder()
-                        .memoryId(m.getId())
-                        .memoryTitle(m.getTitle())
-                        .memoryDate(m.getMemoryDate())
-                        .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
-                        .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
-                        .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
-                        .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
-                        .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
-                        .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
-                        .build());
+            loop :
+            for(int i = 0; i<memories.size(); i++) {
+                // 차단된 프로필 목록이 있을때
+                if(petList != null) {
+                    //차단된 계정중에서 해당 추억을 소유를 했다면 노출하면안됨
+                    for(Blocked blocked : petList) {
+                        if(blocked.getBlockedPet().getId() == memories.get(i).getPet().getId()) continue loop;
+                    }
+                }
+                // 추억 공개 제한이 친구일때 - 여기에서는 친구의 좋아요만 나오므로 체크할 필요가 없음
+
+                // 추억 공개 제한이 비공개
+                if(memories.get(i).getAudience().equals(Audience.ME) && memories.get(i).getPet().getId() != likedMemoryRequestDto.getPetId()) {
+                    // 자기소유가 아니면 다음으로 넘기기.
+                    continue;
+                }
+                filteredMemoryIds.add(memories.get(i).getId());
             }
         }
+        PageRequest pageRequest = PageRequest.of(likedMemoryRequestDto.getCurrentPage()-1, likedMemoryRequestDto.getDataCounts());
+        // 필터된 데이터로 다시 메모리 조회
+        Page<Memory> memoryPage = memoryRepository.findByMemoryIdsWithPagination(filteredMemoryIds, pageRequest);
 
-        LikedMemoryResponseDto likedMemoryResponseDto = LikedMemoryResponseDto.builder().totalPages(page.getTotalPages()).currentPage(page.getNumber()+1).dataCounts(page.getContent().size()).memoryResponseDto(memoriesContent).build();
+        List<Memory> filteredMemories = memoryPage.getContent();
+        List<MemoryImage> memoryImages = null;
+        for(Memory memory : filteredMemories) {
+            memoryImages = memoryImageRepository.findByMemoryId(memory.getId());
+            memoryImages.forEach(memoryImage -> {
+                q.offer(memoryImage);
+            });
+
+            memoriesContent.add(MemoryResponseDto.builder()
+                    .memoryId(memory.getId())
+                    .memoryTitle(memory.getTitle())
+                    .memoryDescription(memory.getMemoryDescription())
+                    .memoryDate(memory.getMemoryDate())
+                    .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
+                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
+                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
+                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .build());
+        }
+
+        LikedMemoryResponseDto likedMemoryResponseDto = LikedMemoryResponseDto.builder().totalPages(memoryPage.getTotalPages()).currentPage(memoryPage.getNumber()+1).dataCounts(memoryPage.getContent().size()).memoryResponseDto(memoriesContent).build();
         return likedMemoryResponseDto;
     }
 
+    /**
+     *
+     * pet_id = 2 가 조회자
+     * 로직 :
+     * 1. pet_id = 2가 좋아요를 누른 최신 추억 조회(일주인 전꺼만) 후 각 추억의 접근권한(모두, 친구, 비공개) 로 확인
+     * 친구 : pet_id = 2가 1의 친구인지 확인
+     * 비공개 : 자기자신 외에는 전부 비공개 (pet_id = 1 인 경우외만 노출)
+     *
+     * 2. 각 추억의 주인(pet_id)이 조회자(pet_id = 2)를 차단된 상태라면 비노출
+     *
+     * @param likedMemoryRequestDto
+     * @return
+     */
     public LikedMemoryResponseDto findMainMemoriesByPetId(LikedMemoryRequestDto likedMemoryRequestDto) {
-
         Optional<Pet> pet = petRepository.findById(Long.valueOf(likedMemoryRequestDto.getPetId()));
 
         List<MemoryResponseDto> memoriesContent = new ArrayList<>();
         List<Long> memoryIds = new ArrayList<>();
-        // get likes by pet id
-        PageRequest pageRequest = PageRequest.of(likedMemoryRequestDto.getCurrentPage()-1, likedMemoryRequestDto.getDataCounts());
+
         if(!pet.isPresent()) {
             return LikedMemoryResponseDto.builder().totalPages(0).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
         }
 
-        Page<Likes> page = likesRepository.findLikesByPetId(pet.get().getId(), pageRequest);
-        List<Likes> likesLs = page.getContent();
+        List<Likes> likesLs = likesRepository.findLikesByPetId(pet.get().getId());
+        List<Long> filteredMemoryIds = new ArrayList<>();
+
+        if(likesLs == null) return LikedMemoryResponseDto.builder().totalPages(0).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
 
         if(likesLs != null) {
             for (Likes like : likesLs) {
@@ -133,50 +243,85 @@ public class MemoryService {
             }
 
             List<Memory> memories = memoryRepository.findByRecentMemoryIds(memoryIds, LocalDateTime.now().minusDays(7));
-            Queue<MemoryImage> q = new LinkedList<>();
-            List<MemoryImage> memoryImages = null;
-            for (Memory m : memories) {
 
-                memoryImages = memoryImageRepository.findByMemoryId(m.getId());
-                memoryImages.forEach(memoryImage -> {
-                    q.offer(memoryImage);
-                });
+            // 사용자의 차단한 펫 id 가져오기
+            BlockListResponseDto blockListResponseDto = blockedService.blockedPetList(likedMemoryRequestDto.getPetId());
+            List<Blocked> petList = blockListResponseDto.getPetList();
 
-                memoriesContent.add(MemoryResponseDto.builder()
-                        .memoryId(m.getId())
-                        .memoryTitle(m.getTitle())
-                        .memoryDescription(m.getMemoryDescription())
-                        .memoryDate(m.getMemoryDate())
-                        .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
-                        .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
-                        .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
-                        .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
-                        .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
-                        .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
-                        .build());
+            loop :
+            for(int i = 0; i<memories.size(); i++) {
+                // 차단된 프로필 목록이 있을때
+                if(petList != null) {
+                    //차단된 계정중에서 해당 추억을 소유를 했다면 노출하면안됨
+                    for(Blocked blocked : petList) {
+                        if(blocked.getBlockedPet().getId() == memories.get(i).getPet().getId()) continue loop;
+                    }
+                }
+                // 추억 공개 제한이 친구일때 - 여기에서는 친구의 좋아요만 나오므로 체크할 필요가 없음
+
+                // 추억 공개 제한이 비공개
+                if(memories.get(i).getAudience().equals(Audience.ME) && memories.get(i).getPet().getId() != likedMemoryRequestDto.getPetId()) {
+                    // 자기소유가 아니면 다음으로 넘기기.
+                    continue;
+                }
+                filteredMemoryIds.add(memories.get(i).getId());
             }
         }
+        PageRequest pageRequest = PageRequest.of(likedMemoryRequestDto.getCurrentPage()-1, likedMemoryRequestDto.getDataCounts());
+        // 필터된 데이터로 다시 메모리 조회
+        Page<Memory> memoryPage = memoryRepository.findByRecentMemoryIdsWithPagination(filteredMemoryIds,LocalDateTime.now().minusDays(7), pageRequest);
 
-        LikedMemoryResponseDto likedMemoryResponseDto = LikedMemoryResponseDto.builder().totalPages(page.getTotalPages()).currentPage(page.getNumber()+1).dataCounts(page.getContent().size()).memoryResponseDto(memoriesContent).build();
+        List<Memory> filteredMemories = memoryPage.getContent();
+        List<MemoryImage> memoryImages = null;
+        Queue<MemoryImage> q = new LinkedList<>();
+
+        for (Memory m : filteredMemories) {
+            memoryImages = memoryImageRepository.findByMemoryId(m.getId());
+            memoryImages.forEach(memoryImage -> {
+                q.offer(memoryImage);
+            });
+
+            memoriesContent.add(MemoryResponseDto.builder()
+                    .memoryId(m.getId())
+                    .memoryTitle(m.getTitle())
+                    .memoryDescription(m.getMemoryDescription())
+                    .memoryDate(m.getMemoryDate())
+                    .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
+                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
+                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
+                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .build());
+        }
+
+        LikedMemoryResponseDto likedMemoryResponseDto = LikedMemoryResponseDto.builder().totalPages(memoryPage.getTotalPages()).currentPage(memoryPage.getNumber()+1).dataCounts(memoryPage.getContent().size()).memoryResponseDto(memoriesContent).build();
         return likedMemoryResponseDto;
 
     }
 
+    /**
+     *
+     * pet_id = 1 이 추억들 주인이고 my_pet_id = 2 가 조회자
+     * 로직 : pet_id = 1 로 추억 조회 후 각 추억의 접근권한(모두, 친구, 비공개) 로 확인
+     * 친구 : my_pet_id = 2가 1의 친구인지 확인
+     * 비공개 : 자기자신 외에는 전부 비공개 (pet_id = 1 인 경우외만 노출)
+     * @param monthMemoriesRequestDto
+     * @return
+     */
     public MonthMemoriesResponseDto findMonthMemoriesByPetId(MonthMemoriesRequestDto monthMemoriesRequestDto) {
         MonthMemoriesResponseDto monthMemoriesResponseDto;
         // pet id로 펫 정보를 가져옴
-        Optional<Pet> pet = petRepository.findById(Long.valueOf(monthMemoriesRequestDto.getPetId()));
+        Optional<Pet> pet = petRepository.findById(monthMemoriesRequestDto.getPetId());
         if(!pet.isPresent()) return monthMemoriesResponseDto = MonthMemoriesResponseDto.builder().build();
 
         Pet petInfo = pet.get();
 
-        // 페이지 네이션용 pagable 객체 생성;
-        PageRequest pageRequest = PageRequest.of(monthMemoriesRequestDto.getCurrentPage()-1, monthMemoriesRequestDto.getDataCounts());
-
         // yearMonth로 null 이면 최신 추억을 찾아 해당 달의 정보를 가져옴
         String yearMonth = monthMemoriesRequestDto.getYearMonth();
-        Page<Memory> page;
-
+        List<Memory> memories;
+        LocalDateTime firstDayOfMonth;
+        LocalDateTime lastDayOfMonth;
         if(yearMonth == null) {
             Optional<Memory> theRecentMomory = memoryRepository.findTheRecentMomoryByPetId(petInfo.getId());
 
@@ -185,9 +330,9 @@ public class MemoryService {
             Memory memory = theRecentMomory.get();
             LocalDateTime recentPostedDate = memory.getCreatedDate();
 
-            LocalDateTime firstDayOfMonth =beginningOfMonth(recentPostedDate);
-            LocalDateTime lastDayOfMonth =endOfMonth(recentPostedDate);
-            page = memoryRepository.findMonthMomoriesByPetId(petInfo.getId(), firstDayOfMonth, lastDayOfMonth, pageRequest);
+            firstDayOfMonth = beginningOfMonth(recentPostedDate);
+            lastDayOfMonth = endOfMonth(recentPostedDate);
+            memories = memoryRepository.findMonthMomoriesByPetId(petInfo.getId(), firstDayOfMonth, lastDayOfMonth);
 
         } else {
             // yearmonth로 받으면 해당 달 20개 를 가져옴
@@ -195,17 +340,61 @@ public class MemoryService {
             int month = Integer.parseInt(yearMonth.substring(4,6));
             LocalDateTime localDateTime = LocalDateTime.of(year, month, 01, 00, 00, 00);
 
-            LocalDateTime firstDayOfMonth = beginningOfMonth(localDateTime);
-            LocalDateTime lastDayOfMonth = endOfMonth(localDateTime);
-            page = memoryRepository.findMonthMomoriesByPetId(petInfo.getId(),firstDayOfMonth,lastDayOfMonth, pageRequest);
+            firstDayOfMonth = beginningOfMonth(localDateTime);
+            lastDayOfMonth = endOfMonth(localDateTime);
+            memories = memoryRepository.findMonthMomoriesByPetId(petInfo.getId(),firstDayOfMonth,lastDayOfMonth);
         }
-        List<Memory> memories = page.getContent();
+
+
+
+
+        if(memories == null) return monthMemoriesResponseDto = MonthMemoriesResponseDto.builder().build();
 
         List<MemoryResponseDto> memoryResponseDtos = new ArrayList<>();
-        Queue<MemoryImage> q = new LinkedList<>();
-        List<MemoryImage> memoryImages = null;
-        for(Memory memory : memories) {
+        List<Long> filteredMemoryIds = new ArrayList<>();
+        boolean isFlag = false;
 
+        loop :
+        for(int i = 0; i<memories.size(); i++) {
+            isFlag = false;
+
+            // 추억 공개 제한이 친구일때 - 여기에서는 친구의 좋아요만 나오므로 체크할 필요가 없음
+            if(memories.get(i).getAudience().equals(Audience.FRIEND)) {
+                System.out.println("친구");
+                List<Follow> followList = followRepository.findByPetId(memories.get(i).getPet());
+
+                if(memories.get(i).getPet().getId() == monthMemoriesRequestDto.getMyPetId()) {
+                    isFlag = true;
+                } else if(followList != null){
+                    for(Follow follow : followList) {
+                        if(follow.getPetId() == monthMemoriesRequestDto.getMyPetId()) {
+                            isFlag = true;
+                            break;
+                        }
+                    }
+                }
+                // 자기자신 또는 친구가 없다면 다음으로 넘기기
+                if(!isFlag) continue;
+            }
+
+            // 추억 공개 제한이 비공개
+            if(memories.get(i).getAudience().equals(Audience.ME) && memories.get(i).getPet().getId() != monthMemoriesRequestDto.getMyPetId()) {
+                // 자기소유가 아니면 다음으로 넘기기.
+                continue;
+            }
+            filteredMemoryIds.add(memories.get(i).getId());
+        }
+
+        PageRequest pageRequest = PageRequest.of(monthMemoriesRequestDto.getCurrentPage()-1, monthMemoriesRequestDto.getDataCounts());
+        // 필터된 데이터로 다시 메모리 조회
+        Page<Memory> memoryPage = memoryRepository.findByMemoryIdsWithPagination(filteredMemoryIds, pageRequest);
+
+        List<Memory> filteredMemories = memoryPage.getContent();
+        List<MemoryImage> memoryImages = null;
+        Queue<MemoryImage> q = new LinkedList<>();
+
+
+        for (Memory memory : filteredMemories) {
             memoryImages = memoryImageRepository.findByMemoryId(memory.getId());
             memoryImages.forEach(memoryImage -> {
                 q.offer(memoryImage);
@@ -225,12 +414,13 @@ public class MemoryService {
                     .build());
         }
 
-        monthMemoriesResponseDto = MonthMemoriesResponseDto.builder().currentPage(page.getNumber()+1).totalPages(page.getTotalPages()).dataCounts(page.getContent().size()).memoryResponseDto(memoryResponseDtos).build();
+
+        monthMemoriesResponseDto = MonthMemoriesResponseDto.builder().currentPage(memoryPage.getNumber()+1).totalPages(memoryPage.getTotalPages()).dataCounts(memoryPage.getContent().size()).memoryResponseDto(memoryResponseDtos).build();
         return monthMemoriesResponseDto;
     }
 
     @Transactional(readOnly = false)
-    public MemoryDeleteResponseDto deleteMemory(MemoryDeleteRequestDto memoryDeleteRequestDto) {
+    public MemoryDeleteResponseDto deleteMemory(MemoryDeleteRequestDto memoryDeleteRequestDto) throws Exception {
         Long memoryId = memoryDeleteRequestDto.getMemoryId();
         Optional<Memory> memoryOptional = memoryRepository.findById(memoryId);
         MemoryDeleteResponseDto memoryDeleteResponseDto;
@@ -242,6 +432,8 @@ public class MemoryService {
 
         for(MemoryImage memoryImage : memoryImages) {
             memoryImage.updateDeletedDate(LocalDateTime.now());
+
+            //s3Uploader.deleteS3(memoryImage.getUrl());
         }
 
         memoryDeleteResponseDto = MemoryDeleteResponseDto.builder().decCode('1').build();

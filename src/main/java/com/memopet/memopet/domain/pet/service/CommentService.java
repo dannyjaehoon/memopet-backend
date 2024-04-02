@@ -23,6 +23,7 @@ public class CommentService {
     private final PetRepository petRepository;
     private final MemoryRepository memoryRepository;
     private final MemoryImageRepository memoryImageRepository;
+    private final NotificationService notificationService;
 
 
     @Transactional(readOnly = false)
@@ -94,27 +95,49 @@ public class CommentService {
         int commentGroup = commentPostRequestDto.getCommentGroup();
         Long petId = commentPostRequestDto.getPetId();
 
-        Optional<Pet> pet = null;
+        Optional<Pet> pet = petRepository.findById(petId);
         Optional<Memory> memory = null;
+
+        if(!pet.isPresent()) return CommentPostResponseDto.builder().decCode('0').errorMsg("프로필 ID로 조회된 데이터가 없습니다.").build();
 
         if(commentGroup == 1) { // 따뜻한 한마디 등록
             // 댓글 그룹이 1일때는 펫 id가 필수
-            if(petId == null) return commentDeleteResponseDto = CommentPostResponseDto.builder().decCode('0').errorMsg("댓글 그룹이 따듯한 한마디일때 펫 id 필수입니다.").build();
+            if(petId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("댓글 그룹이 따듯한 한마디일때 펫 id 필수입니다.").build();
 
-            pet = petRepository.findById(petId);
             // 뎁스가 2일때는 부모댓글 id가 필수
-            if(depth == 2 && parentCommentId == null) return commentDeleteResponseDto = CommentPostResponseDto.builder().decCode('0').errorMsg("대댓글 등록일때 부모 댓글 id 필수입니다.").build();
-            if(commentGroup == 1) if(!pet.isPresent()) return commentDeleteResponseDto = CommentPostResponseDto.builder().decCode('0').errorMsg("프로필 ID로 조회된 데이터가 없습니다.").build();
+            if(depth == 2 && parentCommentId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("대댓글 등록일때 부모 댓글 id 필수입니다.").build();
 
         } else { // 추억댓글 등록
             // 댓글 그룹이 2일때는 메모리 id가 필수
-            if(memoryId == null) return commentDeleteResponseDto = CommentPostResponseDto.builder().decCode('0').errorMsg("댓글 그룹이 추억댓글일때 메모리 id 필수입니다.").build();
+            if(memoryId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("댓글 그룹이 추억댓글일때 메모리 id 필수입니다.").build();
 
             memory = memoryRepository.findById(memoryId);
-            // 뎁스가 2일때는 부모댓글 id가 필수
-            if(depth == 2 && parentCommentId == null) return commentDeleteResponseDto = CommentPostResponseDto.builder().decCode('0').errorMsg("대댓글 등록일때 부모 댓글 id 필수입니다.").build();
-            if(commentGroup == 2) if(!memory.isPresent()) return commentDeleteResponseDto = CommentPostResponseDto.builder().decCode('0').errorMsg("추억 ID로 조회된 데이터가 없습니다.").build();
 
+            // 뎁스가 2일때는 부모댓글 id가 필수
+            if(depth == 2 && parentCommentId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("대댓글 등록일때 부모 댓글 id 필수입니다.").build();
+            if(commentGroup == 2) if(!memory.isPresent()) return CommentPostResponseDto.builder().decCode('0').errorMsg("추억 ID로 조회된 데이터가 없습니다.").build();
+        }
+
+        // 알림 달기
+        // 댓글
+        if(depth == 1) {
+            if(commentGroup == 1) notificationService.saveNotificationInfo(NotificationType.WARM_COMMENT_ALARM  ,pet.get(), commenterId);
+            if(commentGroup == 2) notificationService.saveNotificationInfo(NotificationType.MEMORY_COMMENT_ALARM,pet.get(), commenterId);
+        } else {
+            // 대댓글
+            if(commentGroup == 1) {
+                notificationService.saveNotificationInfo(NotificationType.WARM_COMMENT_ALARM, pet.get(), commenterId);
+                // 프로필 소유자와 댓글자가 다르면 프로필 소유자도 메시지를 보낸다
+                if(commentPostRequestDto.getPetOwnId() != pet.get().getId()) {
+                    Optional<Pet> pet1 = petRepository.findById(commentPostRequestDto.getPetOwnId());
+                    notificationService.saveNotificationInfo(NotificationType.WARM_ALARM, pet1.get(), commenterId);
+                }
+
+            } else if(commentGroup == 2) {
+                notificationService.saveNotificationInfo(NotificationType.MEMORY_COMMENT_ALARM, pet.get(), commenterId);
+                // 추억 소유자와 댓글자가 다르면 추억 소유자도 메시지를 보낸다
+                if(memory.get().getPet().getId() != pet.get().getId()) notificationService.saveNotificationInfo(NotificationType.MEMORY_ALARM, memory.get().getPet(), commenterId);
+            }
         }
 
         Comment comment = Comment.builder()
@@ -122,7 +145,7 @@ public class CommentService {
                 .memory(commentGroup == 2 ? memory.get() : null)
                 .commenterId(commenterId)
                 .depth(depth)
-                .pet(commentGroup == 1 ? pet.get() : null)
+                .pet(pet.get())
                 .comment(commentContext)
                 .commentGroup(commentGroup == 1 ? CommentGroup.LAST_WORD : CommentGroup.MEMORY_COMMENT)
                 .build();
@@ -139,7 +162,7 @@ public class CommentService {
 
         Optional<Comment> commentOptional = commentRepository.findById(warmCommentUpdateRequestDto.getCommentId());
         WarmCommentUpdateResponseDto warmCommentUpdateResponseDto;
-        if(!commentOptional.isPresent()) return warmCommentUpdateResponseDto = WarmCommentUpdateResponseDto.builder().decCode('0').errorMsg("해당 comment id로 조회한 데이터가 없습니다.").build();
+        if(!commentOptional.isPresent()) return WarmCommentUpdateResponseDto.builder().decCode('0').errorMsg("해당 comment id로 조회한 데이터가 없습니다.").build();
         Comment comment = commentOptional.get();
 
         comment.updateComment(warmCommentUpdateRequestDto.getComment());

@@ -7,6 +7,7 @@ import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PetService {
     // 의존성 주입
     private final PetRepository petRepository;
@@ -31,24 +33,26 @@ public class PetService {
     private final FollowRepository followRepository;
     private final CommentRepository commentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BlockedService blockedService;
     private final S3Uploader s3Uploader;
 
 
     @Transactional(readOnly = false)
-    public boolean savePet(MultipartFile petImg, MultipartFile backgroundImg, SavedPetRequestDto petRequestDto) throws IOException {
-        boolean isSaved = false;
+    public SavedPetResponseDto savePet(MultipartFile petImg, MultipartFile backgroundImg, SavedPetRequestDto petRequestDto) throws IOException {
         String storedPetImgName = null;
 
         System.out.println("savePet service start");
 
         if (!petImg.isEmpty()) {
             System.out.println("savePet s3Uploader upload start");
-            storedPetImgName = s3Uploader.uploadFileToS3(petImg, "static/team-image");
+            storedPetImgName = s3Uploader.uploadFileToS3(petImg, "static/pet-image");
         }
+
         String storedBackgroundImgName = null;
         if (!backgroundImg.isEmpty()) {
-            storedBackgroundImgName = s3Uploader.uploadFileToS3(backgroundImg, "static/team-image");
+            storedBackgroundImgName = s3Uploader.uploadFileToS3(backgroundImg, "static/pet-image");
         }
+
         System.out.println(storedPetImgName);
         System.out.println(storedBackgroundImgName);
         Species species = Species.builder().largeCategory("포유류").midCategory(petRequestDto.getPetSpecM()).smallCategory(petRequestDto.getPetSpecS()).build();
@@ -73,18 +77,20 @@ public class PetService {
                 .build();
 
         System.out.println("pet build complete");
-        Pet savedPet = petRepository.save(pet);
+        petRepository.save(pet);
         System.out.println("pet saved complete");
-        return isSaved;
+        SavedPetResponseDto petResponse = SavedPetResponseDto.builder().decCode('1').build();
+        return petResponse;
     }
 
     public PetsResponseDto findPetsByPetId(PetsRequestDto petsRequestDto) {
-        System.out.println("findPetsByPetId start");
         // 펫 id로 펫 정보 조회
         Optional<Pet> pet = petRepository.findById(petsRequestDto.getPetId());
-        if(!pet.isPresent()) {
-            return PetsResponseDto.builder().build();
-        }
+        if(!pet.isPresent()) return PetsResponseDto.builder().build();
+
+        // 사용자가 차단한 펫 id 가져오기
+        BlockListResponseDto blockListResponseDto = blockedService.blockedPetList(petsRequestDto.getPetId());
+        List<Blocked> petList = blockListResponseDto.getPetList();
 
         // 펫 정보로 자기를 좋아해 주는 프로필 조회
         List<PetResponseDto> petsContent = new ArrayList<>();
@@ -99,6 +105,11 @@ public class PetService {
 
         // 자기 자신도 포함
         setPetIds.add(petsRequestDto.getPetId());
+
+        // 사용자가 차단한 사람들도 포함
+        for(Blocked blocked : petList ) {
+            setPetIds.add(blocked.getBlockedPet().getId());
+        }
 
         // 자기자신 + 자기가 좋아요를 누른 프로필 제외하고 최대 20개 조회
         List<Pet> pets = petRepository.findByIdNotIn(setPetIds);
@@ -168,7 +179,6 @@ public class PetService {
                             .build());
                 });
 
-
         PetDetailInfoResponseDto petDetailInfoResponseDto = PetDetailInfoResponseDto.builder()
                 .petId(pet.getId())
                 .petName(pet.getPetName())
@@ -190,14 +200,59 @@ public class PetService {
         return petDetailInfoResponseDto;
     }
 
-    public PetUpdateInfoResponseDto updatePetInfo(PetUpdateInfoRequestDto petUpdateInfoRequestDto) {
+    @Transactional(readOnly = false)
+    public PetUpdateInfoResponseDto updatePetInfo(MultipartFile petImg, MultipartFile backgroundImg, PetUpdateInfoRequestDto petUpdateInfoRequestDto) throws Exception {
         Optional<Pet> petOptional = petRepository.findById(petUpdateInfoRequestDto.getPetId());
         if(!petOptional.isPresent()) return PetUpdateInfoResponseDto.builder().decCode('0').errMsg("해당 펫 ID로 조회된 데이터가 없습니다.").build();
         Pet pet = petOptional.get();
 
         // 펫 정보 업데이트
+        if(petUpdateInfoRequestDto.getPetDesc() != null) {
+            log.info("펫 desc 수정");
+            pet.updateDesc(petUpdateInfoRequestDto.getPetDesc());
+        }
+        if(petUpdateInfoRequestDto.getPetName() != null) {
+            log.info("펫 이름 수정");
+            pet.updateName(petUpdateInfoRequestDto.getPetName());
+        }
+        if(petUpdateInfoRequestDto.getPetBirthDate() != null) {
+            log.info("펫 생일 수정");
+            pet.updateBirthDate(petUpdateInfoRequestDto.getPetBirthDate());
+        }
+        if(petUpdateInfoRequestDto.getPetDeathDate() != null) {
+            log.info("펫 사망일 수정");
+            pet.updateDeathDate(petUpdateInfoRequestDto.getPetDeathDate());
+        }
+        if(petUpdateInfoRequestDto.getPetProfileFrame() != null) {
+            log.info("펫 프레임 수정");
+            pet.updatePetProfileFrame(petUpdateInfoRequestDto.getPetProfileFrame());
+        }
+        if(petUpdateInfoRequestDto.getPetFavs() != null) {
+            log.info("펫 f1 수정");
+            pet.updateFav(petUpdateInfoRequestDto.getPetFavs(),1);
+        }
+        if(petUpdateInfoRequestDto.getPetFavs2() != null) {
+            log.info("펫 f2 수정");
+            pet.updateFav(petUpdateInfoRequestDto.getPetFavs2(),2);
+        }
+        if(petUpdateInfoRequestDto.getPetFavs3() != null) {
+            log.info("펫 f3 수정");
+            pet.updateFav(petUpdateInfoRequestDto.getPetFavs3(),3);
+        }
+        if(!petImg.isEmpty()) {
+            log.info("펫 Profile 수정");
+            s3Uploader.deleteS3(pet.getPetProfileUrl());
+            String storedPetImgName = s3Uploader.uploadFileToS3(petImg, "static/pet-image");
 
+            pet.updateProfileUrl(storedPetImgName);
+        }
 
+        if(!backgroundImg.isEmpty()) {
+            log.info("펫 background 수정");
+            s3Uploader.deleteS3(pet.getBackImgUrl());
+            String storedBackgroundImgName = s3Uploader.uploadFileToS3(backgroundImg, "static/pet-image");
+            pet.updateBackgroundUrl(storedBackgroundImgName);
+        }
 
         return PetUpdateInfoResponseDto.builder().decCode('1').errMsg("수정 완료됬습니다.").build();
     }

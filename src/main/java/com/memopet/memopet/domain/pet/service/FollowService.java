@@ -1,6 +1,7 @@
 package com.memopet.memopet.domain.pet.service;
 
 import com.memopet.memopet.domain.pet.dto.*;
+import com.memopet.memopet.domain.pet.entity.NotificationType;
 import com.memopet.memopet.domain.pet.entity.Follow;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.FollowRepository;
@@ -9,10 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class FollowService {
     private final FollowRepository followRepository;
+    private final NotificationService notificationService;
     private final PetRepository petRepository;
 
     /**
@@ -28,8 +32,6 @@ public class FollowService {
                         .decCode('1').build();
                 break;
             case 2:
-
-
                 wrapper= FollowListWrapper.builder()
                         .followList(followRepository.findFollowingPetsById(pageable, petId))
                         .decCode('1').build();
@@ -70,7 +72,7 @@ public class FollowService {
                 .orElse(null);
 
         if (followingPet == null) {
-            return new FollowResponseDto('0', "Pet not found");
+            return new FollowResponseDto('0', "Following Pet Info not found");
         }
 
         if (followRepository.existsByPetIdAndFollowingPetId(followRequestDTO.getPetId(), followRequestDTO.getFollowingPetId())) {
@@ -82,6 +84,14 @@ public class FollowService {
                 .followingPet(followingPet)
                 .build();
         followRepository.save(follow);
+
+        Optional<Pet> pet = petRepository.findById(followRequestDTO.getPetId());
+
+        if(!pet.isPresent()) return new FollowResponseDto('0',"Followed Pet Info not found");
+
+        // 팔로우를 했을때 팔로우를 당한 프로필에 알림을 보낸다.
+        notificationService.saveNotificationInfo(NotificationType.FOLLOW_ALARM,pet.get(), followingPet.getId());
+
         return new FollowResponseDto('1', "Followed the pet successfully");
     }
 }

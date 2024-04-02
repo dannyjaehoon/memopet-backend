@@ -1,9 +1,6 @@
 package com.memopet.memopet.domain.pet.service;
 
-import com.memopet.memopet.domain.pet.dto.BlockRequestDto;
-import com.memopet.memopet.domain.pet.dto.BlockListWrapper;
-import com.memopet.memopet.domain.pet.dto.BlockeResponseDto;
-import com.memopet.memopet.domain.pet.dto.BlockedListResponseDto;
+import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.Blocked;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.BlockedRepository;
@@ -13,6 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +43,47 @@ public class BlockedService {
 
     }
 
+    public HashMap<Long, Integer> findBlockList(Long petId) {
+        Optional<Pet> pet = petRepository.findById(petId);
+        // 사용자가 차단한 펫 id 가져오기
+        BlockListResponseDto blockListResponseDto = blockedPetList(petId);
+        List<Blocked> blockedPetList = blockListResponseDto.getPetList();
+        HashMap<Long,Integer> blockMap = new HashMap<>();
+
+        for(Blocked blockedPet : blockedPetList) {
+            if(blockMap.getOrDefault(blockedPet.getBlockedPet().getId(),0) != 0) continue;
+            blockMap.put(blockedPet.getBlockedPet().getId(),1);
+        }
+        // 프로필 차단된 리스트
+        // 사용자 2가 사용자 1을 차단했을때 사용자 1 은 사용자 2의 정보를 볼수없다.
+        // 블락커의 정보가 필요함
+        List<Blocked> blockerList = blockedRepository.findBlockerPets(pet.get());
+
+        for(Blocked blockerPet : blockerList) {
+            if(blockMap.getOrDefault(blockerPet.getBlockerPetId(),0) != 0) continue;
+            blockMap.put(blockerPet.getBlockerPetId(),1);
+        }
+
+        return blockMap;
+    }
+
+    // 자기를 블락한 프로필과 자기가 블락한 프로필 둘다 가져옴
+    @Transactional(readOnly = true)
+    public BlockListResponseDto blockedPetList(Long blockerPetId) {
+        try {
+            List<Blocked> blockedPets = blockedRepository.findBlockedPets(blockerPetId);
+            return BlockListResponseDto.builder()
+                    .petList(blockedPets)
+                    .decCode('1')
+                    .build();
+        } catch (Exception e) {
+            return BlockListResponseDto.builder()
+                    .decCode('0')
+                    .errorDescription("Error: "+ e.getMessage())
+                    .build();
+        }
+
+    }
 
     /**
      * 차단

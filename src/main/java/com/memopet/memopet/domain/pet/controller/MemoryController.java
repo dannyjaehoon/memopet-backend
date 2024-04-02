@@ -25,7 +25,7 @@ public class MemoryController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/memory")
     public MemoryResponseDto memory(MemoryRequestDto memoryRequestDto) {
-        MemoryResponseDto memoryResponseDto = memoryService.findMemoryByMemoryId(memoryRequestDto.getMemoryId());
+        MemoryResponseDto memoryResponseDto = memoryService.findMemoryByMemoryId(memoryRequestDto);
         return memoryResponseDto;
     }
 
@@ -103,7 +103,7 @@ public class MemoryController {
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @DeleteMapping("/memory")
-    public MemoryDeleteResponseDto deleteMemory(@RequestBody MemoryDeleteRequestDto memoryDeleteRequestDto) {
+    public MemoryDeleteResponseDto deleteMemory(@RequestBody MemoryDeleteRequestDto memoryDeleteRequestDto) throws Exception {
         MemoryDeleteResponseDto memoryDeleteResponseDto  = memoryService.deleteMemory(memoryDeleteRequestDto);
         return memoryDeleteResponseDto;
     }

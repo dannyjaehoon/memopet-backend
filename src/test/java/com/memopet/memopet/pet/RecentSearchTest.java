@@ -9,10 +9,8 @@ import com.memopet.memopet.domain.pet.entity.PetStatus;
 import com.memopet.memopet.domain.pet.entity.Species;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import com.memopet.memopet.domain.pet.repository.SpeciesRepository;
-import com.memopet.memopet.global.common.entity.RecentSearch;
 import com.memopet.memopet.global.common.repository.RecentSearchRepository;
 import com.memopet.memopet.global.common.service.RecentSearchService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +20,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-
-import static com.memopet.memopet.global.common.entity.QRecentSearch.recentSearch;
 
 @SpringBootTest
 @Transactional

@@ -1,25 +1,20 @@
 package com.memopet.memopet.pet;
 
-import com.memopet.memopet.domain.member.entity.Roles;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
 import com.memopet.memopet.global.common.entity.Meta;
-import com.memopet.memopet.global.common.entity.RecentSearch;
 import com.memopet.memopet.global.common.repository.MetaRepository;
 import com.memopet.memopet.global.common.repository.RecentSearchRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 

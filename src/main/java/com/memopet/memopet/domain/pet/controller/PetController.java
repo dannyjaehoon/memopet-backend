@@ -3,6 +3,7 @@ package com.memopet.memopet.domain.pet.controller;
 
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.service.PetService;
+import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class PetController {
 
+    private final S3Uploader s3Uploader;
     private final PetService petService;
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PostMapping(value="/pet/new",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -40,10 +42,10 @@ public class PetController {
         System.out.println(petRequestDto.getPetFavs2());
         System.out.println(petRequestDto.getPetFavs3());
         System.out.println("-----------------------------------------------------");
-        boolean isSaved = petService.savePet(backImgUrl, petProfileUrl, petRequestDto);
+        SavedPetResponseDto savedPetResponseDto = petService.savePet(backImgUrl, petProfileUrl, petRequestDto);
         System.out.println("pet saved complete1");
-        SavedPetResponseDto petResponse = SavedPetResponseDto.builder().decCode(isSaved ? '1': '0').build();
-        return petResponse;
+
+        return savedPetResponseDto;
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
@@ -62,8 +64,8 @@ public class PetController {
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping("/profile")
-    public PetUpdateInfoResponseDto findPets(PetUpdateInfoRequestDto petUpdateInfoRequestDto) {
-        PetUpdateInfoResponseDto petUpdateInfoResponseDto  = petService.updatePetInfo(petUpdateInfoRequestDto);
+    public PetUpdateInfoResponseDto findPets(@RequestPart(value="back_img_url") MultipartFile backImgUrl, @RequestPart(value="pet_profile_url") MultipartFile petProfileUrl, @RequestPart(value = "petUpdateInfoRequestDto") PetUpdateInfoRequestDto petUpdateInfoRequestDto) throws Exception {
+        PetUpdateInfoResponseDto petUpdateInfoResponseDto  = petService.updatePetInfo(backImgUrl, petProfileUrl, petUpdateInfoRequestDto);
         return petUpdateInfoResponseDto;
     }
 
@@ -104,4 +106,6 @@ public class PetController {
     public PetProfileResponseDto deletePetProfile(@RequestBody PetDeleteRequestDto petDeleteRequestDTO) {
         return petService.deletePetProfile(petDeleteRequestDTO);
     }
+
+
 }

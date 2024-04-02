@@ -19,6 +19,8 @@ public class CommentPostRequestDto {
     private Long memoryId;
     @JsonProperty("pet_id")
     private Long petId;
+    @JsonProperty("pet_own_id")
+    private Long petOwnId;
     private int depth;
     private String comment;
     @JsonProperty("comment_group")

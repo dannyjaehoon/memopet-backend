@@ -74,4 +74,38 @@ public class Pet extends FirstCreatedEntity {
     public void updateDeletedDate(LocalDateTime deletedDate) {
         this.deletedDate = deletedDate;
     }
+
+    public void updateDesc(String petDesc) {
+        this.petDesc = petDesc;
+    }
+
+    public void updateFav(String petFavs, int dec) {
+        if(dec == 1) this.petFavs = petFavs;
+        if(dec == 2) this.petFavs2 = petFavs;
+        if(dec == 3) this.petFavs3 = petFavs;
+    }
+
+    public void updateName(String petName) {
+        this.petName = petName;
+    }
+
+    public void updateBirthDate(LocalDate petBirthDate) {
+        this.petBirth = petBirthDate;
+    }
+
+    public void updateDeathDate(LocalDate petDeathDate) {
+        this.petDeathDate = petDeathDate;
+    }
+
+    public void updatePetProfileFrame(Integer petProfileFrame) {
+        this.petProfileFrame = petProfileFrame;
+    }
+
+    public void updateProfileUrl(String storedPetImgName) {
+        this.petProfileUrl = storedPetImgName;
+    }
+
+    public void updateBackgroundUrl(String storedBackgroundImgName) {
+        this.backImgUrl = storedBackgroundImgName;
+    }
 }

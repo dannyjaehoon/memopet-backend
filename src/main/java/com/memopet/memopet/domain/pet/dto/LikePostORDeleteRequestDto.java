@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FollowOrLikePostORDeleteRequestDto {
+public class LikePostORDeleteRequestDto {
 
     @JsonProperty("memory_id")
     private Long memoryId;
@@ -18,9 +18,4 @@ public class FollowOrLikePostORDeleteRequestDto {
     private Long petId;
     @JsonProperty("my_pet_id")
     private Long myPetId;
-    @JsonProperty("fun_code")
-    private String funCode;
-    @JsonProperty("dec_code")
-    private String decCode;
-
 }

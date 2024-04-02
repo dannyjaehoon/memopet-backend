@@ -5,6 +5,8 @@ import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
+import com.memopet.memopet.global.common.entity.RecentSearch;
+import com.memopet.memopet.global.common.repository.RecentSearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +34,7 @@ public class InitialUserInfo implements CommandLineRunner {
     private final CommentRepository commentRepository;
     private final MemoryImageRepository memoryImageRepository;
     private final FollowRepository followRepository;
+    private final RecentSearchRepository recentSearchRepository;
     @Override
     public void run(String... args) throws Exception {
         Member member1 = Member.builder()
@@ -147,7 +152,7 @@ public class InitialUserInfo implements CommandLineRunner {
                 .title("방울이와의 밤 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
+                .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
 
@@ -155,49 +160,49 @@ public class InitialUserInfo implements CommandLineRunner {
                 .title("방울이와의 낮 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
-                .audience(Audience.ALL)
+                .likeCount(1)
+                .audience(Audience.ME)
                 .build();
         Memory memory2 = Memory.builder().pet(pet1)
                 .title("방울이와의 오전 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
-                .audience(Audience.ALL)
+                .likeCount(1)
+                .audience(Audience.FRIEND)
                 .build();
         Memory memory3 = Memory.builder().pet(pet1)
                 .title("방울이와의 오후 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
+                .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory4 = Memory.builder().pet(pet2)
                 .title("두리와의 오전 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("두리와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
+                .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory5 = Memory.builder().pet(pet2)
                 .title("두리와의 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("두리와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
+                .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory6 = Memory.builder().pet(pet2)
                 .title("두리와의 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("두리와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
+                .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory7 = Memory.builder().pet(pet3)
                 .title("방울이와의 산책")
                 .memoryDate(LocalDateTime.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
-                .likeCount(0)
+                .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory8 = Memory.builder().pet(pet3)
@@ -401,5 +406,12 @@ public class InitialUserInfo implements CommandLineRunner {
 
         followRepository.saveAll(List.of(follow,follow1,follow2));
 
+        List<String> searchTexts = new ArrayList<>();
+        searchTexts.add("코코");
+        searchTexts.add("피기");
+
+        RecentSearch recentSearch = RecentSearch.builder().searchTexts(searchTexts).createdDate(LocalDateTime.now()).pet(pet1).build();
+
+        recentSearchRepository.save(recentSearch);
     }
 }

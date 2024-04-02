@@ -1,6 +1,8 @@
 package com.memopet.memopet.domain.pet.service;
 
 
+import com.memopet.memopet.domain.pet.dto.BlockRequestDto;
+import com.memopet.memopet.domain.pet.dto.BlockeResponseDto;
 import com.memopet.memopet.domain.pet.dto.ReportPostRequestDto;
 import com.memopet.memopet.domain.pet.dto.ReportPostResponseDto;
 import com.memopet.memopet.domain.pet.entity.Report;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReportService {
     private final ReportRepository reportRepository;
+    private final BlockedService blockedService;
 
     @Transactional(readOnly = false)
     public ReportPostResponseDto registerReport(ReportPostRequestDto reportPostRequestDto) {
@@ -36,6 +39,7 @@ public class ReportService {
                 .reportReason(reportPostRequestDto.getReportReason())
                 .commentId(commentId != null ? commentId : null)
                 .createdDate(LocalDateTime.now()).build();
+
 
         reportRepository.save(report);
         return ReportPostResponseDto.builder().decCode('1').errMsg("").build();

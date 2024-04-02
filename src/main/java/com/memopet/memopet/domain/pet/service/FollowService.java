@@ -2,6 +2,7 @@ package com.memopet.memopet.domain.pet.service;
 
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.pet.dto.*;
+import com.memopet.memopet.domain.pet.entity.NotificationType;
 import com.memopet.memopet.domain.pet.entity.Follow;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.entity.PetStatus;
@@ -12,11 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class FollowService {
     private final FollowRepository followRepository;
+    private final NotificationService notificationService;
     private final PetRepository petRepository;
     private final PetService petService;
 
@@ -98,6 +101,14 @@ public class FollowService {
                 .followingPet(followingPet)
                 .build();
         followRepository.save(follow);
+
+        Optional<Pet> pet = petRepository.findById(followRequestDTO.getPetId());
+
+        if(!pet.isPresent()) return new FollowResponseDto('0',"Followed Pet Info not found");
+
+        // 팔로우를 했을때 팔로우를 당한 프로필에 알림을 보낸다.
+        notificationService.saveNotificationInfo(NotificationType.FOLLOW_ALARM,pet.get(), followingPet.getId());
+
         return new FollowResponseDto('1', "Followed the pet successfully");
     }
 

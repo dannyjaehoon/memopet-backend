@@ -35,5 +35,5 @@ public class PetUpdateInfoRequestDto {
     @JsonProperty("pet_desc")
     private String petDesc;
     @JsonProperty("pet_profile_frame")
-    private int petProfileFrame;
+    private Integer petProfileFrame;
 }

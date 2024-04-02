@@ -35,6 +35,8 @@ public class SavedPetRequestDto {
     private String petProfileUrl;
     @JsonProperty("back_img_url")
     private String backImgUrl;
+    @JsonProperty("pet_profile_frame")
+    private String petProfileFrame;
     @JsonProperty("birth_dt")
     private String birthDate;
     @JsonProperty("death_dt")

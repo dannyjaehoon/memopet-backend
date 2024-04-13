@@ -36,13 +36,7 @@ jobs:
           touch ./src/main/resources/application.yml 
           echo "${{ secrets.YML }}" > ./application.yml  # github actions에서 설정한 값을 application.yml 파일에 쓰기
       
-    - name: make jwt.yml
-      shell: bash
-      run: |
-          touch src/main/resources/jwt.yml 
-          echo "${{ secrets.JWT_YML }}" > src/main/resources/jwt.yml  # github actions에서 설정한 값을 application.yml 파일에 쓰기
-      
-      
+
     # gradle caching - 빌드 시간 향상
     - name: Gradle Caching
       uses: actions/cache@v3

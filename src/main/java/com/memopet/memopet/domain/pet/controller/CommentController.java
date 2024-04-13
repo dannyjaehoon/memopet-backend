@@ -26,12 +26,12 @@ public class CommentController {
     }
 
 
-    // 추억 댓글 단건 삭제
+    // 댓글 단건 삭제
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @DeleteMapping("/memory-comment")
+    @DeleteMapping("/comment")
     public ResponseEntity<CommentDeleteResponseDto> deleteMemoryComment(@RequestBody CommentDeleteRequestDto commentDeleteRequestDto) {
 
-        CommentDeleteResponseDto commentDeleteResponseDto = commentService.deleteComments(commentDeleteRequestDto);
+        CommentDeleteResponseDto commentDeleteResponseDto = commentService.deleteComment(commentDeleteRequestDto);
         return new ResponseEntity<>(commentDeleteResponseDto, HttpStatus.OK);
     }
 

@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemoryRepository extends JpaRepository<Memory, Long> {
+public interface MemoryRepository extends JpaRepository<Memory, Long>, CustomMemoryRepository {
 
     @Override
     @Query(value = "select * from memory where memory_id = ?1 and deleted_date IS NULL", nativeQuery = true)
@@ -27,28 +27,26 @@ public interface MemoryRepository extends JpaRepository<Memory, Long> {
     @Query(value = "select * from memory where memory_id in ?1 and deleted_date IS NULL", nativeQuery = true)
     List<Memory> findByMemoryIds(List<Long> memory_ids);
 
-    @Query(value = "select * from memory where memory_id in ?1 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
-    Page<Memory> findByMemoryIdsWithPagination(List<Long> memory_ids,Pageable pageable);
-    @Query(value = "select * from memory where memory_id in ?1 and created_date >= ?2 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
-    List<Memory> findByRecentMemoryIds(List<Long> memory_ids, LocalDateTime localDateTime);
     @Query(value = "select * from memory where pet_id in ?1 and deleted_date IS NULL", nativeQuery = true)
     List<Memory> findByPetIds(List<Long> pets);
 
     @Query(value="select * from memory where pet_id = ?1 and deleted_date IS NULL order by created_date desc limit 1", nativeQuery = true)
     Optional<Memory> findTheRecentMomoryByPetId(Long id);
 
-    @Query(value="select * from memory where memory_id in ?1 and created_date between ?2 and ?3 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
-    Page<Memory> findMonthMomoriesByPetIdWithPagination(List<Long> memoryIds, LocalDateTime firstDayOfMonth, LocalDateTime lastDayOfMonth, Pageable pageable);
+    @Query(value="select distinct m.* from (select m.* from memory as m where 1= 1 and m.audience = 'ALL' and m.created_date between ?2 and ?3 and m.deleted_date IS NULL union all select m.* from memory as m left join follow as f on m.pet_id = f.following_pet where 1= 1 and f.following_pet = ?1 and m.audience = 'FRIEND' and m.created_date between ?2 and ?3 and m.deleted_date IS NULL) m order by created_date desc",countQuery = "select count(distinct m.memory_id) from (select m.* from memory as m where 1= 1 and m.audience = 'ALL' and m.created_date between ?2 and ?3 and m.deleted_date IS NULL union all select m.* from memory as m left join follow as f on m.pet_id = f.following_pet where 1= 1 and f.following_pet = ?1 and m.audience = 'FRIEND' and m.created_date between ?2 and ?3 and m.deleted_date IS NULL) m order by created_date desc",nativeQuery = true)
+    Page<Memory> findMonthMomoriesByPetId(Long petId, LocalDateTime firstDayOfMonth, LocalDateTime lastDayOfMonth,Pageable pageable);
 
-    @Query(value="select * from memory where pet_id = ?1 and created_date between ?2 and ?3 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
-    List<Memory> findMonthMomoriesByPetId(Long petId, LocalDateTime firstDayOfMonth, LocalDateTime lastDayOfMonth);
+    @Query(value = "select m.* from memory as m left join follow as f on m.pet_id = f.pet_id where 1= 1 and m.pet_id not in ?1 and f.following_pet = ?3 and m.audience != 'ME' and m.created_date >=?2  and m.deleted_date IS NULL order by m.created_date desc",countQuery = "select count(m.memory_id) from memory as m left join follow as f on m.pet_id = f.pet_id where 1= 1 and m.pet_id not in ?1 and f.following_pet = ?3 and m.audience != 'ME' and m.created_date >=?2  and m.deleted_date IS NULL order by m.created_date desc", nativeQuery = true)
+    Page<Memory> findByRecentMemoryIdsWithPagination(List<Long> blockedPetIds, LocalDateTime localDateTime,Long id, PageRequest pageRequest);
+    @Query(value = "select m.* from memory as m left join follow as f on m.pet_id = f.pet_id where 1= 1 and f.following_pet = ?2 and m.audience != 'ME' and m.created_date >=?1  and m.deleted_date IS NULL order by m.created_date desc",countQuery = "select count(m.memory_id) from memory as m left join follow as f on m.pet_id = f.pet_id where 1= 1 and f.following_pet = ?2 and m.audience != 'ME' and m.created_date >=?1  and m.deleted_date IS NULL order by m.created_date desc",nativeQuery = true)
+    Page<Memory> findByRecentMemoryIdsWithPaginationWithoutBlockedPetList(LocalDateTime localDateTime, Long id, PageRequest pageRequest);
 
-    Page<Memory> findMemoriesByPetId(Long petId, Pageable pageable);
 
-    @Query(value = "select * from memory where memory_id in ?1 and created_date >= ?2 and deleted_date IS NULL order by created_date desc", nativeQuery = true)
-    Page<Memory> findByRecentMemoryIdsWithPagination(List<Long> filteredMemoryIds, LocalDateTime localDateTime, PageRequest pageRequest);
+    @Query(value = "select distinct m.* from memory as m where m.pet_id not in ?1 and m.audience != 'ME' and (m.memory_title like %?2% or m.memory_desc like %?2%) and m.deleted_date IS NULL", nativeQuery = true)
+    Slice<Memory> findMemoryBySearchText(List<Long> petIds, String searchText, Long petId, PageRequest pageRequest);
 
-    @Query(value = "select * from memory where pet_id not in ?1 and (memory_title like %?2% or memory_desc like %?2%) and deleted_date IS NULL order by created_date desc", nativeQuery = true)
-    Slice<Memory> findMemoryBySearchText(List<Long> petIds, String searchText, PageRequest pageRequest);
-    Collection<Object> findByPetId(Long petId);
+    @Query(value = "select distinct m.* from memory as m where 1= 1 and m.memory_id in :memoryIds and m.audience != 'ME' and m.deleted_date IS NULL order by created_date desc", nativeQuery = true)
+    Slice<Memory> findByMemoryIdsWithSlice(@Param("memoryIds") List<Long> memoryIds, PageRequest pageRequest);
+
+
 }

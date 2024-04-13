@@ -57,6 +57,7 @@ public class S3Uploader {
      * @return 업로드 경로
      */
     public String putS3(File uploadFile, String fileName) {
+
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(
                 CannedAccessControlList.PublicRead));
         return amazonS3Client.getUrl(bucket, fileName).toString();
@@ -68,8 +69,8 @@ public class S3Uploader {
      */
     public void deleteS3(String filePath) throws Exception {
         try{
-            String key = filePath.substring(56); // 폴더/파일.확장자
-
+            String key = filePath.substring(55); // 폴더/파일.확장자
+            log.info("key : " +  key);
             try {
                 amazonS3Client.deleteObject(bucket, key);
             } catch (AmazonServiceException e) {

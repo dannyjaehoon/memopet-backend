@@ -85,6 +85,9 @@ public class Pet extends FirstCreatedEntity {
         if(dec == 3) this.petFavs3 = petFavs;
     }
 
+    public void updatePetStatus(PetStatus petStatus) {
+        this.petStatus = petStatus;
+    }
     public void updateName(String petName) {
         this.petName = petName;
     }

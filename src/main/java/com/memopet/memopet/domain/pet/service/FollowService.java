@@ -9,7 +9,10 @@ import com.memopet.memopet.domain.pet.entity.PetStatus;
 import com.memopet.memopet.domain.pet.repository.FollowRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,52 +24,58 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final NotificationService notificationService;
     private final PetRepository petRepository;
-    private final PetService petService;
 
     /**
      * 리스트 조회- 1:팔로워 2:팔로우
      */
-    public FollowListWrapper followList(Pageable pageable, Long petId, int followType, String email) {
-        boolean validatePetResult = petService.validatePetRequest(email, petId);
-        if (!validatePetResult) {
-            return FollowListWrapper.builder()
+    public FollowListResponseDto followList(FollowListRequestDto followListRequestDto) {
+
+        Optional<Pet> pet = petRepository.findById(followListRequestDto.getPetId());
+        if (!pet.isPresent()) {
+            return FollowListResponseDto.builder()
                     .errorDescription("Pet not available or not active.")
                     .decCode('0')
                     .build();
         }
 
+        FollowListResponseDto followListResponseDto;
 
-        FollowListWrapper wrapper;
+        PageRequest pageRequest = PageRequest.of(followListRequestDto.getCurrentPage()-1, followListRequestDto.getDataCounts());
 
-        switch (followType) {
+        switch (followListRequestDto.getFollowType()) {
             case 1:
-                wrapper= FollowListWrapper.builder()
-                        .followList(followRepository.findFollowerPetsByPetId(pageable, petId))
+                Slice<PetFollowingResponseDto> followerSlice = followRepository.findFollowerPetsByPetId(followListRequestDto.getPetId(),pageRequest);
+                followListResponseDto= FollowListResponseDto.builder()
+                        .followList(followerSlice.getContent())
+                        .hasNext(followerSlice.hasNext())
+                        .currentPage(followerSlice.getNumber()+1)
+                        .dataCounts(followerSlice.getContent().size())
                         .decCode('1').build();
                 break;
             case 2:
-
-
-                wrapper= FollowListWrapper.builder()
-                        .followList(followRepository.findFollowingPetsById(pageable, petId))
+                Slice<PetFollowingResponseDto> followingSlice = followRepository.findFollowingPetsById(followListRequestDto.getPetId(),pageRequest);
+                followListResponseDto= FollowListResponseDto.builder()
+                        .followList(followingSlice.getContent())
+                        .hasNext(followingSlice.hasNext())
+                        .currentPage(followingSlice.getNumber()+1)
+                        .dataCounts(followingSlice.getContent().size())
                         .decCode('1').build();
                 break;
             default:
-                wrapper= FollowListWrapper.builder()
-                        .decCode('0')
-                        .errorDescription("Unexpected value: " + followType)
-                        .build();
+                followListResponseDto= FollowListResponseDto.builder()
+                        .errorDescription("Unexpected value: " + followListRequestDto.getFollowType())
+                        .decCode('0').build();
                 break;
         }
 
-        return wrapper;
+        return followListResponseDto;
     }
 
 
     /**
      * 팔로우 취소
      */
-    public FollowResponseDto unfollow(Long petId, Long followingPetId, String email) {
+    public FollowResponseDto unfollow(Long petId, Long followingPetId) {
 
         if (!followRepository.existsByPetIdAndFollowingPetId(petId, followingPetId)) {
             return new FollowResponseDto('0', "Following relation doesn't exist.");

@@ -15,8 +15,8 @@ import java.util.List;
 public class LikedMemoryResponseDto {
 
 
-    @JsonProperty("total_pages")
-    private int totalPages;
+    @JsonProperty("has_next")
+    private boolean hasNext;
     @JsonProperty("current_page")
     private int currentPage;
     @JsonProperty("data_counts")

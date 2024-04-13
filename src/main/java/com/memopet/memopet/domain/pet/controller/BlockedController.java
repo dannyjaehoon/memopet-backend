@@ -3,9 +3,10 @@ package com.memopet.memopet.domain.pet.controller;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.domain.pet.dto.BlockListRequestDto;
+import com.memopet.memopet.domain.pet.dto.BlockListResponseDto;
 import com.memopet.memopet.domain.pet.dto.BlockRequestDto;
-import com.memopet.memopet.domain.pet.dto.BlockListWrapper;
-import com.memopet.memopet.domain.pet.dto.BlockeResponseDto;
+import com.memopet.memopet.domain.pet.dto.BlockedResponseDto;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import com.memopet.memopet.domain.pet.repository.SpeciesRepository;
@@ -36,10 +37,10 @@ public class BlockedController {
      * 차단 리스트
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @GetMapping("/{petId}")
-    public BlockListWrapper blockedPetList(@PageableDefault(size = 20,page = 0) Pageable pageable, @PathVariable @Param("blockerPetId") Long petId, Authentication authentication) {
+    @GetMapping("")
+    public BlockListResponseDto blockedPetList(BlockListRequestDto blockListRequestDto, Authentication authentication) {
 
-        return blockedService.blockedPetList(pageable,petId, authentication.getName());
+        return blockedService.blockedPetList(blockListRequestDto, authentication.getName());
     }
 
     /**
@@ -47,7 +48,7 @@ public class BlockedController {
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PostMapping("")
-    public BlockeResponseDto BlockAPet(@RequestBody @Valid BlockRequestDto blockRequestDTO, Authentication authentication) {
+    public BlockedResponseDto BlockAPet(@RequestBody @Valid BlockRequestDto blockRequestDTO, Authentication authentication) {
         return blockedService.blockApet(blockRequestDTO, authentication.getName());
     }
 
@@ -55,8 +56,8 @@ public class BlockedController {
      * 차단 취소
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @DeleteMapping("/{petId}/{blockedPetId}")
-    public BlockeResponseDto CancelBlocking(@PathVariable @Param("blockerPetId")Long petId, @PathVariable Long blockedPetId, Authentication authentication) {
+    @DeleteMapping("")
+    public BlockedResponseDto CancelBlocking(@RequestParam("blockerPetId")Long petId, @RequestParam("blockedPetId") Long blockedPetId, Authentication authentication) {
         return blockedService.unblockAPet(petId, blockedPetId,authentication.getName());
     }
 

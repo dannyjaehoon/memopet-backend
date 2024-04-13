@@ -10,17 +10,15 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FollowListResponseDto {
+public class RecentMainMemoriesResponseDto {
 
 
-    @JsonProperty("has_next")
-    private boolean hasNext;
+    @JsonProperty("total_page")
+    private int totalPage;
     @JsonProperty("current_page")
     private int currentPage;
     @JsonProperty("data_counts")
     private int dataCounts;
-    private List<PetFollowingResponseDto> followList;
-    @JsonProperty("dec_code")
-    private char decCode;
-    private String errorDescription;
+    private List<MemoryResponseDto> memoryResponseDto;
+
 }

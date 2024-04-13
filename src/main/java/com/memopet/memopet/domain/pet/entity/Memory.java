@@ -5,6 +5,7 @@ import com.memopet.memopet.global.common.entity.FirstCreatedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,7 +26,7 @@ public class Memory extends FirstCreatedEntity {
     private String title;
 
     @Column(name = "memory_date",nullable = false)
-    private LocalDateTime memoryDate;
+    private LocalDate memoryDate;
 
     @Column(name = "memory_desc")
     private String memoryDescription;
@@ -42,22 +43,6 @@ public class Memory extends FirstCreatedEntity {
 
     public void updateDeleteDate(LocalDateTime deletedDate) {
         this.deletedDate = deletedDate;
-    }
-
-    public void updateTitle(String memoryTitle) {
-        this.title = memoryTitle;
-    }
-
-    public void updateMemoryDate(LocalDateTime memoryDate) {
-        this.memoryDate = memoryDate;
-    }
-
-    public void updateDesc(String memoryDescription) {
-        this.memoryDescription = memoryDescription;
-    }
-
-    public void updateAudience(Audience audience) {
-        this.audience = audience;
     }
 
     public void updateLikesCount(int count) {this.likeCount =count;}

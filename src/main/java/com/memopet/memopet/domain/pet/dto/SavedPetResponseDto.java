@@ -12,4 +12,7 @@ public class SavedPetResponseDto {
     @JsonProperty("dec_code")
     private char decCode;
 
+    @JsonProperty("message")
+    private String message;
+
 }

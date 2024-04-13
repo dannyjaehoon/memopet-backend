@@ -32,13 +32,13 @@ public class CustomPetRepositoryImpl implements CustomPetRepository{
 
 
     @Override
-    public Page<PetListResponseDto> findPetsById(Pageable pageable, Long petId) {
+    public List<PetListResponseDto> findPetsById(Long petId) {
 
         List<PetListResponseDto> content = queryFactory.select(
                         Projections.constructor(PetListResponseDto.class,
                                 pet.id,
                                 pet.petName,
-                                pet.petDesc))
+                                pet.petProfileUrl))
                 .from(QPet.pet)
                 .where(pet.member.id.eq(
                         JPAExpressions.select(pet.member.id)
@@ -46,15 +46,12 @@ public class CustomPetRepositoryImpl implements CustomPetRepository{
                                 .where(pet.id.eq(petId))
                         ))
                 .where(pet.deletedDate.isNull())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .orderBy(new CaseBuilder()
                         .when(pet.petStatus.eq(PetStatus.ACTIVE)).then(0)
                         .otherwise(1)
                         .asc())
                 .fetch();
-        long total = content.size();
-        return new PageImpl<>(content, pageable, total);
+        return content;
 
     }
 

@@ -1,15 +1,17 @@
 package com.memopet.memopet.domain.pet.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
 
+@AllArgsConstructor
 @Getter
 @Builder
-public class BlockListWrapper {
-    private Page<BlockedListResponseDto> petList;
+public class BlockedResponseDto {
     @JsonProperty("dec_code")
     private char decCode;
+
     private String message;
+
 }

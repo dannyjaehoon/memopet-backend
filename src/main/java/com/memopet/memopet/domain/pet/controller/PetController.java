@@ -43,7 +43,6 @@ public class PetController {
         System.out.println(petRequestDto.getPetFavs3());
         System.out.println("-----------------------------------------------------");
         SavedPetResponseDto savedPetResponseDto = petService.savePet(backImgUrl, petProfileUrl, petRequestDto);
-        System.out.println("pet saved complete1");
 
         return savedPetResponseDto;
     }
@@ -74,14 +73,16 @@ public class PetController {
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/pet/profiles/{petId}")
-    public PetListWrapper petsList(@PageableDefault(size = 5, page = 0) Pageable pageable, @PathVariable Long petId,Authentication authentication) {
+    public PetProfileResponseDto petsList(@PathVariable Long petId, Authentication authentication) {
         boolean validatePetResult = petService.validatePetRequest(authentication.getName(), petId);
         if (!validatePetResult) {
-            return PetListWrapper.builder()
+            return PetProfileResponseDto.builder()
                     .decCode('0')
                     .message("Pet not available or not active.").build();
         }
-        return petService.profileList(pageable, petId);
+
+        PetProfileResponseDto petProfileResponseDto = petService.profileList(petId);
+        return petProfileResponseDto;
     }
 
     /**
@@ -90,12 +91,7 @@ public class PetController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping("/pet")
     public PetProfileResponseDto switchProfile(@RequestBody PetSwitchRequestDto petSwitchResponseDTO) {
-        boolean isSwitched = petService.switchProfile(petSwitchResponseDTO);
-        if (isSwitched) {
-            return PetProfileResponseDto.builder().decCode('1').message("Pet has been switched.").build();
-        }
-        return PetProfileResponseDto.builder().decCode('0').message("Failed to switch pet").build();
-
+        return petService.switchProfile(petSwitchResponseDTO);
     }
 
     /**

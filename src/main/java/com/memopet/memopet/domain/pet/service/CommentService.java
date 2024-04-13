@@ -27,7 +27,7 @@ public class CommentService {
 
 
     @Transactional(readOnly = false)
-    public CommentDeleteResponseDto deleteComments(CommentDeleteRequestDto commentDeleteRequestDto) {
+    public CommentDeleteResponseDto deleteComment(CommentDeleteRequestDto commentDeleteRequestDto) {
 
         CommentDeleteResponseDto commentDeleteResponseDto = CommentDeleteResponseDto.builder().decCode('1').build();
 

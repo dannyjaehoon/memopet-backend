@@ -47,6 +47,7 @@ public class EmailService {
         emailSender.send(emailForm);
         setDataExpire(toEmail, authNum,60 * 3L);
 
+        log.info("authNum : " + authNum);
         return authNum; //인증 코드 반환
     }
 
@@ -90,13 +91,17 @@ public class EmailService {
 
     public EmailAuthResponseDto checkVerificationCode(String email, String code) {
 
+        log.info("email : " + email);
+        log.info("code : " + code);
         EmailAuthResponseDto emailAuthResponseDto = EmailAuthResponseDto.builder().dscCode("1").build();
         String codeSaved = redisUtil.getValues(email);
+        log.info("codeSaved : " + codeSaved);
         if(codeSaved.equals("false")) {
             emailAuthResponseDto = EmailAuthResponseDto.builder().dscCode("0").errMessage("expired").build();
             return emailAuthResponseDto;
         }
         if(!codeSaved.equals(code)) {
+
             emailAuthResponseDto = EmailAuthResponseDto.builder().dscCode("0").errMessage("different").build();
             return emailAuthResponseDto;
         }

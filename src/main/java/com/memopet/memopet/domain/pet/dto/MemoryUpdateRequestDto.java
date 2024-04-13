@@ -3,6 +3,7 @@ package com.memopet.memopet.domain.pet.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -28,6 +29,6 @@ public class MemoryUpdateRequestDto {
     @JsonProperty("memory_desc")
     private String memoryDescription;
     @JsonProperty("memory_date")
-    private LocalDateTime memoryDate;
+    private LocalDate memoryDate;
 
 }

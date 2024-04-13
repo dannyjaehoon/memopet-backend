@@ -1,14 +1,13 @@
 package com.memopet.memopet.domain.pet.service;
 
-import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.Blocked;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.BlockedRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +27,7 @@ public class BlockedService {
      * 차단한 펫 리스트
      */
     @Transactional(readOnly = true)
-    public BlockListWrapper blockedPetList(Pageable pageable, Long blockerPetId, String email) {
+    public BlockListResponseDto blockedPetList(BlockListRequestDto blockListRequestDto, String email) {
 //        boolean validatePetResult=petService.validatePetRequest(email, blockerPetId);
 //        if (!validatePetResult) {
 //            return BlockListWrapper.builder()
@@ -36,14 +35,20 @@ public class BlockedService {
 //                    .decCode('0')
 //                    .build();
 //        }
+
+        PageRequest pageRequest = PageRequest.of(blockListRequestDto.getCurrentPage()-1, blockListRequestDto.getDataCounts());
+
         try {
-            Page<BlockedListResponseDto> result = blockedRepository.findBlockedPets(blockerPetId, pageable);
-            return BlockListWrapper.builder()
-                    .petList(result)
+            Slice<BlockedListResponseDto> result = blockedRepository.findBlockedPets(blockListRequestDto.getPetId(), pageRequest);
+            return BlockListResponseDto.builder()
+                    .petList(result.getContent())
+                    .hasNext(result.hasNext())
+                    .currentPage(result.getNumber()+1)
+                    .dataCounts(result.getContent().size())
                     .decCode('1')
                     .build();
         } catch (Exception e) {
-            return BlockListWrapper.builder()
+            return BlockListResponseDto.builder()
                     .decCode('0')
                     .message("Error: "+ e.getMessage())
                     .build();
@@ -54,8 +59,8 @@ public class BlockedService {
     public HashMap<Long, Integer> findBlockList(Long petId) {
         Optional<Pet> pet = petRepository.findById(petId);
         // 사용자가 차단한 펫 id 가져오기
-        BlockListResponseDto blockListResponseDto = blockedPetList(petId);
-        List<Blocked> blockedPetList = blockListResponseDto.getPetList();
+        BlockedAndBlockerListResponseDto blockedAndBlockerListResponseDto = blockedPetList(petId);
+        List<Blocked> blockedPetList = blockedAndBlockerListResponseDto.getPetList();
         HashMap<Long,Integer> blockMap = new HashMap<>();
 
         for(Blocked blockedPet : blockedPetList) {
@@ -77,17 +82,17 @@ public class BlockedService {
 
     // 자기를 블락한 프로필과 자기가 블락한 프로필 둘다 가져옴
     @Transactional(readOnly = true)
-    public BlockListResponseDto blockedPetList(Long blockerPetId) {
+    public BlockedAndBlockerListResponseDto blockedPetList(Long blockerPetId) {
         try {
             List<Blocked> blockedPets = blockedRepository.findBlockedPets(blockerPetId);
-            return BlockListResponseDto.builder()
+            return BlockedAndBlockerListResponseDto.builder()
                     .petList(blockedPets)
                     .decCode('1')
                     .build();
         } catch (Exception e) {
-            return BlockListResponseDto.builder()
+            return BlockedAndBlockerListResponseDto.builder()
                     .decCode('0')
-                    .errorDescription("Error: "+ e.getMessage())
+                    .message("Error: "+ e.getMessage())
                     .build();
         }
 
@@ -96,7 +101,7 @@ public class BlockedService {
     /**
      * 차단
      */
-    public BlockeResponseDto blockApet(BlockRequestDto blockRequestDTO, String email) {
+    public BlockedResponseDto blockApet(BlockRequestDto blockRequestDTO, String email) {
         //boolean validatePetResult=petService.validatePetRequest(email, blockRequestDTO.getBlockerPetId());
 //        if (!validatePetResult) {
 //            return BlockeResponseDto.builder()
@@ -112,7 +117,7 @@ public class BlockedService {
                     .blockerPetId(blockRequestDTO.getBlockerPetId())
                     .build();
             blockedRepository.save(blocked);
-            return BlockeResponseDto.builder()
+            return BlockedResponseDto.builder()
                     .message("Successfully Blocked A pet.")
                     .decCode('1')
                     .build();
@@ -123,7 +128,7 @@ public class BlockedService {
             } else {
                 errorMessage = "Error: Unexpected error occurred";
             }
-            return BlockeResponseDto.builder()
+            return BlockedResponseDto.builder()
                     .decCode('0')
                     .message(errorMessage)
                     .build();
@@ -154,7 +159,7 @@ public class BlockedService {
     /**
      * 차단 취소
      */
-    public BlockeResponseDto unblockAPet(Long blockerPetId, Long blockedPetId,String email) {
+    public BlockedResponseDto unblockAPet(Long blockerPetId, Long blockedPetId,String email) {
 //        boolean validatePetResult=petService.validatePetRequest(email, blockerPetId);
 //        if (!validatePetResult) {
 //            return BlockeResponseDto.builder()
@@ -173,19 +178,19 @@ public class BlockedService {
                             .orElseThrow(() -> new IllegalArgumentException("Blocked Pet not found")));
 
             blockedRepository.delete(blockedEntity);
-            return BlockeResponseDto.builder()
+            return BlockedResponseDto.builder()
                     .decCode('1')
                     .message("Unblocked a pet successfully")
                     .build();
         } catch (Exception e) {
             String errorMessage;
             if (e instanceof IllegalStateException || e instanceof IllegalArgumentException) {
-                return BlockeResponseDto.builder()
+                return BlockedResponseDto.builder()
                         .message("error: " + e.getMessage())
                         .decCode('0')
                         .build();
             } else {
-                return BlockeResponseDto.builder()
+                return BlockedResponseDto.builder()
                         .message("Error: Unexpected error occurred")
                         .build();
             }

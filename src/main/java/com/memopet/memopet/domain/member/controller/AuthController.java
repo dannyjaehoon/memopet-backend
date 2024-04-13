@@ -75,17 +75,17 @@ public class  AuthController {
         return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
 
     }
-
-    @PostMapping("/sign-in/password-reset")
-    public PasswordResetResponseDto resetPassword(@RequestBody EmailAuthRequestDto emailAuthRequestDto) {
-        PasswordResetResponseDto passwordResetResponseDto = loginService.checkValidEmail(emailAuthRequestDto.getEmail());
-
-        if(passwordResetResponseDto.getDscCode().equals("1")) {
-            passwordResetResponseDto = loginService.resetPassword(emailAuthRequestDto.getEmail());
-        }
-
-        return passwordResetResponseDto;
-    }
+//
+//    @PostMapping("/sign-in/password-reset")
+//    public PasswordResetResponseDto resetPassword(@RequestBody EmailAuthRequestDto emailAuthRequestDto) {
+//        PasswordResetResponseDto passwordResetResponseDto = loginService.checkValidEmail(emailAuthRequestDto.getEmail());
+//
+//        if(passwordResetResponseDto.getDscCode().equals("1")) {
+//            passwordResetResponseDto = loginService.resetPassword(emailAuthRequestDto.getEmail());
+//        }
+//
+//        return passwordResetResponseDto;
+//    }
 
     @GetMapping("/sign-in/duplication-check")
     public DuplicationCheckResponseDto emailDuplicationCheck(DuplicationCheckRequestDto duplicationCheckRequestDto ) {

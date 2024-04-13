@@ -34,40 +34,40 @@ public class FollowController {
      * 리스트 조회- 1:팔로워 2:팔로우
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @GetMapping("/{petId}/{followType}")
-    public FollowListWrapper followList(@PageableDefault(size = 20,page = 0)Pageable pageable,
-                                        @PathVariable Long petId,
-                                        @PathVariable int followType, Authentication authentication){
-        return followService.followList(pageable,petId,followType,authentication.getName());
+    @GetMapping("")
+    public FollowListResponseDto followList(FollowListRequestDto followListRequestDto){
+        System.out.println(" getFollowType: " + followListRequestDto.getFollowType());
+        System.out.println(" getPetId : " + followListRequestDto.getPetId());
+        return followService.followList(followListRequestDto);
     }
 
     /**
      * 팔로우 취소
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @DeleteMapping("/{petId}/{followingPetId}")
-    public FollowResponseDto unfollow(@PathVariable Long petId, @PathVariable Long followingPetId, Authentication authentication) {
-        boolean validatePetResult = petService.validatePetRequest(authentication.getName(), petId);
-        if (!validatePetResult) {
-            return new FollowResponseDto('0',"Pet not available or not active.");
-        }
-        return followService.unfollow(petId,followingPetId,authentication.getName());
+    @DeleteMapping("")
+    public FollowResponseDto unfollow(@RequestParam("petId") Long petId, @RequestParam("followingPetId") Long followingPetId, Authentication authentication) {
+//        boolean validatePetResult = petService.validatePetRequest(authentication.getName(), petId);
+//        if (!validatePetResult) {
+//            return new FollowResponseDto('0',"Pet not available or not active.");
+//        }
+        return followService.unfollow(petId,followingPetId);
     }
 
     /**
      * 팔로워 삭제
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @DeleteMapping("/follower/{petId}/{followerPetId}")
+    @DeleteMapping("/follower")
     public FollowResponseDto deleteFollower(@PathVariable @Param("followingPetId")Long petId,
                                             @PathVariable @Param("petId") Long followerPetId,
                                             Authentication authentication) {
-        boolean validatePetResult = petService.validatePetRequest(authentication.getName(), petId);
-        if (!validatePetResult) {
-            return new FollowResponseDto('0',"Pet not available or not active.");
-        }
+//        boolean validatePetResult = petService.validatePetRequest(authentication.getName(), petId);
+//        if (!validatePetResult) {
+//            return new FollowResponseDto('0',"Pet not available or not active.");
+//        }
 
-        FollowResponseDto result= followService.unfollow(followerPetId, petId,authentication.getName());
+        FollowResponseDto result= followService.unfollow(followerPetId, petId);
         if (result.getDecCode()=='0'){
             return result;
         }

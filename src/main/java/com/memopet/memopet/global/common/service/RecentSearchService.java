@@ -37,9 +37,20 @@ public class RecentSearchService {
 
         if (desCode == 0) {
             // 연관추억 조회
-            //SearchResponseDTO searchMemoryResponseDTO= searchMemory(searchRequestDTO);
+            SearchResponseDTO searchMemoryResponseDTO= searchMemory(searchRequestDTO);
             // 연관 프로필 조회
             SearchResponseDTO searchProfileResponseDTO= searchProfile(searchRequestDTO);
+
+            return SearchResponseDTO.builder()
+                    .searchMemoryCommentResponseDtos(searchMemoryResponseDTO.getSearchMemoryCommentResponseDtos())
+                    .hasNext(searchMemoryResponseDTO.isHasNext())
+                    .currentPage(searchMemoryResponseDTO.getCurrentPage())
+                    .dataCounts(searchMemoryResponseDTO.getDataCounts())
+                    .searchPetCommentResponseDtos(searchProfileResponseDTO.getSearchPetCommentResponseDtos())
+                    .hasNext2(searchProfileResponseDTO.isHasNext2())
+                    .currentPage2(searchProfileResponseDTO.getCurrentPage2())
+                    .dataCounts2(searchProfileResponseDTO.getDataCounts2())
+                    .build();
 
         } else if(desCode == 1) {
             // 연관추억 조회
@@ -74,12 +85,13 @@ public class RecentSearchService {
            map.put(f.getPetId(), 1);
         }
 
-        // 사용자 차단 리스트 가져오기
+        // 사용자가 차단하거나 사용자를 차단한 펫 id 가져오기
         HashMap<Long, Integer> blockMap = blockedService.findBlockList(petId);
         List<Long> blockedList = new ArrayList<>(blockMap.keySet());
 
         PageRequest pageRequest = PageRequest.of(searchRequestDTO.getCurrentPage2()-1, searchRequestDTO.getDataCounts2());
         blockedList.add(petId);
+
         Slice<Pet> slice = petRepository.findPetBySearchText(blockedList, searchText, pageRequest);
 
         if(slice.getContent().size() == 0) return SearchResponseDTO.builder().build();
@@ -106,16 +118,21 @@ public class RecentSearchService {
         long petId = searchRequestDTO.getPetId();
 
         // 프로필 차단 로직 + 메모리 자체 접근 로직 필요(모두, 친구, 비공개)
-        // 사용자 차단 리스트 가져오기
+        // 사용자가 차단하거나 사용자를 차단한 펫 id 가져오기
         HashMap<Long, Integer> blockMap = blockedService.findBlockList(petId);
         List<Long> blockedList = new ArrayList<>(blockMap.keySet());
 
         PageRequest pageRequest = PageRequest.of(searchRequestDTO.getCurrentPage()-1, searchRequestDTO.getDataCounts());
         blockedList.add(petId);
 
-        Slice<Memory> slice = memoryRepository.findMemoryBySearchText(blockedList, searchText, pageRequest);
+        // 모두, 친구, 비공개
+        // 검색에서는 비공개는 안나오는게 맞고
+        // 친구일경우에 보여주고
+        // 모두인것들은 전부가져오는게 필요
+        Slice<Memory> slice = memoryRepository.findMemoryBySearchText(blockedList, searchText, petId,pageRequest);
 
         List<Memory> memories = slice.getContent();
+        log.info("memories size : " + memories.size());
         List<SearchMemoryCommentResponseDto> searchMemoryCommentResponseDtos = new ArrayList<>();
 
         for(Memory m : memories) {
@@ -139,7 +156,6 @@ public class RecentSearchService {
         if(!petOptional.isPresent()) return RecentSearchResponseDto.builder().build();
         RecentSearch recentSearch = recentSearchRepository.findByPet(petOptional.get());
 
-        // 해쉬 맵을 리스트로 변환
         return RecentSearchResponseDto.builder().searchTexts(recentSearch.getSearchTexts()).dataCounts(recentSearch.getSearchTexts().size()).build();
     }
 

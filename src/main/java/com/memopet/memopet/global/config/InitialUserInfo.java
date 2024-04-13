@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -111,7 +110,7 @@ public class InitialUserInfo implements CommandLineRunner {
                 .petProfileFrame(0)
                 .petProfileUrl("https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVBJUIwJTlDfGVufDB8fDB8fHww")
                 .backImgUrl("https://images.unsplash.com/photo-1706670542491-61eeb26510de?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8")
-                .petStatus(PetStatus.ACTIVE)
+                .petStatus(PetStatus.DEACTIVE)
                 .build();
 
         Pet pet3 = Pet.builder()
@@ -143,14 +142,14 @@ public class InitialUserInfo implements CommandLineRunner {
                 .petProfileFrame(0)
                 .petProfileUrl("https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fCVFQSVCMCU5Q3xlbnwwfHwwfHx8MA%3D%3D")
                 .backImgUrl("https://images.unsplash.com/photo-1706670542491-61eeb26510de?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8")
-                .petStatus(PetStatus.ACTIVE)
+                .petStatus(PetStatus.DEACTIVE)
                 .build();
 
         petRepository.saveAll(List.of(pet1, pet2, pet3, pet4));
 
         Memory memory = Memory.builder().pet(pet1)
                 .title("방울이와의 밤 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.ALL)
@@ -158,154 +157,154 @@ public class InitialUserInfo implements CommandLineRunner {
 
         Memory memory1 = Memory.builder().pet(pet1)
                 .title("방울이와의 낮 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.ME)
                 .build();
         Memory memory2 = Memory.builder().pet(pet1)
                 .title("방울이와의 오전 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.FRIEND)
                 .build();
         Memory memory3 = Memory.builder().pet(pet1)
                 .title("방울이와의 오후 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory4 = Memory.builder().pet(pet2)
                 .title("두리와의 오전 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("두리와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory5 = Memory.builder().pet(pet2)
                 .title("두리와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("두리와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory6 = Memory.builder().pet(pet2)
                 .title("두리와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("두리와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory7 = Memory.builder().pet(pet3)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(1)
                 .audience(Audience.ALL)
                 .build();
         Memory memory8 = Memory.builder().pet(pet3)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory9 = Memory.builder().pet(pet3)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory10 = Memory.builder().pet(pet3)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory11 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory12 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory13 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory14 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory15 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory16 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory17 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory18 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory19 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory20 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory21 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
                 .build();
         Memory memory22 = Memory.builder().pet(pet4)
                 .title("방울이와의 산책")
-                .memoryDate(LocalDateTime.now())
+                .memoryDate(LocalDate.now())
                 .memoryDescription("방울이와의 산책이 너무 즐거웠습니다.")
                 .likeCount(0)
                 .audience(Audience.ALL)
@@ -403,8 +402,12 @@ public class InitialUserInfo implements CommandLineRunner {
         Follow follow = Follow.builder().petId(pet2.getId()).followingPet(pet1).build();
         Follow follow1 = Follow.builder().petId(pet3.getId()).followingPet(pet1).build();
         Follow follow2 = Follow.builder().petId(pet4.getId()).followingPet(pet1).build();
-
-        followRepository.saveAll(List.of(follow,follow1,follow2));
+        Follow follow3 = Follow.builder().petId(pet2.getId()).followingPet(pet3).build();
+        Follow follow4 = Follow.builder().petId(pet2.getId()).followingPet(pet4).build();
+        Follow follow5 = Follow.builder().petId(pet3.getId()).followingPet(pet2).build();
+        Follow follow6 = Follow.builder().petId(pet4.getId()).followingPet(pet2).build();
+        Follow follow7 = Follow.builder().petId(pet4.getId()).followingPet(pet3).build();
+        followRepository.saveAll(List.of(follow,follow1,follow2,follow3,follow4,follow5,follow6,follow7));
 
         List<String> searchTexts = new ArrayList<>();
         searchTexts.add("코코");

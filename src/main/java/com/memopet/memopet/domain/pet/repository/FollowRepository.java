@@ -1,7 +1,10 @@
 package com.memopet.memopet.domain.pet.repository;
 
+import com.memopet.memopet.domain.pet.dto.PetFollowingResponseDto;
 import com.memopet.memopet.domain.pet.entity.Follow;
 import com.memopet.memopet.domain.pet.entity.Pet;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +22,49 @@ public interface FollowRepository extends JpaRepository<Follow, Long> , CustomFo
 
     @Query("select f from Follow f where f.followingPet = :petId")
     List<Follow> findByPetId(@Param("petId") Pet pet);
+
+
+    // 팔로우 리스트 조회
+    // 조회해야되는 값, 팔로우 한 프로필 정보 + 그 프로필의 팔로우 수 +  팔로우 관계 (무조건 true)
+    @Query(value = "select count(f.pet_id) as followCnt\n" +
+            "          , max(p.pet_id) as petId\n" +
+            "          , max(p.pet_name) as petName\n" +
+            "          , max(p.pet_desc) as petDesc\n" +
+            "          , max(p.pet_profile_url) as petProfileUrl\n" +
+            "          , 1 as followYn\n" +
+            "\t   from pet as p\n" +
+            "          left join follow as f\n" +
+            "          on p.pet_id = f.pet_id\n" +
+            "\t  where p.pet_id in ( \t\n" +
+            "\t\t\t\t\tselect p.pet_id\n" +
+            "\t\t\t\t\t from pet as p\n" +
+            "\t\t\t\t\t left join follow as f\n" +
+            "\t\t\t\t\t on p.pet_id = f.pet_id\n" +
+            "\t\t\t\t\t where f.following_pet = ?1\n" +
+            "             and p.deleted_date IS NULL\n" +
+            "\t\t\t\t\t)\n" +
+            "\t    group by p.pet_id", nativeQuery = true)
+    Slice<PetFollowingResponseDto> findFollowingPetsById( Long petId,Pageable pageable );
+    // 팔로워 리스트 조회
+    // 조회해야되는 값, 팔로우 한 프로필 정보 + 그 프로필의 팔로우 수 + 팔로우 관계
+    @Query(value = "select count(f.pet_id) as followCnt\n" +
+            "          , max(p.pet_id) as  petId\n" +
+            "          , max(p.pet_name) as petName\n" +
+            "          , max(p.pet_desc) as petDesc\n" +
+            "          , max(p.pet_profile_url) as petProfileUrl\n" +
+            "          , COALESCE((select 1 from follow as f where f.following_pet = 2 and f.pet_id= p.pet_id),0) as followYn\n" +
+            "\t   from pet as p\n" +
+            "          left join follow as f\n" +
+            "          on p.pet_id = f.pet_id\n" +
+            "\t  where p.pet_id in ( \t\n" +
+            "\t\t\t\t\tselect f.following_pet\n" +
+            "\t\t\t\t\t from pet as p\n" +
+            "\t\t\t\t\t left join follow as f\n" +
+            "\t\t\t\t\t on p.pet_id = f.pet_id\n" +
+            "\t\t\t\t\t where f.pet_id = 2\n" +
+            "                      and p.deleted_date IS NULL\n" +
+            "\t\t\t\t\t)\n" +
+            "\t    group by p.pet_id", nativeQuery = true)
+    Slice<PetFollowingResponseDto> findFollowerPetsByPetId( Long petId,Pageable pageable);
 
 }

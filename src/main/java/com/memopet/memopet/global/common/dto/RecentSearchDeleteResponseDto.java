@@ -11,10 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecentSearchDeleteResponseDto {
-    @JsonProperty("dsc_code")
+
     private String dscCode;
-    @JsonProperty("data_counts")
+
     private int dataCounts;
-    @JsonProperty("search_texts")
+
     private List<String> searchTexts;
 }

@@ -2,6 +2,7 @@ package com.memopet.memopet.global.common.controller;
 
 import com.memopet.memopet.global.common.dto.EmailAuthRequestDto;
 import com.memopet.memopet.global.common.dto.EmailAuthResponseDto;
+import com.memopet.memopet.global.common.dto.RestResult;
 import com.memopet.memopet.global.common.service.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,17 +24,22 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping("/sign-in/verification")
-    public EmailAuthResponseDto sendVerificationEmail(@RequestBody EmailAuthRequestDto emailDto) throws MessagingException, UnsupportedEncodingException {
+    public RestResult sendVerificationEmail(@RequestBody EmailAuthRequestDto emailDto) {
 
-        String auth = emailService.sendEmail(emailDto.getEmail());
-        return EmailAuthResponseDto.builder().dscCode("1").authCode(auth).build();
+        Map<String,Object> hashMap = new LinkedHashMap<>();
+        hashMap.put("response",emailService.sendEmail(emailDto.getEmail()));
+
+        return new RestResult(hashMap);
     }
 
     @PostMapping("/sign-in/verification-email")
-    public EmailAuthResponseDto checkVerificationCode(@RequestBody EmailAuthRequestDto emailDto) {
+    public RestResult checkVerificationCode(@RequestBody EmailAuthRequestDto emailAuthRequestDto) {
 
-        EmailAuthResponseDto emailAuthResponseDto = emailService.checkVerificationCode(emailDto.getEmail(), emailDto.getCode());
-        return emailAuthResponseDto;
+        EmailAuthResponseDto emailAuthResponseDto = emailService.checkVerificationCode(emailAuthRequestDto);
+        Map<String,Object> hashMap = new LinkedHashMap<>();
+        hashMap.put("response", emailAuthResponseDto);
+
+        return new RestResult(hashMap);
     }
 
 }

@@ -11,12 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailAuthResponseDto {
-    @JsonProperty("dsc_code")
-    private String dscCode;
 
-    @JsonProperty("auth_code")
     private String authCode;
-
-    @JsonProperty("err_message")
-    private String errMessage;
+    private long verificationStatusId;
 }

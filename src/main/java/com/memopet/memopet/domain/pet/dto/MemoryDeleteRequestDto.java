@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemoryDeleteRequestDto {
-    @JsonProperty("memory_id")
+
     private Long memoryId;
 }

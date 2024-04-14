@@ -15,11 +15,11 @@ import java.util.List;
 public class LikedMemoryResponseDto {
 
 
-    @JsonProperty("has_next")
+
     private boolean hasNext;
-    @JsonProperty("current_page")
+
     private int currentPage;
-    @JsonProperty("data_counts")
+
     private int dataCounts;
     private List<MemoryResponseDto> memoryResponseDto;
 

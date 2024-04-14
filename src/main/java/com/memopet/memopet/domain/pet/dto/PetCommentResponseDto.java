@@ -11,17 +11,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetCommentResponseDto {
-    @JsonProperty("pet_id")
+
     private Long petId;
-    @JsonProperty("pet_nm")
     private String petName;
-    @JsonProperty("pet_profile_url")
     private String petProfileUrl;
-    @JsonProperty("comment_id")
     private Long commentId;
-    @JsonProperty("comment")
     private String comment;
-    @JsonProperty("comment_created_date")
     private LocalDateTime commentCreatedDate;
 
 }

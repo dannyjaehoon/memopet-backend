@@ -5,6 +5,7 @@ import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.LoginFailedRepository;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.global.common.dto.EmailAuthResponseDto;
 import com.memopet.memopet.global.common.service.EmailService;
 import com.memopet.memopet.global.config.SecurityConfig;
 import com.memopet.memopet.global.config.UserInfoConfig;
@@ -22,12 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.security.auth.login.AccountLockedException;
-
-import java.io.UnsupportedEncodingException;
-
-import static com.memopet.memopet.domain.member.entity.QMember.member;
 
 @Service
 @Slf4j
@@ -89,17 +84,15 @@ public class LoginService implements UserDetailsService {
 
     public PasswordResetResponseDto resetPassword(String email) {
 
-        String authCode = null;
+        EmailAuthResponseDto emailAuthResponseDto = null;
         try {
-            authCode = emailService.sendEmail(email);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
+            emailAuthResponseDto = emailService.sendEmail(email);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println(" authCode : " + authCode);
+        System.out.println(" authCode : " + emailAuthResponseDto.getAuthCode());
         Member member = memberRepository.findByEmail(email);
-        member.changePassword(passwordEncoder.encode(authCode));
+        member.changePassword(passwordEncoder.encode(emailAuthResponseDto.getAuthCode()));
 
         PasswordResetResponseDto passwordResetResponseDto = PasswordResetResponseDto.builder().dscCode("1").errMessage("complete reset password").build();
 

@@ -9,9 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MyIdResponseDto {
-    @JsonProperty("dsc_code")
-    private String dscCode;
 
-    @JsonProperty("email")
+    private String dscCode;
     private String email;
 }

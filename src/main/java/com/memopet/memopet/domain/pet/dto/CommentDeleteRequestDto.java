@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDeleteRequestDto {
-    @JsonProperty("comment_id")
+
     private Long commentId;
 }

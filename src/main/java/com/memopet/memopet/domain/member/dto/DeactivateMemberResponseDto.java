@@ -10,9 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class DeactivateMemberResponseDto {
 
-    @JsonProperty("dsc_code")
     private String dscCode;
 
-    @JsonProperty("err_message")
     private String errMessage;
 }

@@ -11,9 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemoryRequestDto {
-    @JsonProperty("memory_id")
+
     private Long memoryId;
 
-    @JsonProperty("pet_id")
+
     private Long petId;
 }

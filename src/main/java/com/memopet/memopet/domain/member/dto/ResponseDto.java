@@ -10,8 +10,5 @@ import lombok.*;
 @NoArgsConstructor
 public class ResponseDto {
 
-    @JsonProperty("dsc_code")
     private String dscCode;
-
-
 }

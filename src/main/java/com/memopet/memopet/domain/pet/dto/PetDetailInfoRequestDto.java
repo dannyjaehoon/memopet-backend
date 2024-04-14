@@ -9,8 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetDetailInfoRequestDto {
-    @JsonProperty("pet_id")
+
     private Long petId;
-    @JsonProperty("my_pet_id")
     private Long myPetId;
 }

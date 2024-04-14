@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponseDto {
-    @JsonProperty("status")
+
     private int status;
-    @JsonProperty("timestamp")
+
     private LocalDateTime timestamp;
-    @JsonProperty("message")
+
     private String message;
 }

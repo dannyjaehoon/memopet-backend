@@ -12,6 +12,5 @@ import lombok.*;
 @NoArgsConstructor
 public class MyIdRequestDto {
     private String username;
-    @JsonProperty("phone_num")
     private String phoneNum;
 }

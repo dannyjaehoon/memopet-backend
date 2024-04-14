@@ -9,9 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PasswordResetResponseDto {
-    @JsonProperty("dsc_code")
+
     private String dscCode;
 
-    @JsonProperty("err_message")
     private String errMessage;
 }

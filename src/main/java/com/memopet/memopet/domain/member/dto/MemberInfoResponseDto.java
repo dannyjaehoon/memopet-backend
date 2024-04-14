@@ -11,13 +11,11 @@ import lombok.*;
 @NoArgsConstructor
 public class MemberInfoResponseDto {
 
-    @JsonProperty("dsc_code")
+
     private String dscCode;
     private String email;
     private String username;
-    @JsonProperty("phone_num")
     private String phoneNum;
-    @JsonProperty("err_message")
     private String errMessage;
 
 }

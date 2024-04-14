@@ -9,7 +9,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class BlockedResponseDto {
-    @JsonProperty("dec_code")
     private char decCode;
 
     private String message;

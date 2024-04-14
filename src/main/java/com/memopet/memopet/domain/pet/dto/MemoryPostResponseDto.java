@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MemoryPostResponseDto {
-    @JsonProperty("dec_code")
+
     private char decCode;
 }

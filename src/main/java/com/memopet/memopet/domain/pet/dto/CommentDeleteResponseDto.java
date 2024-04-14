@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class CommentDeleteResponseDto {
 
-    @JsonProperty("dec_code")
+
     private char decCode;
 }

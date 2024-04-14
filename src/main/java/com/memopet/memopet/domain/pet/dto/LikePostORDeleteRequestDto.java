@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class LikePostORDeleteRequestDto {
 
-    @JsonProperty("memory_id")
+
     private Long memoryId;
-    @JsonProperty("pet_id")
+
     private Long petId;
-    @JsonProperty("my_pet_id")
+
     private Long myPetId;
 }

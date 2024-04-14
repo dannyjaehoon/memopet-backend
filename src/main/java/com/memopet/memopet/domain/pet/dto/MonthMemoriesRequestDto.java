@@ -11,14 +11,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MonthMemoriesRequestDto {
-    @JsonProperty("pet_id")
+
     private Long petId;
-    @JsonProperty("my_pet_id")
+
     private Long myPetId;
-    @JsonProperty("current_page")
+
     private int currentPage;
-    @JsonProperty("data_counts")
+
     private int dataCounts;
-    @JsonProperty("year_month")
+
     private String yearMonth;
 }

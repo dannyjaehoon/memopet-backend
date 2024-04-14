@@ -25,6 +25,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.memopet.memopet.domain.pet.entity.QPet.pet;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -57,8 +59,6 @@ public class PetService {
             storedBackgroundImgName = s3Uploader.uploadFileToS3(backgroundImg, "static/pet-image");
         }
 
-        System.out.println(storedPetImgName);
-        System.out.println(storedBackgroundImgName);
         Species species = Species.builder().largeCategory("포유류").midCategory(petRequestDto.getPetSpecM()).smallCategory(petRequestDto.getPetSpecS()).build();
         Species savedSpecies = speciesRepository.save(species);
         Member member = memberRepository.findByEmail(petRequestDto.getEmail());
@@ -218,58 +218,28 @@ public class PetService {
     }
 
     @Transactional(readOnly = false)
-    public PetUpdateInfoResponseDto updatePetInfo(MultipartFile petImg, MultipartFile backgroundImg, PetUpdateInfoRequestDto petUpdateInfoRequestDto) throws Exception {
+    public PetUpdateInfoResponseDto updatePetInfo(MultipartFile backgroundImg , MultipartFile petImg, PetUpdateInfoRequestDto petUpdateInfoRequestDto) throws Exception {
         Optional<Pet> petOptional = petRepository.findById(petUpdateInfoRequestDto.getPetId());
         if(!petOptional.isPresent()) return PetUpdateInfoResponseDto.builder().decCode('0').errMsg("해당 펫 ID로 조회된 데이터가 없습니다.").build();
         Pet pet = petOptional.get();
+        String storedPetImgName = null;
+        String storedBackgroundImgName = null;
 
-        // 펫 정보 업데이트
-        if(petUpdateInfoRequestDto.getPetDesc() != null) {
-            log.info("펫 desc 수정");
-            pet.updateDesc(petUpdateInfoRequestDto.getPetDesc());
-        }
-        if(petUpdateInfoRequestDto.getPetName() != null) {
-            log.info("펫 이름 수정");
-            pet.updateName(petUpdateInfoRequestDto.getPetName());
-        }
-        if(petUpdateInfoRequestDto.getPetBirthDate() != null) {
-            log.info("펫 생일 수정");
-            pet.updateBirthDate(petUpdateInfoRequestDto.getPetBirthDate());
-        }
-        if(petUpdateInfoRequestDto.getPetDeathDate() != null) {
-            log.info("펫 사망일 수정");
-            pet.updateDeathDate(petUpdateInfoRequestDto.getPetDeathDate());
-        }
-        if(petUpdateInfoRequestDto.getPetProfileFrame() != null) {
-            log.info("펫 프레임 수정");
-            pet.updatePetProfileFrame(petUpdateInfoRequestDto.getPetProfileFrame());
-        }
-        if(petUpdateInfoRequestDto.getPetFavs() != null) {
-            log.info("펫 f1 수정");
-            pet.updateFav(petUpdateInfoRequestDto.getPetFavs(),1);
-        }
-        if(petUpdateInfoRequestDto.getPetFavs2() != null) {
-            log.info("펫 f2 수정");
-            pet.updateFav(petUpdateInfoRequestDto.getPetFavs2(),2);
-        }
-        if(petUpdateInfoRequestDto.getPetFavs3() != null) {
-            log.info("펫 f3 수정");
-            pet.updateFav(petUpdateInfoRequestDto.getPetFavs3(),3);
-        }
         if(!petImg.isEmpty()) {
             log.info("펫 Profile 수정");
             s3Uploader.deleteS3(pet.getPetProfileUrl());
-            String storedPetImgName = s3Uploader.uploadFileToS3(petImg, "static/pet-image");
-
-            pet.updateProfileUrl(storedPetImgName);
+            storedPetImgName = s3Uploader.uploadFileToS3(petImg, "static/pet-image");
         }
 
         if(!backgroundImg.isEmpty()) {
             log.info("펫 background 수정");
             s3Uploader.deleteS3(pet.getBackImgUrl());
-            String storedBackgroundImgName = s3Uploader.uploadFileToS3(backgroundImg, "static/pet-image");
-            pet.updateBackgroundUrl(storedBackgroundImgName);
+            storedBackgroundImgName = s3Uploader.uploadFileToS3(backgroundImg, "static/pet-image");
         }
+
+        petRepository.updateMemoryInfo(storedPetImgName, storedBackgroundImgName, petUpdateInfoRequestDto);
+
+
 
         return PetUpdateInfoResponseDto.builder().decCode('1').errMsg("수정 완료됬습니다.").build();
     }
@@ -311,7 +281,6 @@ public class PetService {
     /**
      * 펫 프로필 삭제 -Pet(deletedDate)
      */
-
     @Transactional(readOnly = false)
     public PetProfileResponseDto deletePetProfile(PetDeleteRequestDto petDeleteRequestDTO) {
         try {

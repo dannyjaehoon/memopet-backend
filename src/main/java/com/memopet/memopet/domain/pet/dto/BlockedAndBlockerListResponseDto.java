@@ -12,7 +12,6 @@ import java.util.List;
 public class BlockedAndBlockerListResponseDto {
 
     private List<Blocked> petList;
-    @JsonProperty("dec_code")
     private char decCode;
     private String message;
 }

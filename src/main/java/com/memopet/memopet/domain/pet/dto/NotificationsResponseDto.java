@@ -13,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationsResponseDto {
-    @JsonProperty("current_page")
+
     private int currentPage;
-    @JsonProperty("data_counts")
+
     private int dataCounts;
-    @JsonProperty("has_next")
+
     private boolean hasNext;
-    @JsonProperty("notificationsResponseDto")
+
     private List<NotificationResponseDto> notifications;
 }

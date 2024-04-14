@@ -37,6 +37,8 @@ public class EmailService {
         return message;
 
     }
+
+    //fixme Third-party @Async 를 분리해야할수도 있는데 이것은 나중에 살펴보시죠.
     @Transactional(readOnly = true)
     //실제 메일 전송
     public String sendEmail(String toEmail) throws MessagingException, UnsupportedEncodingException {
@@ -51,12 +53,14 @@ public class EmailService {
         return authNum; //인증 코드 반환
     }
 
+    //fixme 레디스를 사용한 이유는 ??? 특별한 이유가 아니면, 캐시용도로만 사용하는것이 좋음. (관리포인트가 늘어나서 운영비가 증가한다)
     private void setDataExpire(String email, String authKey, Long duration) {
         //Redis에 3분동안 인증코드 {email, authKey} 저장
         try {
             redisUtil.setDataExpire(email, authKey,duration);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();    // System.out.println(e.toString());
+            log.error("Redis Error : " + e.toString(), e);
             // 에러처리 필요
         }
     }

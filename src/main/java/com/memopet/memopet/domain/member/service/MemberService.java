@@ -9,6 +9,7 @@ import com.memopet.memopet.domain.pet.entity.Memory;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.CommentRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryRepository;
+import com.memopet.memopet.global.exception.BadRequestRuntimeException;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,6 +95,12 @@ public class MemberService  {
     public MemberInfoResponseDto changeMemberInfo(MemberInfoRequestDto memberInfoRequestDto) {
 
         Member member = memberRepository.findByEmail(memberInfoRequestDto.getEmail());
+
+        //fixme 이런식으로 예외처리하는것이 좋습니다.
+        if(member == null) {
+            throw new BadRequestRuntimeException("member does not exist");
+        }
+
         MemberInfoResponseDto memberInfoResponseDto = MemberInfoResponseDto.builder().dscCode("0").build();
         if(member == null) return memberInfoResponseDto;
 

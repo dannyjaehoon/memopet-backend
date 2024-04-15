@@ -9,7 +9,7 @@ import com.memopet.memopet.domain.pet.entity.Memory;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.CommentRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryRepository;
-import com.memopet.memopet.global.exception.BadRequestRuntimeException;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

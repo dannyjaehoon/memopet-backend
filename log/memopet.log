@@ -4611,3 +4611,2344 @@ insert into recent_search (created_date,pet_id,search_texts) values ('2024-04-15
 2024-04-15 22:21:40.092 [restartedMain]  INFO p6spy - #1713187300092 | took 8ms | commit | connection 21| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
 
 ;
+2024-04-15 22:26:15.488 [SpringApplicationShutdownHook]  INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-04-15 22:26:15.492 [SpringApplicationShutdownHook]  INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-04-15 22:26:15.572 [SpringApplicationShutdownHook]  INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-04-15 22:33:19.600 [background-preinit]  INFO org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-04-15 22:33:19.619 [restartedMain]  INFO com.memopet.memopet.MemopetApplication - Starting MemopetApplication using Java 17.0.7 with PID 57911 (/Users/jaehoonlee/Desktop/tutor/memopet-backend/build/classes/java/main started by jaehoonlee in /Users/jaehoonlee/Desktop/tutor/memopet-backend)
+2024-04-15 22:33:19.619 [restartedMain]  INFO com.memopet.memopet.MemopetApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-15 22:33:19.645 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-15 22:33:19.645 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-15 22:33:19.773 [restartedMain]  WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.memopet.memopet.MemopetApplication]
+2024-04-15 22:33:19.790 [restartedMain] ERROR org.springframework.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.memopet.memopet.MemopetApplication]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:178)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:415)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:287)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:344)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:115)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:771)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:589)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:436)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295)
+	at com.memopet.memopet.MemopetApplication.main(MemopetApplication.java:23)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name 'globalRestExceptionHandler' for bean class [com.memopet.memopet.global.exception.GlobalRestExceptionHandler] conflicts with existing, non-compatible bean definition of same name and class [com.memopet.memopet.global.common.exception.GlobalRestExceptionHandler]
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.checkCandidate(ClassPathBeanDefinitionScanner.java:349)
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.doScan(ClassPathBeanDefinitionScanner.java:287)
+	at org.springframework.context.annotation.ComponentScanAnnotationParser.parse(ComponentScanAnnotationParser.java:128)
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:289)
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:243)
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:196)
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:164)
+	... 18 common frames omitted
+2024-04-15 22:34:25.923 [background-preinit]  INFO org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-04-15 22:34:25.941 [restartedMain]  INFO com.memopet.memopet.MemopetApplication - Starting MemopetApplication using Java 17.0.7 with PID 58000 (/Users/jaehoonlee/Desktop/tutor/memopet-backend/build/classes/java/main started by jaehoonlee in /Users/jaehoonlee/Desktop/tutor/memopet-backend)
+2024-04-15 22:34:25.942 [restartedMain]  INFO com.memopet.memopet.MemopetApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-15 22:34:25.965 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-15 22:34:25.965 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-15 22:34:26.110 [restartedMain]  WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.memopet.memopet.MemopetApplication]
+2024-04-15 22:34:26.126 [restartedMain] ERROR org.springframework.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.memopet.memopet.MemopetApplication]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:178)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:415)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:287)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:344)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:115)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:771)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:589)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:436)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295)
+	at com.memopet.memopet.MemopetApplication.main(MemopetApplication.java:23)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name 'globalRestExceptionHandler' for bean class [com.memopet.memopet.global.exception.GlobalRestExceptionHandler] conflicts with existing, non-compatible bean definition of same name and class [com.memopet.memopet.global.common.exception.GlobalRestExceptionHandler]
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.checkCandidate(ClassPathBeanDefinitionScanner.java:349)
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.doScan(ClassPathBeanDefinitionScanner.java:287)
+	at org.springframework.context.annotation.ComponentScanAnnotationParser.parse(ComponentScanAnnotationParser.java:128)
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:289)
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:243)
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:196)
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:164)
+	... 18 common frames omitted
+2024-04-15 22:37:40.585 [background-preinit]  INFO org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-04-15 22:37:40.605 [restartedMain]  INFO com.memopet.memopet.MemopetApplication - Starting MemopetApplication using Java 17.0.7 with PID 58282 (/Users/jaehoonlee/Desktop/tutor/memopet-backend/build/classes/java/main started by jaehoonlee in /Users/jaehoonlee/Desktop/tutor/memopet-backend)
+2024-04-15 22:37:40.606 [restartedMain]  INFO com.memopet.memopet.MemopetApplication - No active profile set, falling back to 1 default profile: "default"
+2024-04-15 22:37:40.629 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-15 22:37:40.629 [restartedMain]  INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-15 22:37:41.162 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-04-15 22:37:41.163 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-15 22:37:41.274 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 106 ms. Found 15 JPA repository interfaces.
+2024-04-15 22:37:41.285 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-04-15 22:37:41.286 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-04-15 22:37:41.299 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.299 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.member.repository.RefreshTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.299 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.BlockedRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.299 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.CommentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.FollowRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.LikesRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.MemoryImageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.MemoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.NotificationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.PetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.ReportRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.domain.pet.repository.SpeciesRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.global.common.repository.MetaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.global.common.repository.RecentSearchRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.300 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.memopet.memopet.global.common.repository.VertificationStatusRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-04-15 22:37:41.301 [restartedMain]  INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2024-04-15 22:37:41.683 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2024-04-15 22:37:41.688 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-15 22:37:41.689 [restartedMain]  INFO org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2024-04-15 22:37:41.689 [restartedMain]  INFO org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.11]
+2024-04-15 22:37:41.725 [restartedMain]  INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-04-15 22:37:41.726 [restartedMain]  INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1096 ms
+2024-04-15 22:37:41.782 [restartedMain]  INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-04-15 22:37:42.277 [restartedMain]  INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5bd004ae
+2024-04-15 22:37:42.279 [restartedMain]  INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-04-15 22:37:42.285 [restartedMain]  INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8'
+2024-04-15 22:37:42.357 [restartedMain]  INFO org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-15 22:37:42.383 [restartedMain]  INFO org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.6.Final
+2024-04-15 22:37:42.384 [restartedMain]  INFO org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2024-04-15 22:37:42.457 [restartedMain]  INFO org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2024-04-15 22:37:42.519 [restartedMain]  INFO org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-04-15 22:37:42.567 [restartedMain]  WARN org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-04-15 22:37:42.708 [restartedMain]  INFO org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2024-04-15 22:37:43.135 [restartedMain]  INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-04-15 22:37:43.142 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table blocked 
+       drop 
+       foreign key FKnaikjrvvsgqydmq4dksrkbkqs
+2024-04-15 22:37:43.232 [restartedMain]  INFO p6spy - #1713188263232 | took 82ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table blocked 
+       drop 
+       foreign key FKnaikjrvvsgqydmq4dksrkbkqs
+
+    alter table blocked 
+       drop 
+       foreign key FKnaikjrvvsgqydmq4dksrkbkqs;
+2024-04-15 22:37:43.233 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table comment 
+       drop 
+       foreign key FK9ikw731f4xppbn3feyloudpw3
+2024-04-15 22:37:43.293 [restartedMain]  INFO p6spy - #1713188263293 | took 59ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table comment 
+       drop 
+       foreign key FK9ikw731f4xppbn3feyloudpw3
+
+    alter table comment 
+       drop 
+       foreign key FK9ikw731f4xppbn3feyloudpw3;
+2024-04-15 22:37:43.293 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table comment 
+       drop 
+       foreign key FKhvrca92mdyusiykgpypnfxnui
+2024-04-15 22:37:43.344 [restartedMain]  INFO p6spy - #1713188263344 | took 51ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table comment 
+       drop 
+       foreign key FKhvrca92mdyusiykgpypnfxnui
+
+    alter table comment 
+       drop 
+       foreign key FKhvrca92mdyusiykgpypnfxnui;
+2024-04-15 22:37:43.344 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table follow 
+       drop 
+       foreign key FKsv1ro6ep72nof9lk8ey879js7
+2024-04-15 22:37:43.388 [restartedMain]  INFO p6spy - #1713188263388 | took 44ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table follow 
+       drop 
+       foreign key FKsv1ro6ep72nof9lk8ey879js7
+
+    alter table follow 
+       drop 
+       foreign key FKsv1ro6ep72nof9lk8ey879js7;
+2024-04-15 22:37:43.389 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table likes 
+       drop 
+       foreign key FK3eb73lcsoolg9hnt2mx72lslv
+2024-04-15 22:37:43.415 [restartedMain]  INFO p6spy - #1713188263415 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table likes 
+       drop 
+       foreign key FK3eb73lcsoolg9hnt2mx72lslv
+
+    alter table likes 
+       drop 
+       foreign key FK3eb73lcsoolg9hnt2mx72lslv;
+2024-04-15 22:37:43.415 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table likes 
+       drop 
+       foreign key FKc4sxuu6gf0q9qbnab319n657h
+2024-04-15 22:37:43.448 [restartedMain]  INFO p6spy - #1713188263448 | took 32ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table likes 
+       drop 
+       foreign key FKc4sxuu6gf0q9qbnab319n657h
+
+    alter table likes 
+       drop 
+       foreign key FKc4sxuu6gf0q9qbnab319n657h;
+2024-04-15 22:37:43.448 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table memory 
+       drop 
+       foreign key FK2ws42dna5wo37rsdrmb61o9d6
+2024-04-15 22:37:43.480 [restartedMain]  INFO p6spy - #1713188263480 | took 31ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table memory 
+       drop 
+       foreign key FK2ws42dna5wo37rsdrmb61o9d6
+
+    alter table memory 
+       drop 
+       foreign key FK2ws42dna5wo37rsdrmb61o9d6;
+2024-04-15 22:37:43.481 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table memory_image 
+       drop 
+       foreign key FKdm4x79i6g8p4k7wbdlosy3s24
+2024-04-15 22:37:43.513 [restartedMain]  INFO p6spy - #1713188263513 | took 31ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table memory_image 
+       drop 
+       foreign key FKdm4x79i6g8p4k7wbdlosy3s24
+
+    alter table memory_image 
+       drop 
+       foreign key FKdm4x79i6g8p4k7wbdlosy3s24;
+2024-04-15 22:37:43.513 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table notification 
+       drop 
+       foreign key FKh6swx5uhav8puch5xjwi21r26
+2024-04-15 22:37:43.539 [restartedMain]  INFO p6spy - #1713188263539 | took 25ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table notification 
+       drop 
+       foreign key FKh6swx5uhav8puch5xjwi21r26
+
+    alter table notification 
+       drop 
+       foreign key FKh6swx5uhav8puch5xjwi21r26;
+2024-04-15 22:37:43.539 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table pet 
+       drop 
+       foreign key FK1c9th7o408mgfqkbjjkvkl4mw
+2024-04-15 22:37:43.570 [restartedMain]  INFO p6spy - #1713188263569 | took 30ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table pet 
+       drop 
+       foreign key FK1c9th7o408mgfqkbjjkvkl4mw
+
+    alter table pet 
+       drop 
+       foreign key FK1c9th7o408mgfqkbjjkvkl4mw;
+2024-04-15 22:37:43.570 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table pet 
+       drop 
+       foreign key FKr1mw2c3xoe48evroh3mxacxok
+2024-04-15 22:37:43.599 [restartedMain]  INFO p6spy - #1713188263599 | took 29ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table pet 
+       drop 
+       foreign key FKr1mw2c3xoe48evroh3mxacxok
+
+    alter table pet 
+       drop 
+       foreign key FKr1mw2c3xoe48evroh3mxacxok;
+2024-04-15 22:37:43.600 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table recent_search 
+       drop 
+       foreign key FKqkom7u8p7og7hr5rl0jg1u2kd
+2024-04-15 22:37:43.627 [restartedMain]  INFO p6spy - #1713188263627 | took 27ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table recent_search 
+       drop 
+       foreign key FKqkom7u8p7og7hr5rl0jg1u2kd
+
+    alter table recent_search 
+       drop 
+       foreign key FKqkom7u8p7og7hr5rl0jg1u2kd;
+2024-04-15 22:37:43.628 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table refresh_tokens 
+       drop 
+       foreign key FKk9jsrwb7xx30157urhsxphvrg
+2024-04-15 22:37:43.655 [restartedMain]  INFO p6spy - #1713188263655 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table refresh_tokens 
+       drop 
+       foreign key FKk9jsrwb7xx30157urhsxphvrg
+
+    alter table refresh_tokens 
+       drop 
+       foreign key FKk9jsrwb7xx30157urhsxphvrg;
+2024-04-15 22:37:43.655 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists blocked
+2024-04-15 22:37:43.683 [restartedMain]  INFO p6spy - #1713188263683 | took 28ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists blocked
+
+    drop table if exists blocked;
+2024-04-15 22:37:43.684 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists blocked_seq
+2024-04-15 22:37:43.711 [restartedMain]  INFO p6spy - #1713188263711 | took 27ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists blocked_seq
+
+    drop table if exists blocked_seq;
+2024-04-15 22:37:43.712 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists comment
+2024-04-15 22:37:43.738 [restartedMain]  INFO p6spy - #1713188263738 | took 25ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists comment
+
+    drop table if exists comment;
+2024-04-15 22:37:43.738 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists follow
+2024-04-15 22:37:43.763 [restartedMain]  INFO p6spy - #1713188263763 | took 24ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists follow
+
+    drop table if exists follow;
+2024-04-15 22:37:43.764 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists follow_seq
+2024-04-15 22:37:43.786 [restartedMain]  INFO p6spy - #1713188263786 | took 22ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists follow_seq
+
+    drop table if exists follow_seq;
+2024-04-15 22:37:43.787 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists likes
+2024-04-15 22:37:43.813 [restartedMain]  INFO p6spy - #1713188263813 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists likes
+
+    drop table if exists likes;
+2024-04-15 22:37:43.813 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists likes_seq
+2024-04-15 22:37:43.840 [restartedMain]  INFO p6spy - #1713188263840 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists likes_seq
+
+    drop table if exists likes_seq;
+2024-04-15 22:37:43.841 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists member
+2024-04-15 22:37:43.870 [restartedMain]  INFO p6spy - #1713188263870 | took 29ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists member
+
+    drop table if exists member;
+2024-04-15 22:37:43.871 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists memory
+2024-04-15 22:37:43.899 [restartedMain]  INFO p6spy - #1713188263899 | took 28ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists memory
+
+    drop table if exists memory;
+2024-04-15 22:37:43.900 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists memory_image_seq
+2024-04-15 22:37:43.924 [restartedMain]  INFO p6spy - #1713188263924 | took 24ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists memory_image_seq
+
+    drop table if exists memory_image_seq;
+2024-04-15 22:37:43.925 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists memory_seq
+2024-04-15 22:37:43.950 [restartedMain]  INFO p6spy - #1713188263950 | took 25ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists memory_seq
+
+    drop table if exists memory_seq;
+2024-04-15 22:37:43.951 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists memory_image
+2024-04-15 22:37:43.977 [restartedMain]  INFO p6spy - #1713188263977 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists memory_image
+
+    drop table if exists memory_image;
+2024-04-15 22:37:43.977 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists meta
+2024-04-15 22:37:44.008 [restartedMain]  INFO p6spy - #1713188264008 | took 30ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists meta
+
+    drop table if exists meta;
+2024-04-15 22:37:44.009 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists meta_seq
+2024-04-15 22:37:44.032 [restartedMain]  INFO p6spy - #1713188264032 | took 23ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists meta_seq
+
+    drop table if exists meta_seq;
+2024-04-15 22:37:44.033 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists notification
+2024-04-15 22:37:44.060 [restartedMain]  INFO p6spy - #1713188264060 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists notification
+
+    drop table if exists notification;
+2024-04-15 22:37:44.060 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists pet
+2024-04-15 22:37:44.087 [restartedMain]  INFO p6spy - #1713188264087 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists pet
+
+    drop table if exists pet;
+2024-04-15 22:37:44.087 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists recent_search
+2024-04-15 22:37:44.114 [restartedMain]  INFO p6spy - #1713188264114 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists recent_search
+
+    drop table if exists recent_search;
+2024-04-15 22:37:44.114 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists refresh_tokens
+2024-04-15 22:37:44.141 [restartedMain]  INFO p6spy - #1713188264141 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists refresh_tokens
+
+    drop table if exists refresh_tokens;
+2024-04-15 22:37:44.141 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists refresh_tokens_seq
+2024-04-15 22:37:44.168 [restartedMain]  INFO p6spy - #1713188264167 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists refresh_tokens_seq
+
+    drop table if exists refresh_tokens_seq;
+2024-04-15 22:37:44.169 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists report
+2024-04-15 22:37:44.197 [restartedMain]  INFO p6spy - #1713188264196 | took 27ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists report
+
+    drop table if exists report;
+2024-04-15 22:37:44.197 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists report_seq
+2024-04-15 22:37:44.228 [restartedMain]  INFO p6spy - #1713188264228 | took 30ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists report_seq
+
+    drop table if exists report_seq;
+2024-04-15 22:37:44.228 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists species
+2024-04-15 22:37:44.259 [restartedMain]  INFO p6spy - #1713188264259 | took 29ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists species
+
+    drop table if exists species;
+2024-04-15 22:37:44.260 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists verification_status_entity
+2024-04-15 22:37:44.287 [restartedMain]  INFO p6spy - #1713188264287 | took 26ms | statement | connection 2| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    drop table if exists verification_status_entity
+
+    drop table if exists verification_status_entity;
+2024-04-15 22:37:44.293 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table blocked (
+        blocked_id bigint not null,
+        blocked_pet bigint not null,
+        blocker_pet_id bigint not null,
+        created_date datetime(6) not null,
+        primary key (blocked_id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.334 [restartedMain]  INFO p6spy - #1713188264334 | took 40ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table blocked (
+        blocked_id bigint not null,
+        blocked_pet bigint not null,
+        blocker_pet_id bigint not null,
+        created_date datetime(6) not null,
+        primary key (blocked_id)
+    ) engine=InnoDB
+
+    create table blocked (
+        blocked_id bigint not null,
+        blocked_pet bigint not null,
+        blocker_pet_id bigint not null,
+        created_date datetime(6) not null,
+        primary key (blocked_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.335 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table blocked_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:44.371 [restartedMain]  INFO p6spy - #1713188264371 | took 36ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table blocked_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table blocked_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:44.371 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into blocked_seq values ( 1 )
+2024-04-15 22:37:44.392 [restartedMain]  INFO p6spy - #1713188264392 | took 21ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into blocked_seq values ( 1 )
+
+    insert into blocked_seq values ( 1 );
+2024-04-15 22:37:44.393 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table comment (
+        depth integer not null,
+        commenter_id bigint not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        id bigint not null auto_increment,
+        last_modified_date datetime(6),
+        memory_id bigint,
+        parent_comment_id bigint,
+        pet_id bigint,
+        comment varchar(150) not null,
+        comment_group enum ('LAST_WORD','MEMORY_COMMENT') not null,
+        last_modified_by varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.431 [restartedMain]  INFO p6spy - #1713188264431 | took 37ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table comment (
+        depth integer not null,
+        commenter_id bigint not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        id bigint not null auto_increment,
+        last_modified_date datetime(6),
+        memory_id bigint,
+        parent_comment_id bigint,
+        pet_id bigint,
+        comment varchar(150) not null,
+        comment_group enum ('LAST_WORD','MEMORY_COMMENT') not null,
+        last_modified_by varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+
+    create table comment (
+        depth integer not null,
+        commenter_id bigint not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        id bigint not null auto_increment,
+        last_modified_date datetime(6),
+        memory_id bigint,
+        parent_comment_id bigint,
+        pet_id bigint,
+        comment varchar(150) not null,
+        comment_group enum ('LAST_WORD','MEMORY_COMMENT') not null,
+        last_modified_by varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.431 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table follow (
+        created_date datetime(6),
+        following_pet_id bigint not null,
+        id bigint not null,
+        last_modified_date datetime(6),
+        pet_id bigint,
+        last_modified_by varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.468 [restartedMain]  INFO p6spy - #1713188264468 | took 36ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table follow (
+        created_date datetime(6),
+        following_pet_id bigint not null,
+        id bigint not null,
+        last_modified_date datetime(6),
+        pet_id bigint,
+        last_modified_by varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+
+    create table follow (
+        created_date datetime(6),
+        following_pet_id bigint not null,
+        id bigint not null,
+        last_modified_date datetime(6),
+        pet_id bigint,
+        last_modified_by varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.468 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table follow_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:44.506 [restartedMain]  INFO p6spy - #1713188264506 | took 37ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table follow_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table follow_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:44.507 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into follow_seq values ( 1 )
+2024-04-15 22:37:44.526 [restartedMain]  INFO p6spy - #1713188264526 | took 19ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into follow_seq values ( 1 )
+
+    insert into follow_seq values ( 1 );
+2024-04-15 22:37:44.527 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table likes (
+        created_date datetime(6),
+        liked_own_pet_id bigint not null,
+        likes_id bigint not null,
+        memory_id bigint not null,
+        pet_id bigint not null,
+        primary key (likes_id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.563 [restartedMain]  INFO p6spy - #1713188264563 | took 36ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table likes (
+        created_date datetime(6),
+        liked_own_pet_id bigint not null,
+        likes_id bigint not null,
+        memory_id bigint not null,
+        pet_id bigint not null,
+        primary key (likes_id)
+    ) engine=InnoDB
+
+    create table likes (
+        created_date datetime(6),
+        liked_own_pet_id bigint not null,
+        likes_id bigint not null,
+        memory_id bigint not null,
+        pet_id bigint not null,
+        primary key (likes_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.565 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table likes_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:44.604 [restartedMain]  INFO p6spy - #1713188264604 | took 38ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table likes_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table likes_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:44.604 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into likes_seq values ( 1 )
+2024-04-15 22:37:44.624 [restartedMain]  INFO p6spy - #1713188264624 | took 19ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into likes_seq values ( 1 )
+
+    insert into likes_seq values ( 1 );
+2024-04-15 22:37:44.625 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table member (
+        activated bit not null,
+        login_fail_count integer not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        id BINARY(16) not null,
+        city varchar(255),
+        deactivation_reason varchar(255),
+        deactivation_reason_comment varchar(255),
+        email varchar(255) not null,
+        last_modified_by varchar(255),
+        member_status enum ('BAN','LOCKED','NORMAL'),
+        password varchar(255),
+        phone_num varchar(255),
+        provide_id varchar(255),
+        provider varchar(255),
+        roles varchar(255) not null,
+        street varchar(255),
+        username varchar(255) not null,
+        zipcode varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.662 [restartedMain]  INFO p6spy - #1713188264662 | took 36ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table member (
+        activated bit not null,
+        login_fail_count integer not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        id BINARY(16) not null,
+        city varchar(255),
+        deactivation_reason varchar(255),
+        deactivation_reason_comment varchar(255),
+        email varchar(255) not null,
+        last_modified_by varchar(255),
+        member_status enum ('BAN','LOCKED','NORMAL'),
+        password varchar(255),
+        phone_num varchar(255),
+        provide_id varchar(255),
+        provider varchar(255),
+        roles varchar(255) not null,
+        street varchar(255),
+        username varchar(255) not null,
+        zipcode varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+
+    create table member (
+        activated bit not null,
+        login_fail_count integer not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        id BINARY(16) not null,
+        city varchar(255),
+        deactivation_reason varchar(255),
+        deactivation_reason_comment varchar(255),
+        email varchar(255) not null,
+        last_modified_by varchar(255),
+        member_status enum ('BAN','LOCKED','NORMAL'),
+        password varchar(255),
+        phone_num varchar(255),
+        provide_id varchar(255),
+        provider varchar(255),
+        roles varchar(255) not null,
+        street varchar(255),
+        username varchar(255) not null,
+        zipcode varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.662 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table memory (
+        like_count integer not null,
+        memory_date date not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        memory_id bigint not null,
+        pet_id bigint not null,
+        audience enum ('ALL','FRIEND','ME') not null,
+        last_modified_by varchar(255),
+        memory_description varchar(255),
+        title varchar(255) not null,
+        primary key (memory_id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.699 [restartedMain]  INFO p6spy - #1713188264699 | took 36ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table memory (
+        like_count integer not null,
+        memory_date date not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        memory_id bigint not null,
+        pet_id bigint not null,
+        audience enum ('ALL','FRIEND','ME') not null,
+        last_modified_by varchar(255),
+        memory_description varchar(255),
+        title varchar(255) not null,
+        primary key (memory_id)
+    ) engine=InnoDB
+
+    create table memory (
+        like_count integer not null,
+        memory_date date not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        memory_id bigint not null,
+        pet_id bigint not null,
+        audience enum ('ALL','FRIEND','ME') not null,
+        last_modified_by varchar(255),
+        memory_description varchar(255),
+        title varchar(255) not null,
+        primary key (memory_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.700 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table memory_image_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:44.737 [restartedMain]  INFO p6spy - #1713188264737 | took 37ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table memory_image_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table memory_image_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:44.737 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into memory_image_seq values ( 1 )
+2024-04-15 22:37:44.757 [restartedMain]  INFO p6spy - #1713188264757 | took 19ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into memory_image_seq values ( 1 )
+
+    insert into memory_image_seq values ( 1 );
+2024-04-15 22:37:44.758 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table memory_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:44.792 [restartedMain]  INFO p6spy - #1713188264792 | took 34ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table memory_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table memory_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:44.792 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into memory_seq values ( 1 )
+2024-04-15 22:37:44.813 [restartedMain]  INFO p6spy - #1713188264813 | took 21ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into memory_seq values ( 1 )
+
+    insert into memory_seq values ( 1 );
+2024-04-15 22:37:44.814 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table memory_image (
+        created_date datetime(6),
+        deleted_date datetime(6),
+        memory_id bigint not null,
+        memory_image_id bigint not null,
+        image_format varchar(255) not null,
+        image_logical_name varchar(255) not null,
+        image_physical_name varchar(255) not null,
+        image_size varchar(255) not null,
+        image_url varchar(255) not null,
+        primary key (memory_image_id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.854 [restartedMain]  INFO p6spy - #1713188264854 | took 40ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table memory_image (
+        created_date datetime(6),
+        deleted_date datetime(6),
+        memory_id bigint not null,
+        memory_image_id bigint not null,
+        image_format varchar(255) not null,
+        image_logical_name varchar(255) not null,
+        image_physical_name varchar(255) not null,
+        image_size varchar(255) not null,
+        image_url varchar(255) not null,
+        primary key (memory_image_id)
+    ) engine=InnoDB
+
+    create table memory_image (
+        created_date datetime(6),
+        deleted_date datetime(6),
+        memory_id bigint not null,
+        memory_image_id bigint not null,
+        image_format varchar(255) not null,
+        image_logical_name varchar(255) not null,
+        image_physical_name varchar(255) not null,
+        image_size varchar(255) not null,
+        image_url varchar(255) not null,
+        primary key (memory_image_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.857 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table meta (
+        meta_data integer not null,
+        id bigint not null,
+        last_modified_date datetime(6),
+        column_name varchar(255) not null,
+        last_modified_by varchar(255),
+        meta_data_name varchar(255) not null,
+        table_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+2024-04-15 22:37:44.900 [restartedMain]  INFO p6spy - #1713188264900 | took 42ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table meta (
+        meta_data integer not null,
+        id bigint not null,
+        last_modified_date datetime(6),
+        column_name varchar(255) not null,
+        last_modified_by varchar(255),
+        meta_data_name varchar(255) not null,
+        table_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+
+    create table meta (
+        meta_data integer not null,
+        id bigint not null,
+        last_modified_date datetime(6),
+        column_name varchar(255) not null,
+        last_modified_by varchar(255),
+        meta_data_name varchar(255) not null,
+        table_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+2024-04-15 22:37:44.903 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table meta_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:44.942 [restartedMain]  INFO p6spy - #1713188264942 | took 37ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table meta_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table meta_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:44.943 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into meta_seq values ( 1 )
+2024-04-15 22:37:44.962 [restartedMain]  INFO p6spy - #1713188264962 | took 19ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into meta_seq values ( 1 )
+
+    insert into meta_seq values ( 1 );
+2024-04-15 22:37:44.963 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table notification (
+        notification_type tinyint not null,
+        read_yn integer not null,
+        created_date datetime(6),
+        last_modified_date datetime(6),
+        notification_id bigint not null auto_increment,
+        receiver bigint,
+        sender bigint not null,
+        last_modified_by varchar(255),
+        primary key (notification_id)
+    ) engine=InnoDB
+2024-04-15 22:37:45.003 [restartedMain]  INFO p6spy - #1713188265003 | took 39ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table notification (
+        notification_type tinyint not null,
+        read_yn integer not null,
+        created_date datetime(6),
+        last_modified_date datetime(6),
+        notification_id bigint not null auto_increment,
+        receiver bigint,
+        sender bigint not null,
+        last_modified_by varchar(255),
+        primary key (notification_id)
+    ) engine=InnoDB
+
+    create table notification (
+        notification_type tinyint not null,
+        read_yn integer not null,
+        created_date datetime(6),
+        last_modified_date datetime(6),
+        notification_id bigint not null auto_increment,
+        receiver bigint,
+        sender bigint not null,
+        last_modified_by varchar(255),
+        primary key (notification_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:45.004 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table pet (
+        pet_birth date not null,
+        pet_death_date date,
+        pet_profile_frame integer not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        pet_id bigint not null auto_increment,
+        pet_species_id bigint,
+        member_id BINARY(16),
+        back_img_url varchar(255),
+        gender enum ('F','M') not null,
+        last_modified_by varchar(255),
+        pet_desc varchar(255) not null,
+        pet_favs varchar(255) not null,
+        pet_favs2 varchar(255),
+        pet_favs3 varchar(255),
+        pet_name varchar(255) not null,
+        pet_profile_url varchar(255) not null,
+        pet_status enum ('ACTIVE','DEACTIVE') not null,
+        primary key (pet_id)
+    ) engine=InnoDB
+2024-04-15 22:37:45.056 [restartedMain]  INFO p6spy - #1713188265056 | took 51ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table pet (
+        pet_birth date not null,
+        pet_death_date date,
+        pet_profile_frame integer not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        pet_id bigint not null auto_increment,
+        pet_species_id bigint,
+        member_id BINARY(16),
+        back_img_url varchar(255),
+        gender enum ('F','M') not null,
+        last_modified_by varchar(255),
+        pet_desc varchar(255) not null,
+        pet_favs varchar(255) not null,
+        pet_favs2 varchar(255),
+        pet_favs3 varchar(255),
+        pet_name varchar(255) not null,
+        pet_profile_url varchar(255) not null,
+        pet_status enum ('ACTIVE','DEACTIVE') not null,
+        primary key (pet_id)
+    ) engine=InnoDB
+
+    create table pet (
+        pet_birth date not null,
+        pet_death_date date,
+        pet_profile_frame integer not null,
+        created_date datetime(6),
+        deleted_date datetime(6),
+        last_modified_date datetime(6),
+        pet_id bigint not null auto_increment,
+        pet_species_id bigint,
+        member_id BINARY(16),
+        back_img_url varchar(255),
+        gender enum ('F','M') not null,
+        last_modified_by varchar(255),
+        pet_desc varchar(255) not null,
+        pet_favs varchar(255) not null,
+        pet_favs2 varchar(255),
+        pet_favs3 varchar(255),
+        pet_name varchar(255) not null,
+        pet_profile_url varchar(255) not null,
+        pet_status enum ('ACTIVE','DEACTIVE') not null,
+        primary key (pet_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:45.056 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table recent_search (
+        created_date datetime(6),
+        id bigint not null auto_increment,
+        pet_id bigint not null,
+        search_texts varbinary(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+2024-04-15 22:37:45.097 [restartedMain]  INFO p6spy - #1713188265097 | took 40ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table recent_search (
+        created_date datetime(6),
+        id bigint not null auto_increment,
+        pet_id bigint not null,
+        search_texts varbinary(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+
+    create table recent_search (
+        created_date datetime(6),
+        id bigint not null auto_increment,
+        pet_id bigint not null,
+        search_texts varbinary(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+2024-04-15 22:37:45.098 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table refresh_tokens (
+        revoked bit not null,
+        id bigint not null,
+        member_id BINARY(16),
+        refresh_token varchar(10000) not null,
+        primary key (id)
+    ) engine=InnoDB
+2024-04-15 22:37:45.137 [restartedMain]  INFO p6spy - #1713188265137 | took 38ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table refresh_tokens (
+        revoked bit not null,
+        id bigint not null,
+        member_id BINARY(16),
+        refresh_token varchar(10000) not null,
+        primary key (id)
+    ) engine=InnoDB
+
+    create table refresh_tokens (
+        revoked bit not null,
+        id bigint not null,
+        member_id BINARY(16),
+        refresh_token varchar(10000) not null,
+        primary key (id)
+    ) engine=InnoDB;
+2024-04-15 22:37:45.138 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table refresh_tokens_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:45.176 [restartedMain]  INFO p6spy - #1713188265176 | took 38ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table refresh_tokens_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table refresh_tokens_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:45.177 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into refresh_tokens_seq values ( 1 )
+2024-04-15 22:37:45.198 [restartedMain]  INFO p6spy - #1713188265198 | took 21ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into refresh_tokens_seq values ( 1 )
+
+    insert into refresh_tokens_seq values ( 1 );
+2024-04-15 22:37:45.199 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table report (
+        comment_id bigint,
+        created_date datetime(6),
+        report_id bigint not null,
+        reported_pet_id bigint not null,
+        reporter_pet_id bigint not null,
+        report_category varchar(255) not null,
+        report_reason varchar(255) not null,
+        primary key (report_id)
+    ) engine=InnoDB
+2024-04-15 22:37:45.247 [restartedMain]  INFO p6spy - #1713188265247 | took 47ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table report (
+        comment_id bigint,
+        created_date datetime(6),
+        report_id bigint not null,
+        reported_pet_id bigint not null,
+        reporter_pet_id bigint not null,
+        report_category varchar(255) not null,
+        report_reason varchar(255) not null,
+        primary key (report_id)
+    ) engine=InnoDB
+
+    create table report (
+        comment_id bigint,
+        created_date datetime(6),
+        report_id bigint not null,
+        reported_pet_id bigint not null,
+        reporter_pet_id bigint not null,
+        report_category varchar(255) not null,
+        report_reason varchar(255) not null,
+        primary key (report_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:45.248 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table report_seq (
+        next_val bigint
+    ) engine=InnoDB
+2024-04-15 22:37:45.288 [restartedMain]  INFO p6spy - #1713188265288 | took 39ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table report_seq (
+        next_val bigint
+    ) engine=InnoDB
+
+    create table report_seq (
+        next_val bigint
+    ) engine=InnoDB;
+2024-04-15 22:37:45.288 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert into report_seq values ( 1 )
+2024-04-15 22:37:45.307 [restartedMain]  INFO p6spy - #1713188265307 | took 18ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    insert into report_seq values ( 1 )
+
+    insert into report_seq values ( 1 );
+2024-04-15 22:37:45.308 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table species (
+        last_modified_date datetime(6),
+        pet_species_id bigint not null auto_increment,
+        last_modified_by varchar(255),
+        species_large_category varchar(255) not null,
+        species_mid_category varchar(255),
+        species_small_category varchar(255) not null,
+        primary key (pet_species_id)
+    ) engine=InnoDB
+2024-04-15 22:37:45.344 [restartedMain]  INFO p6spy - #1713188265344 | took 35ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table species (
+        last_modified_date datetime(6),
+        pet_species_id bigint not null auto_increment,
+        last_modified_by varchar(255),
+        species_large_category varchar(255) not null,
+        species_mid_category varchar(255),
+        species_small_category varchar(255) not null,
+        primary key (pet_species_id)
+    ) engine=InnoDB
+
+    create table species (
+        last_modified_date datetime(6),
+        pet_species_id bigint not null auto_increment,
+        last_modified_by varchar(255),
+        species_large_category varchar(255) not null,
+        species_mid_category varchar(255),
+        species_small_category varchar(255) not null,
+        primary key (pet_species_id)
+    ) engine=InnoDB;
+2024-04-15 22:37:45.344 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table verification_status_entity (
+        expired_at datetime(6),
+        id bigint not null auto_increment,
+        auth_key varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-04-15 22:37:45.393 [restartedMain]  INFO p6spy - #1713188265393 | took 48ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    create table verification_status_entity (
+        expired_at datetime(6),
+        id bigint not null auto_increment,
+        auth_key varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+
+    create table verification_status_entity (
+        expired_at datetime(6),
+        id bigint not null auto_increment,
+        auth_key varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+2024-04-15 22:37:45.394 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table blocked 
+       add constraint FKnaikjrvvsgqydmq4dksrkbkqs 
+       foreign key (blocked_pet) 
+       references pet (pet_id)
+2024-04-15 22:37:45.455 [restartedMain]  INFO p6spy - #1713188265455 | took 61ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table blocked 
+       add constraint FKnaikjrvvsgqydmq4dksrkbkqs 
+       foreign key (blocked_pet) 
+       references pet (pet_id)
+
+    alter table blocked 
+       add constraint FKnaikjrvvsgqydmq4dksrkbkqs 
+       foreign key (blocked_pet) 
+       references pet (pet_id);
+2024-04-15 22:37:45.457 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table comment 
+       add constraint FK9ikw731f4xppbn3feyloudpw3 
+       foreign key (memory_id) 
+       references memory (memory_id)
+2024-04-15 22:37:45.523 [restartedMain]  INFO p6spy - #1713188265523 | took 65ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table comment 
+       add constraint FK9ikw731f4xppbn3feyloudpw3 
+       foreign key (memory_id) 
+       references memory (memory_id)
+
+    alter table comment 
+       add constraint FK9ikw731f4xppbn3feyloudpw3 
+       foreign key (memory_id) 
+       references memory (memory_id);
+2024-04-15 22:37:45.523 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table comment 
+       add constraint FKhvrca92mdyusiykgpypnfxnui 
+       foreign key (pet_id) 
+       references pet (pet_id)
+2024-04-15 22:37:45.587 [restartedMain]  INFO p6spy - #1713188265586 | took 62ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table comment 
+       add constraint FKhvrca92mdyusiykgpypnfxnui 
+       foreign key (pet_id) 
+       references pet (pet_id)
+
+    alter table comment 
+       add constraint FKhvrca92mdyusiykgpypnfxnui 
+       foreign key (pet_id) 
+       references pet (pet_id);
+2024-04-15 22:37:45.587 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table follow 
+       add constraint FKsv1ro6ep72nof9lk8ey879js7 
+       foreign key (following_pet_id) 
+       references pet (pet_id)
+2024-04-15 22:37:45.646 [restartedMain]  INFO p6spy - #1713188265646 | took 59ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table follow 
+       add constraint FKsv1ro6ep72nof9lk8ey879js7 
+       foreign key (following_pet_id) 
+       references pet (pet_id)
+
+    alter table follow 
+       add constraint FKsv1ro6ep72nof9lk8ey879js7 
+       foreign key (following_pet_id) 
+       references pet (pet_id);
+2024-04-15 22:37:45.648 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table likes 
+       add constraint FK3eb73lcsoolg9hnt2mx72lslv 
+       foreign key (memory_id) 
+       references memory (memory_id)
+2024-04-15 22:37:45.711 [restartedMain]  INFO p6spy - #1713188265711 | took 62ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table likes 
+       add constraint FK3eb73lcsoolg9hnt2mx72lslv 
+       foreign key (memory_id) 
+       references memory (memory_id)
+
+    alter table likes 
+       add constraint FK3eb73lcsoolg9hnt2mx72lslv 
+       foreign key (memory_id) 
+       references memory (memory_id);
+2024-04-15 22:37:45.712 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table likes 
+       add constraint FKc4sxuu6gf0q9qbnab319n657h 
+       foreign key (pet_id) 
+       references pet (pet_id)
+2024-04-15 22:37:45.783 [restartedMain]  INFO p6spy - #1713188265783 | took 70ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table likes 
+       add constraint FKc4sxuu6gf0q9qbnab319n657h 
+       foreign key (pet_id) 
+       references pet (pet_id)
+
+    alter table likes 
+       add constraint FKc4sxuu6gf0q9qbnab319n657h 
+       foreign key (pet_id) 
+       references pet (pet_id);
+2024-04-15 22:37:45.783 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table memory 
+       add constraint FK2ws42dna5wo37rsdrmb61o9d6 
+       foreign key (pet_id) 
+       references pet (pet_id)
+2024-04-15 22:37:45.849 [restartedMain]  INFO p6spy - #1713188265849 | took 65ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table memory 
+       add constraint FK2ws42dna5wo37rsdrmb61o9d6 
+       foreign key (pet_id) 
+       references pet (pet_id)
+
+    alter table memory 
+       add constraint FK2ws42dna5wo37rsdrmb61o9d6 
+       foreign key (pet_id) 
+       references pet (pet_id);
+2024-04-15 22:37:45.849 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table memory_image 
+       add constraint FKdm4x79i6g8p4k7wbdlosy3s24 
+       foreign key (memory_id) 
+       references memory (memory_id)
+2024-04-15 22:37:45.910 [restartedMain]  INFO p6spy - #1713188265910 | took 60ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table memory_image 
+       add constraint FKdm4x79i6g8p4k7wbdlosy3s24 
+       foreign key (memory_id) 
+       references memory (memory_id)
+
+    alter table memory_image 
+       add constraint FKdm4x79i6g8p4k7wbdlosy3s24 
+       foreign key (memory_id) 
+       references memory (memory_id);
+2024-04-15 22:37:45.910 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table notification 
+       add constraint FKh6swx5uhav8puch5xjwi21r26 
+       foreign key (receiver) 
+       references pet (pet_id)
+2024-04-15 22:37:45.985 [restartedMain]  INFO p6spy - #1713188265985 | took 74ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table notification 
+       add constraint FKh6swx5uhav8puch5xjwi21r26 
+       foreign key (receiver) 
+       references pet (pet_id)
+
+    alter table notification 
+       add constraint FKh6swx5uhav8puch5xjwi21r26 
+       foreign key (receiver) 
+       references pet (pet_id);
+2024-04-15 22:37:45.986 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table pet 
+       add constraint FK1c9th7o408mgfqkbjjkvkl4mw 
+       foreign key (member_id) 
+       references member (id)
+2024-04-15 22:37:46.067 [restartedMain]  INFO p6spy - #1713188266067 | took 80ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table pet 
+       add constraint FK1c9th7o408mgfqkbjjkvkl4mw 
+       foreign key (member_id) 
+       references member (id)
+
+    alter table pet 
+       add constraint FK1c9th7o408mgfqkbjjkvkl4mw 
+       foreign key (member_id) 
+       references member (id);
+2024-04-15 22:37:46.068 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table pet 
+       add constraint FKr1mw2c3xoe48evroh3mxacxok 
+       foreign key (pet_species_id) 
+       references species (pet_species_id)
+2024-04-15 22:37:46.163 [restartedMain]  INFO p6spy - #1713188266163 | took 95ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table pet 
+       add constraint FKr1mw2c3xoe48evroh3mxacxok 
+       foreign key (pet_species_id) 
+       references species (pet_species_id)
+
+    alter table pet 
+       add constraint FKr1mw2c3xoe48evroh3mxacxok 
+       foreign key (pet_species_id) 
+       references species (pet_species_id);
+2024-04-15 22:37:46.163 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table recent_search 
+       add constraint FKqkom7u8p7og7hr5rl0jg1u2kd 
+       foreign key (pet_id) 
+       references pet (pet_id)
+2024-04-15 22:37:46.225 [restartedMain]  INFO p6spy - #1713188266225 | took 61ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table recent_search 
+       add constraint FKqkom7u8p7og7hr5rl0jg1u2kd 
+       foreign key (pet_id) 
+       references pet (pet_id)
+
+    alter table recent_search 
+       add constraint FKqkom7u8p7og7hr5rl0jg1u2kd 
+       foreign key (pet_id) 
+       references pet (pet_id);
+2024-04-15 22:37:46.226 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table refresh_tokens 
+       add constraint FKk9jsrwb7xx30157urhsxphvrg 
+       foreign key (member_id) 
+       references member (id)
+2024-04-15 22:37:46.288 [restartedMain]  INFO p6spy - #1713188266288 | took 61ms | statement | connection 3| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+    alter table refresh_tokens 
+       add constraint FKk9jsrwb7xx30157urhsxphvrg 
+       foreign key (member_id) 
+       references member (id)
+
+    alter table refresh_tokens 
+       add constraint FKk9jsrwb7xx30157urhsxphvrg 
+       foreign key (member_id) 
+       references member (id);
+2024-04-15 22:37:46.297 [restartedMain]  INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-15 22:37:46.449 [restartedMain]  INFO org.springframework.data.jpa.repository.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-04-15 22:37:47.603 [restartedMain]  WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-15 22:37:47.654 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/sign-in/**'] with [org.springframework.security.web.session.DisableEncodeUrlFilter@338d275d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7f960ee, org.springframework.security.web.context.SecurityContextHolderFilter@2bfb9e6, org.springframework.security.web.header.HeaderWriterFilter@aab47f8, org.springframework.web.filter.CorsFilter@22a676d1, org.springframework.security.web.authentication.logout.LogoutFilter@33cecf8a, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@448e19c3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@ff4a2d8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@317c2b49, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@225482d9, org.springframework.security.web.session.SessionManagementFilter@13ea11c9, org.springframework.security.web.access.ExceptionTranslationFilter@2c4e3d9, org.springframework.security.web.access.intercept.AuthorizationFilter@32bfcdb4]
+2024-04-15 22:37:47.677 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/oauth2/**'] with [org.springframework.security.web.session.DisableEncodeUrlFilter@461ee387, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7e06004e, org.springframework.security.web.context.SecurityContextHolderFilter@64ecdb6b, org.springframework.security.web.header.HeaderWriterFilter@78d97af0, org.springframework.web.filter.CorsFilter@2043fc63, org.springframework.security.web.authentication.logout.LogoutFilter@21c3c1e0, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@4abe53d1, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@49b5015, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@8a97811, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@2ba4b2ee, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@629d2e33, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@65b9c9a6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5604311b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1a977ec6, org.springframework.security.web.session.SessionManagementFilter@5970f06a, org.springframework.security.web.access.ExceptionTranslationFilter@25849a1a, org.springframework.security.web.access.intercept.AuthorizationFilter@1512231c]
+2024-04-15 22:37:47.681 [restartedMain] ERROR com.memopet.memopet.global.config.SecurityConfig - [SecurityConfig:apiSecurityFilterChain] Exception due to :org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer@24d28797
+2024-04-15 22:37:47.689 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/api/**'] with [org.springframework.security.web.session.DisableEncodeUrlFilter@3d34ba84, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3e79b3f5, org.springframework.security.web.context.SecurityContextHolderFilter@2e4be4f2, org.springframework.security.web.header.HeaderWriterFilter@2e499014, org.springframework.web.filter.CorsFilter@5d6a65d, org.springframework.security.web.authentication.logout.LogoutFilter@505ad5e6, com.memopet.memopet.global.filter.JwtAccessTokenFilter@8d7733c, org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter@23631ef1, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@b40d992, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@522694a5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@308d77c5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@10af0838, org.springframework.security.web.session.SessionManagementFilter@35848bff, org.springframework.security.web.access.ExceptionTranslationFilter@4d3624ea, org.springframework.security.web.access.intercept.AuthorizationFilter@6dd79aa9]
+2024-04-15 22:37:47.690 [restartedMain] ERROR com.memopet.memopet.global.config.SecurityConfig - [SecurityConfig:refreshTokenSecurityFilterChain] Exception due to :org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer@4ec23fbb
+2024-04-15 22:37:47.696 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/refresh-token/**'] with [org.springframework.security.web.session.DisableEncodeUrlFilter@6194d48d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@22b37b83, org.springframework.security.web.context.SecurityContextHolderFilter@62df59a4, org.springframework.security.web.header.HeaderWriterFilter@f02dac3, org.springframework.web.filter.CorsFilter@4e215b39, org.springframework.security.web.authentication.logout.LogoutFilter@4e41afe4, com.memopet.memopet.global.filter.JwtRefreshTokenFilter@c5c70d8, org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter@37ab7aa6, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@74d6dd38, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@520181d2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4bcc9d93, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4babfd62, org.springframework.security.web.session.SessionManagementFilter@7d9c00da, org.springframework.security.web.access.ExceptionTranslationFilter@44fe8217, org.springframework.security.web.access.intercept.AuthorizationFilter@3f1f9f7b]
+2024-04-15 22:37:47.697 [restartedMain] ERROR com.memopet.memopet.global.config.SecurityConfig - [SecurityConfig:logoutSecurityFilterChain] Exception due to :org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer@9883bd7
+2024-04-15 22:37:47.701 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/logout/**'] with [org.springframework.security.web.session.DisableEncodeUrlFilter@4d2ff92a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@439f3a22, org.springframework.security.web.context.SecurityContextHolderFilter@3bf5f1bc, org.springframework.security.web.header.HeaderWriterFilter@2038e38, org.springframework.web.filter.CorsFilter@39353d86, org.springframework.security.web.authentication.logout.LogoutFilter@457b6a88, com.memopet.memopet.global.filter.JwtAccessTokenFilter@1db82d75, org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter@539ef6fb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@23552f89, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3d391795, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2fec6141, org.springframework.security.web.session.SessionManagementFilter@25993b6e, org.springframework.security.web.access.ExceptionTranslationFilter@1131312a, org.springframework.security.web.access.intercept.AuthorizationFilter@3aa80f18]
+2024-04-15 22:37:47.706 [restartedMain]  INFO org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/sign-up/**'] with [org.springframework.security.web.session.DisableEncodeUrlFilter@78cfeb3e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a841a92, org.springframework.security.web.context.SecurityContextHolderFilter@14c6b756, org.springframework.security.web.header.HeaderWriterFilter@19b04df1, org.springframework.web.filter.CorsFilter@6a43c03d, org.springframework.security.web.authentication.logout.LogoutFilter@bf13712, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3cc495b4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@27809818, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@410db0b0, org.springframework.security.web.session.SessionManagementFilter@2005b49a, org.springframework.security.web.access.ExceptionTranslationFilter@40fd0af0, org.springframework.security.web.access.intercept.AuthorizationFilter@306360cd]
+2024-04-15 22:37:48.369 [restartedMain]  INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-04-15 22:37:48.378 [restartedMain]  INFO org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-15 22:37:48.390 [restartedMain]  INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2024-04-15 22:37:48.402 [restartedMain]  INFO com.memopet.memopet.MemopetApplication - Started MemopetApplication in 8.033 seconds (process running for 8.258)
+2024-04-15 22:37:48.728 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        member
+        (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:48.754 [restartedMain]  INFO p6spy - #1713188268754 | took 14ms | statement | connection 4| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into member (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+insert into member (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) values (true,NULL,NULL,NULL,'2024-04-15T22:37:48.711+0900',NULL,NULL,NULL,'user@gmail.com','932d95ce-abfa-4e9a-80b3-e9e8eb3086da','2024-04-15T22:37:48.711+0900',0,'NORMAL','{bcrypt}$2a$10$lRytFXbhcubVzSJ2TkoT4.MmWHZbe5QHhFG3XWthODB.ohcT3SeQW','01054232322',NULL,NULL,'ROLE_USER','이재훈','86C421D4CD264066AA11D59F11D2F819');
+2024-04-15 22:37:48.756 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        member
+        (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:48.765 [restartedMain]  INFO p6spy - #1713188268765 | took 7ms | statement | connection 4| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into member (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+insert into member (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) values (true,NULL,NULL,NULL,'2024-04-15T22:37:48.720+0900',NULL,NULL,NULL,'jae@gmail.com','8651f933-cfbe-4345-81cc-5d268da82655','2024-04-15T22:37:48.720+0900',0,'NORMAL','{bcrypt}$2a$10$iJQAMJBnbRTS2e1ucb2Wp.qNmWMpN19IjS5u7.xXrq.z.SN6tODWu','01094232322',NULL,NULL,'ROLE_USER','노재현','C9D8EEBE22F4475E8B8C23720984A519');
+2024-04-15 22:37:48.765 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        member
+        (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:48.775 [restartedMain]  INFO p6spy - #1713188268775 | took 8ms | statement | connection 4| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into member (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+insert into member (activated,city,street,zipcode,created_date,deactivation_reason,deactivation_reason_comment,deleted_date,email,last_modified_by,last_modified_date,login_fail_count,member_status,password,phone_num,provide_id,provider,roles,username,id) values (true,NULL,NULL,NULL,'2024-04-15T22:37:48.720+0900',NULL,NULL,NULL,'admin@gmail.com','7ee78212-e238-4cc5-a0e5-6f3fc185f0b1','2024-04-15T22:37:48.720+0900',0,'NORMAL','{bcrypt}$2a$10$JejyQaaX8mEWyEjzMNXKv.CHpnPOhDmJAX3vH/CszZmyIBQwUOjcW','01084232322',NULL,NULL,'ROLE_ADMIN','김형구','AA4211FE8B774A58B185E8529B7139FA');
+2024-04-15 22:37:48.787 [restartedMain]  INFO p6spy - #1713188268787 | took 9ms | commit | connection 4| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:48.808 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.817 [restartedMain]  INFO p6spy - #1713188268817 | took 8ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','00d30dfc-b228-4105-91c0-6c875d0b6052','2024-04-15T22:37:48.807+0900','개','마티즈');
+2024-04-15 22:37:48.822 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.830 [restartedMain]  INFO p6spy - #1713188268830 | took 7ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','06ccf60d-aaf0-4349-8683-e1ef595d424c','2024-04-15T22:37:48.822+0900','개','시바이누');
+2024-04-15 22:37:48.831 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.838 [restartedMain]  INFO p6spy - #1713188268838 | took 6ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','26c2cbb7-2684-446f-991d-210b8bf6aadc','2024-04-15T22:37:48.830+0900','개','세인트버나드');
+2024-04-15 22:37:48.838 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.846 [restartedMain]  INFO p6spy - #1713188268846 | took 7ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','8146faec-a52d-4db6-965d-ef1e227a2be1','2024-04-15T22:37:48.838+0900','개','서식스스패니얼');
+2024-04-15 22:37:48.846 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.854 [restartedMain]  INFO p6spy - #1713188268854 | took 7ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','f58b48e7-85c0-4d85-960e-b7c1a6e9d52d','2024-04-15T22:37:48.846+0900','개','폭스테리어');
+2024-04-15 22:37:48.855 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.863 [restartedMain]  INFO p6spy - #1713188268863 | took 7ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','3bd14ccd-3cea-4486-82f5-14002335673c','2024-04-15T22:37:48.855+0900','개','테리어');
+2024-04-15 22:37:48.863 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.871 [restartedMain]  INFO p6spy - #1713188268870 | took 6ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','98e8d536-01a8-41bb-9cf0-a1f9fdd810b7','2024-04-15T22:37:48.863+0900','개','시추');
+2024-04-15 22:37:48.872 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        species
+        (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:48.879 [restartedMain]  INFO p6spy - #1713188268879 | took 6ms | statement | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values (?,?,?,?,?)
+insert into species (species_large_category,last_modified_by,last_modified_date,species_mid_category,species_small_category) values ('포유류','89e16952-1318-4bbb-9d1b-712ec5abf065','2024-04-15T22:37:48.871+0900','개','푸들');
+2024-04-15 22:37:48.888 [restartedMain]  INFO p6spy - #1713188268888 | took 9ms | commit | connection 5| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:48.908 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        pet
+        (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:48.918 [restartedMain]  INFO p6spy - #1713188268918 | took 8ms | statement | connection 6| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values ('https://images.unsplash.com/photo-1707343843982-f8275f3994c5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8','2024-04-15T22:37:48.908+0900',NULL,'F','bf6d36ab-c99e-4004-b7d1-6d4f334e1c06','2024-04-15T22:37:48.908+0900','86C421D4CD264066AA11D59F11D2F819','2024-04-15T00:00:00.000+0900',NULL,'두리는 이쁘다','웃기','먹기','달리기','두리',0,'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8JUVBJUIwJTlDfGVufDB8fDB8fHww','ACTIVE',1);
+2024-04-15 22:37:48.918 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        pet
+        (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:48.926 [restartedMain]  INFO p6spy - #1713188268926 | took 7ms | statement | connection 6| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values ('https://images.unsplash.com/photo-1706670542491-61eeb26510de?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8','2024-04-15T22:37:48.918+0900',NULL,'F','7d8055c3-9db5-4a06-9bb9-28f341c35e7b','2024-04-15T22:37:48.918+0900','86C421D4CD264066AA11D59F11D2F819','2024-04-15T00:00:00.000+0900',NULL,'방울이는 이쁘다','웃기','먹기','달리기','방울이',0,'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVBJUIwJTlDfGVufDB8fDB8fHww','DEACTIVE',1);
+2024-04-15 22:37:48.927 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        pet
+        (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:48.935 [restartedMain]  INFO p6spy - #1713188268935 | took 7ms | statement | connection 6| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values ('https://images.unsplash.com/photo-1706670542491-61eeb26510de?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8','2024-04-15T22:37:48.927+0900',NULL,'F','bea68b78-440e-443c-819c-f4fe54661247','2024-04-15T22:37:48.927+0900','C9D8EEBE22F4475E8B8C23720984A519','2024-04-15T00:00:00.000+0900',NULL,'조롱이는 이쁘다','떠들기','뛰기','달리기','조롱이',0,'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFQSVCMCU5Q3xlbnwwfHwwfHx8MA%3D%3D','ACTIVE',1);
+2024-04-15 22:37:48.936 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        pet
+        (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:48.944 [restartedMain]  INFO p6spy - #1713188268944 | took 7ms | statement | connection 6| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+insert into pet (back_img_url,created_date,deleted_date,gender,last_modified_by,last_modified_date,member_id,pet_birth,pet_death_date,pet_desc,pet_favs,pet_favs2,pet_favs3,pet_name,pet_profile_frame,pet_profile_url,pet_status,pet_species_id) values ('https://images.unsplash.com/photo-1706670542491-61eeb26510de?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8','2024-04-15T22:37:48.936+0900',NULL,'F','fd833a71-00ff-4f0b-b476-1bbae5c07212','2024-04-15T22:37:48.936+0900','C9D8EEBE22F4475E8B8C23720984A519','2024-04-15T00:00:00.000+0900',NULL,'띵띵이는 이쁘다','울기','웃기','때리기','띵띵이',0,'https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fCVFQSVCMCU5Q3xlbnwwfHwwfHx8MA%3D%3D','DEACTIVE',1);
+2024-04-15 22:37:48.955 [restartedMain]  INFO p6spy - #1713188268955 | took 10ms | commit | connection 6| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:48.990 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        memory_seq for update
+2024-04-15 22:37:48.999 [restartedMain]  INFO p6spy - #1713188268999 | took 8ms | statement | connection 8| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from memory_seq for update
+select next_val as id_val from memory_seq for update;
+2024-04-15 22:37:48.999 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        memory_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.006 [restartedMain]  INFO p6spy - #1713188269006 | took 7ms | statement | connection 8| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update memory_seq set next_val= ? where next_val=?
+update memory_seq set next_val= 51 where next_val=1;
+2024-04-15 22:37:49.016 [restartedMain]  INFO p6spy - #1713188269016 | took 9ms | commit | connection 8| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.030 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        memory_seq for update
+2024-04-15 22:37:49.038 [restartedMain]  INFO p6spy - #1713188269038 | took 7ms | statement | connection 9| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from memory_seq for update
+select next_val as id_val from memory_seq for update;
+2024-04-15 22:37:49.038 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        memory_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.050 [restartedMain]  INFO p6spy - #1713188269050 | took 12ms | statement | connection 9| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update memory_seq set next_val= ? where next_val=?
+update memory_seq set next_val= 101 where next_val=51;
+2024-04-15 22:37:49.060 [restartedMain]  INFO p6spy - #1713188269060 | took 9ms | commit | connection 9| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.073 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.082 [restartedMain]  INFO p6spy - #1713188269082 | took 8ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:48.973+0900',NULL,'d5b69dcc-3057-4d8b-a5d7-bbf6c6bd8304','2024-04-15T22:37:48.973+0900',1,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',1,'방울이와의 밤 산책',1);
+2024-04-15 22:37:49.083 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.091 [restartedMain]  INFO p6spy - #1713188269091 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ME','2024-04-15T22:37:49.024+0900',NULL,'3ce887f0-2509-4e64-abe1-d343c12e8ccc','2024-04-15T22:37:49.024+0900',1,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',1,'방울이와의 낮 산책',2);
+2024-04-15 22:37:49.092 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.100 [restartedMain]  INFO p6spy - #1713188269100 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('FRIEND','2024-04-15T22:37:49.068+0900',NULL,'93e59752-9623-4d28-b9b7-e5e2b4949f21','2024-04-15T22:37:49.068+0900',1,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',1,'방울이와의 오전 산책',3);
+2024-04-15 22:37:49.100 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.108 [restartedMain]  INFO p6spy - #1713188269108 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.069+0900',NULL,'00b46b64-51f2-4193-ad0d-b26cdf663b67','2024-04-15T22:37:49.069+0900',1,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',1,'방울이와의 오후 산책',4);
+2024-04-15 22:37:49.108 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.116 [restartedMain]  INFO p6spy - #1713188269116 | took 6ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.069+0900',NULL,'8f791755-18c0-4ff5-8fba-ecafdfd5d98c','2024-04-15T22:37:49.069+0900',1,'2024-04-15T00:00:00.000+0900','두리와의 산책이 너무 즐거웠습니다.',2,'두리와의 오전 산책',5);
+2024-04-15 22:37:49.116 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.124 [restartedMain]  INFO p6spy - #1713188269124 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.069+0900',NULL,'0843e270-f5b1-4698-8726-3f9bac15f4df','2024-04-15T22:37:49.069+0900',1,'2024-04-15T00:00:00.000+0900','두리와의 산책이 너무 즐거웠습니다.',2,'두리와의 산책',6);
+2024-04-15 22:37:49.125 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.133 [restartedMain]  INFO p6spy - #1713188269133 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.069+0900',NULL,'2a00e66d-29d6-4fde-8872-d3b38c442e54','2024-04-15T22:37:49.069+0900',1,'2024-04-15T00:00:00.000+0900','두리와의 산책이 너무 즐거웠습니다.',2,'두리와의 산책',7);
+2024-04-15 22:37:49.133 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.141 [restartedMain]  INFO p6spy - #1713188269141 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.069+0900',NULL,'6c44d3e6-0fbf-47ab-a121-d48a08119381','2024-04-15T22:37:49.069+0900',1,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',3,'방울이와의 산책',8);
+2024-04-15 22:37:49.141 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.152 [restartedMain]  INFO p6spy - #1713188269152 | took 9ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.069+0900',NULL,'0bfe4a4e-bcb4-40e4-a1a3-26c4061ba3f4','2024-04-15T22:37:49.069+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',3,'방울이와의 산책',9);
+2024-04-15 22:37:49.152 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.161 [restartedMain]  INFO p6spy - #1713188269161 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.070+0900',NULL,'f2f8c79d-37f7-4da4-bf9b-de4995bc3749','2024-04-15T22:37:49.070+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',3,'방울이와의 산책',10);
+2024-04-15 22:37:49.161 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.169 [restartedMain]  INFO p6spy - #1713188269169 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.070+0900',NULL,'ed45f075-1cfa-41c5-accb-06a10521d73e','2024-04-15T22:37:49.070+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',3,'방울이와의 산책',11);
+2024-04-15 22:37:49.169 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.177 [restartedMain]  INFO p6spy - #1713188269177 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.070+0900',NULL,'f044affe-7c8a-46a2-a063-0cc540334a40','2024-04-15T22:37:49.070+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',12);
+2024-04-15 22:37:49.177 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.185 [restartedMain]  INFO p6spy - #1713188269185 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.070+0900',NULL,'8af3820e-7688-4200-8869-46c2fc7507d7','2024-04-15T22:37:49.070+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',13);
+2024-04-15 22:37:49.185 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.193 [restartedMain]  INFO p6spy - #1713188269193 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.071+0900',NULL,'879c1fec-72d3-4810-b644-940e5f4da831','2024-04-15T22:37:49.071+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',14);
+2024-04-15 22:37:49.194 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.201 [restartedMain]  INFO p6spy - #1713188269201 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.071+0900',NULL,'c598bbb2-67f5-442c-add4-6918ceec7e30','2024-04-15T22:37:49.071+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',15);
+2024-04-15 22:37:49.202 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.210 [restartedMain]  INFO p6spy - #1713188269210 | took 8ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.071+0900',NULL,'97722c76-aeb8-4d14-ac83-e670d2c0c628','2024-04-15T22:37:49.071+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',16);
+2024-04-15 22:37:49.211 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.218 [restartedMain]  INFO p6spy - #1713188269218 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.071+0900',NULL,'972858a0-5223-4036-b72c-1c1a541f287b','2024-04-15T22:37:49.071+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',17);
+2024-04-15 22:37:49.219 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.226 [restartedMain]  INFO p6spy - #1713188269226 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.071+0900',NULL,'7608fac1-4730-40e8-b61b-11738e48b539','2024-04-15T22:37:49.071+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',18);
+2024-04-15 22:37:49.227 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.234 [restartedMain]  INFO p6spy - #1713188269234 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.071+0900',NULL,'10d8f093-992a-41ab-86e2-884f24ad3b9b','2024-04-15T22:37:49.071+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',19);
+2024-04-15 22:37:49.235 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.243 [restartedMain]  INFO p6spy - #1713188269243 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.072+0900',NULL,'ce0bbf12-4344-4d46-a990-6bd189601812','2024-04-15T22:37:49.072+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',20);
+2024-04-15 22:37:49.243 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.252 [restartedMain]  INFO p6spy - #1713188269252 | took 8ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.072+0900',NULL,'1fab55e1-df4f-477c-841b-1f7b6bfa8aa0','2024-04-15T22:37:49.072+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',21);
+2024-04-15 22:37:49.252 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.260 [restartedMain]  INFO p6spy - #1713188269260 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.072+0900',NULL,'de9590fc-c24a-443d-96ba-a8425b038562','2024-04-15T22:37:49.072+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',22);
+2024-04-15 22:37:49.261 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory
+        (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.268 [restartedMain]  INFO p6spy - #1713188269268 | took 7ms | statement | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into memory (audience,created_date,deleted_date,last_modified_by,last_modified_date,like_count,memory_date,memory_description,pet_id,title,memory_id) values ('ALL','2024-04-15T22:37:49.072+0900',NULL,'a3448454-7bd6-4b71-8987-11dcfc12fc45','2024-04-15T22:37:49.072+0900',0,'2024-04-15T00:00:00.000+0900','방울이와의 산책이 너무 즐거웠습니다.',4,'방울이와의 산책',23);
+2024-04-15 22:37:49.279 [restartedMain]  INFO p6spy - #1713188269279 | took 9ms | commit | connection 7| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.305 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        memory_image_seq for update
+2024-04-15 22:37:49.312 [restartedMain]  INFO p6spy - #1713188269312 | took 7ms | statement | connection 11| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from memory_image_seq for update
+select next_val as id_val from memory_image_seq for update;
+2024-04-15 22:37:49.312 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        memory_image_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.319 [restartedMain]  INFO p6spy - #1713188269319 | took 7ms | statement | connection 11| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update memory_image_seq set next_val= ? where next_val=?
+update memory_image_seq set next_val= 51 where next_val=1;
+2024-04-15 22:37:49.329 [restartedMain]  INFO p6spy - #1713188269329 | took 9ms | commit | connection 11| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.344 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        memory_image_seq for update
+2024-04-15 22:37:49.354 [restartedMain]  INFO p6spy - #1713188269354 | took 9ms | statement | connection 12| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from memory_image_seq for update
+select next_val as id_val from memory_image_seq for update;
+2024-04-15 22:37:49.354 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        memory_image_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.362 [restartedMain]  INFO p6spy - #1713188269362 | took 7ms | statement | connection 12| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update memory_image_seq set next_val= ? where next_val=?
+update memory_image_seq set next_val= 101 where next_val=51;
+2024-04-15 22:37:49.372 [restartedMain]  INFO p6spy - #1713188269372 | took 10ms | commit | connection 12| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.381 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory_image
+        (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) 
+    values
+        (?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.390 [restartedMain]  INFO p6spy - #1713188269390 | took 8ms | statement | connection 10| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values (?,?,?,?,?,?,?,?,?)
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values ('2024-04-15T22:37:49.296+0900',NULL,'jpg','48ab8d2e-e8b9-4a72-8963-a04d6a1b04b4','추억 1 : 방울이와 찍은사진','20mb','https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xNV9waG90b19vZl9hX2RvZ19ydW5uaW5nX3dpdGhfb3duZXJfYXRfcGFya19lcF9mM2I3MDQyZC0zNWJlLTRlMTQtOGZhNy1kY2Q2OWQ1YzQzZjlfMi5qcGc.jpg',1,1);
+2024-04-15 22:37:49.390 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory_image
+        (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) 
+    values
+        (?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.402 [restartedMain]  INFO p6spy - #1713188269402 | took 11ms | statement | connection 10| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values (?,?,?,?,?,?,?,?,?)
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values ('2024-04-15T22:37:49.337+0900',NULL,'jpg','145d1bc9-c3e0-4391-a62a-13988fe858fe','추억 1 : 방울이와 찍은사진1','30mb','https://thumbs.dreamstime.com/b/beagle-dog-isolated-white-background-purebred-103538194.jpg',1,2);
+2024-04-15 22:37:49.402 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory_image
+        (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) 
+    values
+        (?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.411 [restartedMain]  INFO p6spy - #1713188269411 | took 7ms | statement | connection 10| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values (?,?,?,?,?,?,?,?,?)
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values ('2024-04-15T22:37:49.381+0900',NULL,'jpg','0eb49e25-98ff-42cf-9913-3b61e8f4bea4','추억 1 : 방울이와 찍은사진','20mb','https://images.unsplash.com/photo-1551992536-ee9a450c44d2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8JUVBJUIwJTlDJTIwJUVDJTgyJUFDJUVDJUE3JTg0fGVufDB8fDB8fHww',1,3);
+2024-04-15 22:37:49.411 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory_image
+        (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) 
+    values
+        (?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.419 [restartedMain]  INFO p6spy - #1713188269419 | took 7ms | statement | connection 10| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values (?,?,?,?,?,?,?,?,?)
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values ('2024-04-15T22:37:49.381+0900',NULL,'jpg','d652ea4b-6786-4dd4-8b57-75e162577626','추억 2 : 방울이와 찍은사진1','30mb','https://images.unsplash.com/photo-1521247560470-d2cbfe2f7b47?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8JUVBJUIwJTlDJTIwJUVDJTgyJUFDJUVDJUE3JTg0fGVufDB8fDB8fHww',2,4);
+2024-04-15 22:37:49.419 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        memory_image
+        (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) 
+    values
+        (?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.427 [restartedMain]  INFO p6spy - #1713188269427 | took 7ms | statement | connection 10| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values (?,?,?,?,?,?,?,?,?)
+insert into memory_image (created_date,deleted_date,image_format,image_logical_name,image_physical_name,image_size,image_url,memory_id,memory_image_id) values ('2024-04-15T22:37:49.381+0900',NULL,'jpg','6ae59692-f35d-42e2-a090-88cbbc7f83b2','추억 2 : 방울이와 찍은사진1','30mb','https://images.unsplash.com/photo-1591214958544-ddcf55d9707b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFQSVCMCU5QyUyMCVFQyU4MiVBQyVFQyVBNyU4NHxlbnwwfHwwfHx8MA%3D%3D',2,5);
+2024-04-15 22:37:49.438 [restartedMain]  INFO p6spy - #1713188269438 | took 10ms | commit | connection 10| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.463 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        likes_seq for update
+2024-04-15 22:37:49.473 [restartedMain]  INFO p6spy - #1713188269473 | took 9ms | statement | connection 14| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from likes_seq for update
+select next_val as id_val from likes_seq for update;
+2024-04-15 22:37:49.473 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        likes_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.480 [restartedMain]  INFO p6spy - #1713188269480 | took 7ms | statement | connection 14| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update likes_seq set next_val= ? where next_val=?
+update likes_seq set next_val= 51 where next_val=1;
+2024-04-15 22:37:49.491 [restartedMain]  INFO p6spy - #1713188269491 | took 10ms | commit | connection 14| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.512 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        likes_seq for update
+2024-04-15 22:37:49.520 [restartedMain]  INFO p6spy - #1713188269520 | took 7ms | statement | connection 15| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from likes_seq for update
+select next_val as id_val from likes_seq for update;
+2024-04-15 22:37:49.520 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        likes_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.529 [restartedMain]  INFO p6spy - #1713188269529 | took 8ms | statement | connection 15| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update likes_seq set next_val= ? where next_val=?
+update likes_seq set next_val= 101 where next_val=51;
+2024-04-15 22:37:49.540 [restartedMain]  INFO p6spy - #1713188269540 | took 11ms | commit | connection 15| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.548 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        likes
+        (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:49.559 [restartedMain]  INFO p6spy - #1713188269559 | took 9ms | statement | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values (?,?,?,?,?)
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values ('2024-04-15T22:37:49.456+0900',1,1,2,1);
+2024-04-15 22:37:49.559 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        likes
+        (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:49.573 [restartedMain]  INFO p6spy - #1713188269573 | took 14ms | statement | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values (?,?,?,?,?)
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values ('2024-04-15T22:37:49.504+0900',1,2,2,2);
+2024-04-15 22:37:49.574 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        likes
+        (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:49.587 [restartedMain]  INFO p6spy - #1713188269587 | took 13ms | statement | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values (?,?,?,?,?)
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values ('2024-04-15T22:37:49.548+0900',1,3,2,3);
+2024-04-15 22:37:49.587 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        likes
+        (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:49.595 [restartedMain]  INFO p6spy - #1713188269595 | took 7ms | statement | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values (?,?,?,?,?)
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values ('2024-04-15T22:37:49.548+0900',2,5,3,4);
+2024-04-15 22:37:49.595 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        likes
+        (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:49.605 [restartedMain]  INFO p6spy - #1713188269605 | took 9ms | statement | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values (?,?,?,?,?)
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values ('2024-04-15T22:37:49.548+0900',2,6,3,5);
+2024-04-15 22:37:49.605 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        likes
+        (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:49.614 [restartedMain]  INFO p6spy - #1713188269614 | took 8ms | statement | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values (?,?,?,?,?)
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values ('2024-04-15T22:37:49.548+0900',2,7,4,6);
+2024-04-15 22:37:49.615 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        likes
+        (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) 
+    values
+        (?,?,?,?,?)
+2024-04-15 22:37:49.622 [restartedMain]  INFO p6spy - #1713188269622 | took 7ms | statement | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values (?,?,?,?,?)
+insert into likes (created_date,liked_own_pet_id,memory_id,pet_id,likes_id) values ('2024-04-15T22:37:49.548+0900',2,8,4,7);
+2024-04-15 22:37:49.632 [restartedMain]  INFO p6spy - #1713188269632 | took 10ms | commit | connection 13| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.651 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.660 [restartedMain]  INFO p6spy - #1713188269660 | took 8ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 너무 사랑스러워요','MEMORY_COMMENT',2,'2024-04-15T22:37:49.651+0900',NULL,1,'9b8f1fd2-7758-4581-b5f6-0fb7d8c927c1','2024-04-15T22:37:49.651+0900',1,NULL,NULL);
+2024-04-15 22:37:49.661 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.669 [restartedMain]  INFO p6spy - #1713188269669 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 좋은곳으로 갔을거에요','LAST_WORD',2,'2024-04-15T22:37:49.661+0900',NULL,1,'34da8bc9-e815-4fad-8ccf-5429ee581dc8','2024-04-15T22:37:49.661+0900',NULL,NULL,1);
+2024-04-15 22:37:49.670 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.678 [restartedMain]  INFO p6spy - #1713188269678 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 참 귀여웠는데 안타까워요','LAST_WORD',3,'2024-04-15T22:37:49.670+0900',NULL,1,'0abce4ed-d770-4b73-a911-ee7f6a1c3bc5','2024-04-15T22:37:49.670+0900',NULL,NULL,1);
+2024-04-15 22:37:49.679 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.686 [restartedMain]  INFO p6spy - #1713188269686 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 참 좋은 주인을 만났어요','LAST_WORD',3,'2024-04-15T22:37:49.678+0900',NULL,1,'71e5589f-c956-49cf-ba9d-f3ea410fa12e','2024-04-15T22:37:49.678+0900',NULL,NULL,1);
+2024-04-15 22:37:49.687 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.696 [restartedMain]  INFO p6spy - #1713188269696 | took 8ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이의 명복을빕니다.','LAST_WORD',4,'2024-04-15T22:37:49.687+0900',NULL,1,'d21542b8-da43-4db6-8650-7a46bca90444','2024-04-15T22:37:49.687+0900',NULL,NULL,1);
+2024-04-15 22:37:49.697 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.705 [restartedMain]  INFO p6spy - #1713188269705 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 내 기쁨이었어요','LAST_WORD',2,'2024-04-15T22:37:49.697+0900',NULL,1,'4a79a603-5f62-42fc-b3ed-22c84d44ede5','2024-04-15T22:37:49.697+0900',NULL,NULL,1);
+2024-04-15 22:37:49.705 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.713 [restartedMain]  INFO p6spy - #1713188269713 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이가 보고싶어요','LAST_WORD',4,'2024-04-15T22:37:49.705+0900',NULL,1,'732eaeb2-8ac8-4cd5-83ff-6bbca592b39f','2024-04-15T22:37:49.705+0900',NULL,NULL,1);
+2024-04-15 22:37:49.714 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.722 [restartedMain]  INFO p6spy - #1713188269722 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 천재였어요','LAST_WORD',4,'2024-04-15T22:37:49.714+0900',NULL,1,'e106e222-4f8d-4743-a92d-8925e02342ca','2024-04-15T22:37:49.714+0900',NULL,NULL,1);
+2024-04-15 22:37:49.723 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.730 [restartedMain]  INFO p6spy - #1713188269730 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이 ㅠㅠ','LAST_WORD',4,'2024-04-15T22:37:49.722+0900',NULL,1,'375bb9a4-791d-4e21-80f6-82f76c234675','2024-04-15T22:37:49.722+0900',NULL,NULL,1);
+2024-04-15 22:37:49.731 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.739 [restartedMain]  INFO p6spy - #1713188269739 | took 7ms | statement | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 낭만파~','LAST_WORD',4,'2024-04-15T22:37:49.731+0900',NULL,1,'a5f0ceb2-1738-465d-9065-d9e4aeb4e2ac','2024-04-15T22:37:49.731+0900',NULL,NULL,1);
+2024-04-15 22:37:49.752 [restartedMain]  INFO p6spy - #1713188269751 | took 11ms | commit | connection 16| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.768 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.777 [restartedMain]  INFO p6spy - #1713188269777 | took 8ms | statement | connection 17| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 너무 사랑스러워요','MEMORY_COMMENT',4,'2024-04-15T22:37:49.768+0900',NULL,2,'fd42bffc-9c7c-49fe-a557-32e4b4fa8b0c','2024-04-15T22:37:49.768+0900',1,1,NULL);
+2024-04-15 22:37:49.777 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.786 [restartedMain]  INFO p6spy - #1713188269786 | took 7ms | statement | connection 17| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 너무 사랑스러워요','LAST_WORD',2,'2024-04-15T22:37:49.777+0900',NULL,2,'15cdc7d0-12a5-4fb5-b2f2-b14a850a710f','2024-04-15T22:37:49.777+0900',NULL,2,1);
+2024-04-15 22:37:49.786 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.794 [restartedMain]  INFO p6spy - #1713188269794 | took 7ms | statement | connection 17| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 너무 사랑스러워요','LAST_WORD',3,'2024-04-15T22:37:49.786+0900',NULL,2,'127902ef-c10e-4a06-bf98-49ce58178df4','2024-04-15T22:37:49.786+0900',NULL,2,1);
+2024-04-15 22:37:49.794 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.802 [restartedMain]  INFO p6spy - #1713188269802 | took 7ms | statement | connection 17| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('방울이는 내 첫사랑~','MEMORY_COMMENT',2,'2024-04-15T22:37:49.794+0900',NULL,2,'db4ecaa0-1d9a-46f5-a2e2-defd494fbbe6','2024-04-15T22:37:49.794+0900',1,1,NULL);
+2024-04-15 22:37:49.803 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        comment
+        (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) 
+    values
+        (?,?,?,?,?,?,?,?,?,?,?)
+2024-04-15 22:37:49.810 [restartedMain]  INFO p6spy - #1713188269810 | took 7ms | statement | connection 17| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values (?,?,?,?,?,?,?,?,?,?,?)
+insert into comment (comment,comment_group,commenter_id,created_date,deleted_date,depth,last_modified_by,last_modified_date,memory_id,parent_comment_id,pet_id) values ('최고의 방울이','MEMORY_COMMENT',3,'2024-04-15T22:37:49.803+0900',NULL,2,'a56cfd8f-d2a6-4fee-b10a-41f7b19d254d','2024-04-15T22:37:49.803+0900',1,1,NULL);
+2024-04-15 22:37:49.821 [restartedMain]  INFO p6spy - #1713188269821 | took 10ms | commit | connection 17| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.845 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        follow_seq for update
+2024-04-15 22:37:49.853 [restartedMain]  INFO p6spy - #1713188269853 | took 7ms | statement | connection 19| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from follow_seq for update
+select next_val as id_val from follow_seq for update;
+2024-04-15 22:37:49.853 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        follow_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.860 [restartedMain]  INFO p6spy - #1713188269860 | took 7ms | statement | connection 19| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update follow_seq set next_val= ? where next_val=?
+update follow_seq set next_val= 51 where next_val=1;
+2024-04-15 22:37:49.871 [restartedMain]  INFO p6spy - #1713188269871 | took 10ms | commit | connection 19| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.886 [restartedMain] DEBUG org.hibernate.SQL - 
+    select
+        next_val as id_val 
+    from
+        follow_seq for update
+2024-04-15 22:37:49.894 [restartedMain]  INFO p6spy - #1713188269894 | took 7ms | statement | connection 20| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+select next_val as id_val from follow_seq for update
+select next_val as id_val from follow_seq for update;
+2024-04-15 22:37:49.894 [restartedMain] DEBUG org.hibernate.SQL - 
+    update
+        follow_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+2024-04-15 22:37:49.901 [restartedMain]  INFO p6spy - #1713188269901 | took 7ms | statement | connection 20| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+update follow_seq set next_val= ? where next_val=?
+update follow_seq set next_val= 101 where next_val=51;
+2024-04-15 22:37:49.912 [restartedMain]  INFO p6spy - #1713188269912 | took 10ms | commit | connection 20| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:49.921 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.929 [restartedMain]  INFO p6spy - #1713188269929 | took 7ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.838+0900',1,'6924faee-9b05-4d49-b58d-9497ac0b009d','2024-04-15T22:37:49.838+0900',2,1);
+2024-04-15 22:37:49.929 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.936 [restartedMain]  INFO p6spy - #1713188269936 | took 7ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.878+0900',1,'65f3f317-ac33-4cb4-adcc-2ff8ba584ec1','2024-04-15T22:37:49.878+0900',3,2);
+2024-04-15 22:37:49.937 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.944 [restartedMain]  INFO p6spy - #1713188269944 | took 7ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.919+0900',1,'d31ef340-042e-46c1-a1ca-c3200ee11cae','2024-04-15T22:37:49.919+0900',4,3);
+2024-04-15 22:37:49.945 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.952 [restartedMain]  INFO p6spy - #1713188269952 | took 7ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.920+0900',3,'5402bab8-8bbb-48c9-80ac-b4eefb20e2ef','2024-04-15T22:37:49.920+0900',2,4);
+2024-04-15 22:37:49.953 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.960 [restartedMain]  INFO p6spy - #1713188269960 | took 7ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.920+0900',4,'2c8aa242-f61d-4149-978b-b5d11fb700c9','2024-04-15T22:37:49.920+0900',2,5);
+2024-04-15 22:37:49.961 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.970 [restartedMain]  INFO p6spy - #1713188269970 | took 9ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.920+0900',2,'46e41ac6-e065-4739-9423-1f228a327188','2024-04-15T22:37:49.920+0900',3,6);
+2024-04-15 22:37:49.970 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.979 [restartedMain]  INFO p6spy - #1713188269979 | took 8ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.920+0900',2,'6e15629e-b74e-4d65-a237-e83098dea697','2024-04-15T22:37:49.920+0900',4,7);
+2024-04-15 22:37:49.979 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        follow
+        (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) 
+    values
+        (?,?,?,?,?,?)
+2024-04-15 22:37:49.988 [restartedMain]  INFO p6spy - #1713188269988 | took 9ms | statement | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values (?,?,?,?,?,?)
+insert into follow (created_date,following_pet_id,last_modified_by,last_modified_date,pet_id,id) values ('2024-04-15T22:37:49.920+0900',3,'18375c94-8ce7-4a9c-ad92-9136fb8b2201','2024-04-15T22:37:49.920+0900',4,8);
+2024-04-15 22:37:50.000 [restartedMain]  INFO p6spy - #1713188270000 | took 11ms | commit | connection 18| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;
+2024-04-15 22:37:50.016 [restartedMain] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        recent_search
+        (created_date,pet_id,search_texts) 
+    values
+        (?,?,?)
+2024-04-15 22:37:50.026 [restartedMain]  INFO p6spy - #1713188270026 | took 7ms | statement | connection 21| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+insert into recent_search (created_date,pet_id,search_texts) values (?,?,?)
+insert into recent_search (created_date,pet_id,search_texts) values ('2024-04-15T22:37:50.008+0900',1,'ACED0005737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A65787000000002770400000002740006ECBD94ECBD94740006ED94BCEAB8B078');
+2024-04-15 22:37:50.037 [restartedMain]  INFO p6spy - #1713188270037 | took 9ms | commit | connection 21| url jdbc:mysql://memopetdb.ctewqg2ww99s.ap-northeast-2.rds.amazonaws.com:3306/memopetdb?serverTimezone=UTC&characterEncoding=UTF-8
+
+;

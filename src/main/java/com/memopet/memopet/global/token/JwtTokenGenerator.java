@@ -34,7 +34,7 @@ public class JwtTokenGenerator {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("atquil")
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plus(3, ChronoUnit.MINUTES))
+                .expiresAt(Instant.now().plus(10, ChronoUnit.MINUTES))
                 .subject(authentication.getName())
                 .claim("scope", permissions)
                 .build();

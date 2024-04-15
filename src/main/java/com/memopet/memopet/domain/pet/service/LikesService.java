@@ -41,7 +41,7 @@ public class LikesService {
         Memory memory = memoryOptional.get();
 
         Optional<Likes> like = likesRepository.findByPetIdAndLikedOwnPetIdAndMemoryID(myPet.get(), pet.get().getId(), memory);
-        Likes likes = Likes.builder().pet(myPet.get()).likedOwnPetId(pet.get().getId()).memoryId(memory).createdDate(LocalDateTime.now()).build();
+        Likes likes = Likes.builder().pet(myPet.get()).likedOwnPetId(pet.get().getId()).memory(memory).createdDate(LocalDateTime.now()).build();
 
         if(!like.isPresent()) { // 좋아요를 하지 않은 상태이면
             // 좋아요를 한다

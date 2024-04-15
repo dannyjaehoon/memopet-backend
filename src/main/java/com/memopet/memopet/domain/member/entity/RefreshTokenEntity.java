@@ -16,14 +16,13 @@ public class RefreshTokenEntity {
     @GeneratedValue
     private Long id;
     // Increase the length to a value that can accommodate your actual token lengths
-    @Column(name = "REFRESH_TOKEN", nullable = false, length = 10000)
+    @Column(nullable = false, length = 10000)
     private String refreshToken;
 
-    @Column(name = "REVOKED")
     private boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "member_id",referencedColumnName = "id")
+    @JoinColumn(name = "memberId",referencedColumnName = "id")
     private Member member;
 
 }

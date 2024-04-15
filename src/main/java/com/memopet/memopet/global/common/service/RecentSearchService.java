@@ -139,7 +139,7 @@ public class RecentSearchService {
             Optional<MemoryImage> memoryImage = memoryImageRepository.findOneById(m.getId());
             searchMemoryCommentResponseDtos.add(SearchMemoryCommentResponseDto.builder()
                             .memoryId(m.getId())
-                            .memoryImageUrl(memoryImage.isPresent() ? memoryImage.get().getUrl():null)
+                            .memoryImageUrl(memoryImage.isPresent() ? memoryImage.get().getImageUrl():null)
                             .memoryImageUrlId(memoryImage.isPresent() ? memoryImage.get().getId():null)
                             .memoryDescription(m.getMemoryDescription())
                             .memoryTitle(m.getTitle())

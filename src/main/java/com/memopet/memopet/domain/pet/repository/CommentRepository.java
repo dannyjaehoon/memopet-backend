@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
+
     // 작성자 pet_id 로 조회 하기 - 즉 작성자의 댓글 조회
     @Query(value = "select * from comment where commenter_id = ?1 and deleted_date IS NULL and comment_group = 'MEMORY_COMMENT' and depth=1 order by created_date desc", nativeQuery = true)
     Page<Comment> findMemoryCommentsByCommenterId(Long petId, Pageable pageable);
@@ -35,7 +36,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("select c from Comment c where c.parentCommentId = :parentCommentId and c.deletedDate IS NULL")
     Page<Comment> findByParentCommentId(@Param("parentCommentId") Long parentCommentId, PageRequest pageRequest);
-
 
     List<Comment> findByMemory(Memory memory);
 }

@@ -36,12 +36,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
-        System.out.println("OAuth2User loadUser method start");
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(oAuth2UserRequest);
 
         try {
-            System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
         } catch (AuthenticationException ex) {
             throw ex;
@@ -58,9 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         Map<String,Object> attrs = oAuth2User.getAttributes();
 
-        System.out.println(" saveOrUpdate start");
         Member member = saveOrUpdate(registrationId, attrs);
-        System.out.println(" saveOrUpdate done");
 
 
 //        Authentication authentication = authService.createAuthenticationObject(member);
@@ -74,8 +70,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //
 //
 //        authService.saveUserRefreshToken(member,refreshToken);
-//        System.out.println(response);
-
 
         return new OAuth2UserPrincipal(member);
     }

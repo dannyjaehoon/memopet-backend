@@ -316,7 +316,7 @@ public class InitialUserInfo implements CommandLineRunner {
 
         MemoryImage memoryImage = MemoryImage.builder()
                 .imageFormat("jpg")
-                .url("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xNV9waG90b19vZl9hX2RvZ19ydW5uaW5nX3dpdGhfb3duZXJfYXRfcGFya19lcF9mM2I3MDQyZC0zNWJlLTRlMTQtOGZhNy1kY2Q2OWQ1YzQzZjlfMi5qcGc.jpg")
+                .imageUrl("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8xNV9waG90b19vZl9hX2RvZ19ydW5uaW5nX3dpdGhfb3duZXJfYXRfcGFya19lcF9mM2I3MDQyZC0zNWJlLTRlMTQtOGZhNy1kY2Q2OWQ1YzQzZjlfMi5qcGc.jpg")
                 .imagePhysicalName("추억 1 : 방울이와 찍은사진")
                 .imageLogicalName(UUID.randomUUID().toString())
                 .imageSize("20mb")
@@ -326,7 +326,7 @@ public class InitialUserInfo implements CommandLineRunner {
 
         MemoryImage memoryImage1 = MemoryImage.builder()
                 .imageFormat("jpg")
-                .url("https://thumbs.dreamstime.com/b/beagle-dog-isolated-white-background-purebred-103538194.jpg")
+                .imageUrl("https://thumbs.dreamstime.com/b/beagle-dog-isolated-white-background-purebred-103538194.jpg")
                 .imageLogicalName(UUID.randomUUID().toString())
                 .imagePhysicalName("추억 1 : 방울이와 찍은사진1")
                 .imageSize("30mb")
@@ -336,7 +336,7 @@ public class InitialUserInfo implements CommandLineRunner {
 
         MemoryImage memoryImage2 = MemoryImage.builder()
                 .imageFormat("jpg")
-                .url("https://images.unsplash.com/photo-1551992536-ee9a450c44d2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8JUVBJUIwJTlDJTIwJUVDJTgyJUFDJUVDJUE3JTg0fGVufDB8fDB8fHww")
+                .imageUrl("https://images.unsplash.com/photo-1551992536-ee9a450c44d2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8JUVBJUIwJTlDJTIwJUVDJTgyJUFDJUVDJUE3JTg0fGVufDB8fDB8fHww")
                 .imagePhysicalName("추억 1 : 방울이와 찍은사진")
                 .imageLogicalName(UUID.randomUUID().toString())
                 .imageSize("20mb")
@@ -346,7 +346,7 @@ public class InitialUserInfo implements CommandLineRunner {
 
         MemoryImage memoryImage3 = MemoryImage.builder()
                 .imageFormat("jpg")
-                .url("https://images.unsplash.com/photo-1521247560470-d2cbfe2f7b47?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8JUVBJUIwJTlDJTIwJUVDJTgyJUFDJUVDJUE3JTg0fGVufDB8fDB8fHww")
+                .imageUrl("https://images.unsplash.com/photo-1521247560470-d2cbfe2f7b47?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8JUVBJUIwJTlDJTIwJUVDJTgyJUFDJUVDJUE3JTg0fGVufDB8fDB8fHww")
                 .imageLogicalName(UUID.randomUUID().toString())
                 .imagePhysicalName("추억 2 : 방울이와 찍은사진1")
                 .imageSize("30mb")
@@ -355,7 +355,7 @@ public class InitialUserInfo implements CommandLineRunner {
                 .build();
         MemoryImage memoryImage4 = MemoryImage.builder()
                 .imageFormat("jpg")
-                .url("https://images.unsplash.com/photo-1591214958544-ddcf55d9707b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFQSVCMCU5QyUyMCVFQyU4MiVBQyVFQyVBNyU4NHxlbnwwfHwwfHx8MA%3D%3D")
+                .imageUrl("https://images.unsplash.com/photo-1591214958544-ddcf55d9707b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFQSVCMCU5QyUyMCVFQyU4MiVBQyVFQyVBNyU4NHxlbnwwfHwwfHx8MA%3D%3D")
                 .imageLogicalName(UUID.randomUUID().toString())
                 .imagePhysicalName("추억 2 : 방울이와 찍은사진1")
                 .imageSize("30mb")
@@ -365,14 +365,14 @@ public class InitialUserInfo implements CommandLineRunner {
 
         memoryImageRepository.saveAll(List.of(memoryImage,memoryImage1,memoryImage2,memoryImage3,memoryImage4));
 
-        Likes likes = Likes.builder().memoryId(memory).likedOwnPetId(pet1.getId()).pet(pet2).build();
-        Likes likes1 = Likes.builder().memoryId(memory1).likedOwnPetId(pet1.getId()).pet(pet2).build();
-        Likes likes2 = Likes.builder().memoryId(memory2).likedOwnPetId(pet1.getId()).pet(pet2).build();
+        Likes likes = Likes.builder().memory(memory).likedOwnPetId(pet1.getId()).pet(pet2).build();
+        Likes likes1 = Likes.builder().memory(memory1).likedOwnPetId(pet1.getId()).pet(pet2).build();
+        Likes likes2 = Likes.builder().memory(memory2).likedOwnPetId(pet1.getId()).pet(pet2).build();
 
-        Likes likes3 = Likes.builder().memoryId(memory4).likedOwnPetId(pet2.getId()).pet(pet3).build();
-        Likes likes4 = Likes.builder().memoryId(memory5).likedOwnPetId(pet2.getId()).pet(pet3).build();
-        Likes likes5 = Likes.builder().memoryId(memory6).likedOwnPetId(pet2.getId()).pet(pet4).build();
-        Likes likes6 = Likes.builder().memoryId(memory7).likedOwnPetId(pet2.getId()).pet(pet4).build();
+        Likes likes3 = Likes.builder().memory(memory4).likedOwnPetId(pet2.getId()).pet(pet3).build();
+        Likes likes4 = Likes.builder().memory(memory5).likedOwnPetId(pet2.getId()).pet(pet3).build();
+        Likes likes5 = Likes.builder().memory(memory6).likedOwnPetId(pet2.getId()).pet(pet4).build();
+        Likes likes6 = Likes.builder().memory(memory7).likedOwnPetId(pet2.getId()).pet(pet4).build();
 
 
         likesRepository.saveAll(List.of(likes,likes1,likes2,likes3,likes4,likes5,likes6));
@@ -399,14 +399,14 @@ public class InitialUserInfo implements CommandLineRunner {
         commentRepository.saveAll(List.of(comment10,comment11,comment12,comment13,comment14));
 
 
-        Follow follow = Follow.builder().petId(pet2.getId()).followingPet(pet1).build();
-        Follow follow1 = Follow.builder().petId(pet3.getId()).followingPet(pet1).build();
-        Follow follow2 = Follow.builder().petId(pet4.getId()).followingPet(pet1).build();
-        Follow follow3 = Follow.builder().petId(pet2.getId()).followingPet(pet3).build();
-        Follow follow4 = Follow.builder().petId(pet2.getId()).followingPet(pet4).build();
-        Follow follow5 = Follow.builder().petId(pet3.getId()).followingPet(pet2).build();
-        Follow follow6 = Follow.builder().petId(pet4.getId()).followingPet(pet2).build();
-        Follow follow7 = Follow.builder().petId(pet4.getId()).followingPet(pet3).build();
+        Follow follow = Follow.builder().petId(pet2.getId()).following(pet1).build();
+        Follow follow1 = Follow.builder().petId(pet3.getId()).following(pet1).build();
+        Follow follow2 = Follow.builder().petId(pet4.getId()).following(pet1).build();
+        Follow follow3 = Follow.builder().petId(pet2.getId()).following(pet3).build();
+        Follow follow4 = Follow.builder().petId(pet2.getId()).following(pet4).build();
+        Follow follow5 = Follow.builder().petId(pet3.getId()).following(pet2).build();
+        Follow follow6 = Follow.builder().petId(pet4.getId()).following(pet2).build();
+        Follow follow7 = Follow.builder().petId(pet4.getId()).following(pet3).build();
         followRepository.saveAll(List.of(follow,follow1,follow2,follow3,follow4,follow5,follow6,follow7));
 
         List<String> searchTexts = new ArrayList<>();

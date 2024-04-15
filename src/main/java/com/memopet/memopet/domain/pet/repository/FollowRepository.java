@@ -13,14 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> , CustomFollowRepository {
-    @Query("SELECT CASE WHEN EXISTS (SELECT f FROM Follow f WHERE f.petId = :petId AND f.followingPet.id = :followingPetId) THEN true ELSE false END")
-    boolean existsByPetIdAndFollowingPetId(@Param("petId") Long petId, @Param("followingPetId") Long followingPetId);
+    @Query("SELECT CASE WHEN EXISTS (SELECT f FROM Follow f WHERE f.petId = :petId AND f.following = :followingPetId) THEN true ELSE false END")
+    boolean existsByPetIdAndFollowingPetId(@Param("petId") Long petId, @Param("followingPetId") Pet followingPetId);
 
-//        @Query("DELETE FROM Follow f where f.petId = :petId AND f.followingPet.id = :followingPetId")
-    @Transactional
-    void deleteByPetIdAndFollowingPetId(@Param("petId") Long petId, @Param("followingPetId") Long followingPetId);
+    @Query("DELETE FROM Follow f where f.petId = :petId AND f.following = :followingPetId")
+    void deleteByPetIdAndFollowingPetId(@Param("petId") Long petId, @Param("followingPetId") Pet followingPet);
 
-    @Query("select f from Follow f where f.followingPet = :petId")
+    @Query("select f from Follow f where f.following = :petId")
     List<Follow> findByPetId(@Param("petId") Pet pet);
 
 
@@ -40,7 +39,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> , CustomFo
             "\t\t\t\t\t from pet as p\n" +
             "\t\t\t\t\t left join follow as f\n" +
             "\t\t\t\t\t on p.pet_id = f.pet_id\n" +
-            "\t\t\t\t\t where f.following_pet = ?1\n" +
+            "\t\t\t\t\t where f.following_pet_id = ?1\n" +
             "             and p.deleted_date IS NULL\n" +
             "\t\t\t\t\t)\n" +
             "\t    group by p.pet_id", nativeQuery = true)
@@ -52,12 +51,12 @@ public interface FollowRepository extends JpaRepository<Follow, Long> , CustomFo
             "          , max(p.pet_name) as petName\n" +
             "          , max(p.pet_desc) as petDesc\n" +
             "          , max(p.pet_profile_url) as petProfileUrl\n" +
-            "          , COALESCE((select 1 from follow as f where f.following_pet = 2 and f.pet_id= p.pet_id),0) as followYn\n" +
+            "          , COALESCE((select 1 from follow as f where f.following_pet_id = 2 and f.pet_id= p.pet_id),0) as followYn\n" +
             "\t   from pet as p\n" +
             "          left join follow as f\n" +
             "          on p.pet_id = f.pet_id\n" +
             "\t  where p.pet_id in ( \t\n" +
-            "\t\t\t\t\tselect f.following_pet\n" +
+            "\t\t\t\t\tselect f.following_pet_id\n" +
             "\t\t\t\t\t from pet as p\n" +
             "\t\t\t\t\t left join follow as f\n" +
             "\t\t\t\t\t on p.pet_id = f.pet_id\n" +
@@ -66,5 +65,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> , CustomFo
             "\t\t\t\t\t)\n" +
             "\t    group by p.pet_id", nativeQuery = true)
     Slice<PetFollowingResponseDto> findFollowerPetsByPetId( Long petId,Pageable pageable);
+
 
 }

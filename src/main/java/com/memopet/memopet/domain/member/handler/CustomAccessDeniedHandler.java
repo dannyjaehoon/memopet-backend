@@ -23,8 +23,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     private final ObjectMapper objectMapper;
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException, ServletException {
-
-        System.out.println("test1");
         String errorMessage = "권한이 없습니다.";
 
 

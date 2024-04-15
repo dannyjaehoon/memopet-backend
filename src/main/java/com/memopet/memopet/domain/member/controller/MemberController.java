@@ -30,7 +30,6 @@ public class MemberController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/member-profile")
     public MemberProfileResponseDto retrieveMemberProfile(Authentication authentication) {
-        System.out.println(authentication.getName());
 
         MemberProfileResponseDto memberProfileResponseDto = memberService.getMemberProfile(authentication.getName());
 
@@ -51,7 +50,6 @@ public class MemberController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/welcome-message")
     public ResponseEntity<String> UserMemberMessageTest(Authentication authentication) {
-        System.out.println("UserMemberMessageTest start");
         return ResponseEntity.ok("Welcome to the JWT Tutorial:"+authentication.getName()+"with scope:"+authentication.getAuthorities());
     }
 

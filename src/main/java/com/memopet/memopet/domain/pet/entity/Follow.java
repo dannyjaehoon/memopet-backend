@@ -25,11 +25,11 @@ public class Follow extends FirstCreatedEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "pet_id")
+    @Column(name = "petId")
     private Long petId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "following_pet",nullable = false)
-    private Pet followingPet;
+    @JoinColumn(nullable = false)
+    private Pet following;
 
 }

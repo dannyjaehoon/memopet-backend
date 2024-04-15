@@ -23,7 +23,7 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
     @Query(value="select pet_id AS petId, COUNT(pet_id) AS likes from likes where pet_id in ?1 group by pet_id", nativeQuery = true)
     List<LikesPerPetDto> findLikesByPetIds(Set<Long> pet_ids);
 
-    @Query("select l from Likes l where l.pet = :petId and l.likedOwnPetId = :myPetId and l.memoryId = :memoryId")
+    @Query("select l from Likes l where l.pet = :petId and l.likedOwnPetId = :myPetId and l.memory = :memoryId")
     Optional<Likes> findByPetIdAndLikedOwnPetIdAndMemoryID(@Param("petId") Pet pet, @Param("myPetId") long myPetId,@Param("memoryId") Memory memoryId );
 
     @Query(value="select * from likes where pet_id = ?1", nativeQuery = true)

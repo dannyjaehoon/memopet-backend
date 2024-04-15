@@ -16,20 +16,20 @@ import java.time.LocalDateTime;
 public class Likes {
 
     @Id @GeneratedValue
-    @Column(name = "likes_id")
+    @Column(name = "likesId")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id", nullable = false)
+    @JoinColumn(name = "petId", nullable = false)
     private Pet pet;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memory_id", nullable = false)
-    private Memory memoryId;
+    @JoinColumn(name = "memoryId", nullable = false)
+    private Memory memory;
 
-    @Column(name = "liked_own_pet_id", nullable = false)
+    @Column(nullable = false)
     private Long likedOwnPetId;
 
-    @CreatedDate @Column(name = "created_date",updatable = false)
+    @CreatedDate @Column(updatable = false)
     private LocalDateTime createdDate;
 }

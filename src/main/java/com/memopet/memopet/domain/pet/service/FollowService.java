@@ -8,12 +8,14 @@ import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.entity.PetStatus;
 import com.memopet.memopet.domain.pet.repository.FollowRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -75,12 +77,16 @@ public class FollowService {
     /**
      * 팔로우 취소
      */
+    @Transactional(readOnly = false)
     public FollowResponseDto unfollow(Long petId, Long followingPetId) {
+        Optional<Pet> pet = petRepository.findById(followingPetId);
 
-        if (!followRepository.existsByPetIdAndFollowingPetId(petId, followingPetId)) {
+        if(pet.isEmpty()) throw new BadRequestRuntimeException("팔로잉 펫");
+        Pet followingPet = pet.get();
+        if (!followRepository.existsByPetIdAndFollowingPetId(petId, followingPet)) {
             return new FollowResponseDto('0', "Following relation doesn't exist.");
         }
-        followRepository.deleteByPetIdAndFollowingPetId(petId, followingPetId);
+        followRepository.deleteByPetIdAndFollowingPetId(petId, followingPet);
         return new FollowResponseDto('1', "Unfollowed the pet successfully");
     }
 
@@ -101,13 +107,13 @@ public class FollowService {
             return new FollowResponseDto('0', "Pet not found");
         }
 
-        if (followRepository.existsByPetIdAndFollowingPetId(followRequestDTO.getPetId(), followRequestDTO.getFollowingPetId())) {
+        if (followRepository.existsByPetIdAndFollowingPetId(followRequestDTO.getPetId(), followingPet)) {
             return new FollowResponseDto('0',"Following relationship already exists");
         }
 
         Follow follow = Follow.builder()
                 .petId(followRequestDTO.getPetId())
-                .followingPet(followingPet)
+                .following(followingPet)
                 .build();
         followRepository.save(follow);
 

@@ -16,19 +16,18 @@ import java.time.LocalDateTime;
 public class Blocked {
 
     @Id @GeneratedValue
-    @Column(name = "Blocked_id")
+    @Column(name = "blockedId")
     private Long id;
 
 
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "blocked_pet", referencedColumnName = "pet_id",nullable = false)
+    @JoinColumn(name = "blockedPet", referencedColumnName = "pet_id",nullable = false)
     private Pet blockedPet; //blockerPet이랑 blockedPet 바꿈.
 
-    @Column(name = "blocker_pet_id", nullable = false)
+    @Column(nullable = false)
     private Long blockerPetId;
 
-
-    @CreatedDate @Column(name = "created_date", nullable = false)
+    @CreatedDate @Column( nullable = false)
     private LocalDateTime createdDate;
 
 }

@@ -17,33 +17,32 @@ import java.time.LocalDateTime;
 public class MemoryImage {
 
     @Id @GeneratedValue
-    @Column(name = "memory_image_id")
+    @Column(name = "memoryImageId")
     private Long id;
 
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "memory_id",nullable = false)
+    @JoinColumn(name = "memoryId",nullable = false)
     private Memory memory;
 
-    @Column(name = "image_url",nullable = false)
-    private String url;
+    @Column(nullable = false)
+    private String imageUrl;
 
-    @Column(name = "image_format",nullable = false)
+    @Column(nullable = false)
     private String imageFormat;
 
-    @Column(name = "image_size",nullable = false)
+    @Column(nullable = false)
     private String imageSize;
 
-    @Column(name = "image_physical_name",nullable = false)
+    @Column(nullable = false)
     private String imagePhysicalName;
 
-    @Column(name = "image_logical_name",nullable = false)
+    @Column(nullable = false)
     private String imageLogicalName;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
-    @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
 
     public void updateDeletedDate(LocalDateTime deletedDate) {

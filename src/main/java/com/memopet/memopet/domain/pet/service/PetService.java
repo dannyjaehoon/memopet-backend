@@ -50,7 +50,6 @@ public class PetService {
         String storedPetImgName = null;
 
         if (!petImg.isEmpty()) {
-            System.out.println("savePet s3Uploader upload start");
             storedPetImgName = s3Uploader.uploadFileToS3(petImg, "static/pet-image");
         }
 
@@ -158,8 +157,6 @@ public class PetService {
 
         // 조회하는 펫 소유자가 사용자를 차단한경우 노출이 안되게 조치
         for (Long blockPetId :blockedPetList) {
-            System.out.println("blockPetId : " + blockPetId);
-            System.out.println("pet.getId() : " + pet.getId());
             if(blockPetId == pet.getId()) return PetDetailInfoResponseDto.builder().build();
         }
 
@@ -336,7 +333,7 @@ public class PetService {
         for (MemoryImage img : images) {
             img.updateDeletedDate(LocalDateTime.now());
             try {
-                s3Uploader.deleteS3(img.getUrl());
+                s3Uploader.deleteS3(img.getImageUrl());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

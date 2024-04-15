@@ -103,7 +103,6 @@ public class S3Uploader {
         // 로컬에서 저장할 파일 경로 : user.dir => 현재 디렉토리 기준
         String dirPath = System.getProperty("user.dir") + "/" + file.getOriginalFilename();
         File convertFile = new File(dirPath);
-        System.out.println("covert File");
         if (convertFile.createNewFile()) {
             // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {

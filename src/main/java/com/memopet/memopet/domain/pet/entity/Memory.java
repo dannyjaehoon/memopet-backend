@@ -15,26 +15,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Memory extends FirstCreatedEntity {
     @Id @GeneratedValue
-    @Column(name = "memory_id")
+    @Column(name = "memoryId")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id", nullable = false)
+    @JoinColumn(name = "petId", nullable = false)
     private Pet pet;
 
-    @Column(name = "memory_title",nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "memory_date",nullable = false)
+    @Column(nullable = false)
     private LocalDate memoryDate;
 
-    @Column(name = "memory_desc")
     private String memoryDescription;
 
-    @Column(name = "like_count")
     private int likeCount;
 
-    @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
 
     @Enumerated(EnumType.STRING)

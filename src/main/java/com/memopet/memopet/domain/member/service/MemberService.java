@@ -59,16 +59,14 @@ public class MemberService  {
             petIds.add(pet.getId());
         }
 
-        System.out.println("step 1");
         // memory
         List<Memory> memories = memoryRepository.findByPetIds(petIds);
         for (Memory memory : memories) {
             memory.updateDeleteDate(LocalDateTime.now());
         }
-        System.out.println("step 2");
+
         // comment deactivate
         List<Comment> commentsByPetIds = commentRepository.findCommentsByPetIds(pets);
-        System.out.println("step 3");
         for (Comment comment : commentsByPetIds) {
             comment.updateDeleteDate(LocalDateTime.now());
         }

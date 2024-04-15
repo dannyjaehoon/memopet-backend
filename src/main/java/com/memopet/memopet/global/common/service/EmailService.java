@@ -60,9 +60,7 @@ public class EmailService {
         emailSender.send(emailForm);
 
         long verificationEntityId = setDataExpire(authNum);
-
         log.info("authNum : " + authNum);
-
         return EmailAuthResponseDto.builder().authCode(authNum).verificationStatusId(verificationEntityId).build();
     }
 

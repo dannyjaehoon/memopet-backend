@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RecentSearchRepository extends JpaRepository<RecentSearch, Long> {
 
      RecentSearch findByPet(Pet petId);
-
      boolean existsByPetId(Pet petId);
 }

@@ -24,39 +24,29 @@ public class Member extends FirstCreatedEntity implements Serializable {
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
-    @Column(name = "username", nullable = false)
+    @Column(nullable = false)
     private String username;
-    @Column(name = "email", nullable = false)
+    @Column(nullable = false)
     private String email;
-    @Column(name = "encrypt_password")
     private String password;
-    @Column(name = "phone_num")
     private String phoneNum;
-
-    @Column(name = "deactivation_reason_comment")
     private String deactivationReasonComment;
-
-    @Column(name = "deactivation_reason")
     private String deactivationReason;
-
-    @Column(name = "login_fail_count")
     private int loginFailCount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "member_status")
     private MemberStatus memberStatus;
 
-    @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
 
     @Embedded //해당 클라스에 @Embeddable을 붙여줘야됨
     private Address address;
 
     @JsonIgnore
-    @Column(name = "activated", nullable = false)
+    @Column(nullable = false)
     private boolean activated;
 
-    @Column(name="roles", nullable = false)
+    @Column(nullable = false)
     private String roles;
 
 
@@ -65,10 +55,8 @@ public class Member extends FirstCreatedEntity implements Serializable {
     @OneToMany(mappedBy = "member", fetch=FetchType.LAZY)
     private List<Pet> pets = new ArrayList<>();
 
-    @Column(name="provider")
     private String provider; //어떤 OAuth인지(google, naver 등)
 
-    @Column(name="providerid")
     private String provideId; // 해당 OAuth 의 key(id)
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

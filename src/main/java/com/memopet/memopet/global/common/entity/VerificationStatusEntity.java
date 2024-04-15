@@ -23,6 +23,6 @@ public class VerificationStatusEntity {
     @Column(updatable = false)
     private String authKey;
 
-    @Column( updatable = false)
+    @Column(updatable = false)
     private LocalDateTime expiredAt;
 }

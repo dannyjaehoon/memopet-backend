@@ -5,6 +5,7 @@ import com.memopet.memopet.domain.pet.service.FollowService;
 import com.memopet.memopet.domain.pet.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 @RequestMapping("/api/follow")
 public class FollowController {
     private final FollowService followService;
@@ -36,8 +38,8 @@ public class FollowController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("")
     public FollowListResponseDto followList(FollowListRequestDto followListRequestDto){
-        System.out.println(" getFollowType: " + followListRequestDto.getFollowType());
-        System.out.println(" getPetId : " + followListRequestDto.getPetId());
+        log.info(" getFollowType: " + followListRequestDto.getFollowType());
+        log.info(" getPetId : " + followListRequestDto.getPetId());
         return followService.followList(followListRequestDto);
     }
 

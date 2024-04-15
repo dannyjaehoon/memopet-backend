@@ -27,8 +27,6 @@ public class SavedPetRequestDto {
     private String petSpecM;
     private String petSpecS;
     private Gender petGender;
-    private String petProfileUrl;
-    private String backImgUrl;
     private String petProfileFrame;
     private String birthDate;
     private String petDeathDate;

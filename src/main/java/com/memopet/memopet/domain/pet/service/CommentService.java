@@ -54,7 +54,6 @@ public class CommentService {
         List<Long> memoryIds = new ArrayList<>();
 
         for (Comment comment : comments) {
-            System.out.println("memory id : " + comment.getMemory().getId());
             memoryIds.add(comment.getMemory().getId());
         }
 
@@ -73,7 +72,7 @@ public class CommentService {
                     .commentId(c.getId())
                     .commentCreatedDate(c.getCreatedDate())
                     .comment(c.getComment())
-                    .memoryImageUrl1(memoryInfoHashMap.getOrDefault(c.getMemory().getId(), null) != null ? memoryInfoHashMap.getOrDefault(c.getMemory().getId(), null).getUrl() : null )
+                    .memoryImageUrl1(memoryInfoHashMap.getOrDefault(c.getMemory().getId(), null) != null ? memoryInfoHashMap.getOrDefault(c.getMemory().getId(), null).getImageUrl() : null )
                     .memoryImageUrlId1(memoryInfoHashMap.getOrDefault(c.getMemory().getId(), null) != null ? memoryInfoHashMap.getOrDefault(c.getMemory().getId(), null).getId() : null)
                     .build());
         }

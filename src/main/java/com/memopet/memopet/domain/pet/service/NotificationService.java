@@ -167,8 +167,6 @@ public class NotificationService {
         Notification notification = Notification.builder().receiver(pet).sender(petIdSend).notificationType(notificationType).readYn(1).build();
         notificationRepository.save(notification);
 
-        System.out.println("notification.getID : " + notification.getId());
-
         // 알림 보내기
         notify(notification);
 

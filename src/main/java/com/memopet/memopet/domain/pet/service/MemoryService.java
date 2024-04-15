@@ -70,7 +70,6 @@ public class MemoryService {
 
         // 추억 공개 제한이 친구일때
         if(memory.getAudience().equals(Audience.FRIEND)) {
-            System.out.println("친구");
             List<Follow> followList = followRepository.findByPetId(memory.getPet());
 
             if(memory.getPet().getId() == memoryRequestDto.getPetId()) {
@@ -91,7 +90,6 @@ public class MemoryService {
 
         // 추억 공개 제한이 비공개
         if(memory.getAudience().equals(Audience.ME) && memory.getPet().getId() != memoryRequestDto.getPetId()) {
-            System.out.println("비공개");
             return MemoryResponseDto.builder().build();
         }
 
@@ -109,11 +107,11 @@ public class MemoryService {
 
         MemoryResponseDto memoryResponseDto = MemoryResponseDto.builder()
                 .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
-                .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
+                .memoryImageUrl1(!q.isEmpty() ? q.poll().getImageUrl() : null)
                 .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
-                .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
+                .memoryImageUrl2(!q.isEmpty() ? q.poll().getImageUrl() : null)
                 .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
-                .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
+                .memoryImageUrl3(!q.isEmpty() ? q.poll().getImageUrl() : null)
                 .memoryId(memory.getId())
                 .memoryTitle(memory.getTitle())
                 .memoryDescription(memory.getMemoryDescription())
@@ -156,7 +154,7 @@ public class MemoryService {
         HashMap<Long, Integer> blockList = blockedService.findBlockList(likedMemoryRequestDto.getPetId());
 
         for(Likes like : likesList) {
-            if(blockList.getOrDefault(like.getLikedOwnPetId(),0) == 0) memoryIds.add(like.getMemoryId().getId());
+            if(blockList.getOrDefault(like.getLikedOwnPetId(),0) == 0) memoryIds.add(like.getMemory().getId());
         }
 
         PageRequest pageRequest = PageRequest.of(likedMemoryRequestDto.getCurrentPage()-1, likedMemoryRequestDto.getDataCounts());
@@ -176,11 +174,11 @@ public class MemoryService {
                     .memoryDescription(memory.getMemoryDescription())
                     .memoryDate(memory.getMemoryDate())
                     .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .build());
         }
 
@@ -239,11 +237,11 @@ public class MemoryService {
                     .memoryDescription(m.getMemoryDescription())
                     .memoryDate(m.getMemoryDate())
                     .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .build());
         }
 
@@ -315,11 +313,11 @@ public class MemoryService {
 
             memoryResponseDtos.add(MemoryResponseDto.builder()
                     .memoryImageUrlId1(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl1(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .memoryImageUrlId2(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl2(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .memoryImageUrlId3(!q.isEmpty() ? q.peek().getId() : null)
-                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getUrl() : null)
+                    .memoryImageUrl3(!q.isEmpty() ? q.poll().getImageUrl() : null)
                     .memoryDate(memory.getMemoryDate())
                     .memoryTitle(memory.getTitle())
                     .memoryId(memory.getId())
@@ -345,7 +343,7 @@ public class MemoryService {
         for(MemoryImage memoryImage : memoryImages) {
             memoryImage.updateDeletedDate(LocalDateTime.now());
 
-            s3Uploader.deleteS3(memoryImage.getUrl());
+            s3Uploader.deleteS3(memoryImage.getImageUrl());
         }
 
         memoryDeleteResponseDto = MemoryDeleteResponseDto.builder().decCode('1').build();
@@ -458,7 +456,7 @@ public class MemoryService {
         // If there was an issue saving images, delete uploaded files from S3
         for (MemoryImage image : images) {
             try {
-                s3Uploader.deleteS3(image.getUrl());
+                s3Uploader.deleteS3(image.getImageUrl());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -476,7 +474,7 @@ public class MemoryService {
     private static MemoryImage getMemoryImage(Memory memory, MultipartFile file, String storedMemoryImgUrl) {
         try {
             return MemoryImage.builder()
-                    .url(storedMemoryImgUrl)
+                    .imageUrl(storedMemoryImgUrl)
                     .imageFormat(file.getContentType())
                     .memory(memory)
                     .imageSize(String.valueOf(file.getSize()))

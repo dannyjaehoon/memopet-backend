@@ -5,6 +5,7 @@ import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.LoginFailedRepository;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.global.common.dto.EmailAuthResponseDto;
 import com.memopet.memopet.global.common.service.EmailService;
 import com.memopet.memopet.global.config.SecurityConfig;
 import com.memopet.memopet.global.config.UserInfoConfig;
@@ -44,7 +45,7 @@ public class LoginService implements UserDetailsService {
     @Override
     // 로그인시에 DB에서 유저정보와 권한정보를 가져와서 해당 정보를 기반으로 userdetails.User 객체를 생성해 리턴
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("loadUserByUsername start with Email : " + email);
+        log.info("loadUserByUsername start with Email : " + email);
 
         return memberRepository.findOptionalMemberByEmail(email)
                 .map(UserInfoConfig::new)
@@ -74,7 +75,7 @@ public class LoginService implements UserDetailsService {
                     changeAccountStatus(member, MemberStatus.LOCKED);
 
                 } else {
-                    System.out.println(loginFailedRepository.increment(member));
+
                 }
             }
         }
@@ -89,17 +90,13 @@ public class LoginService implements UserDetailsService {
 
     public PasswordResetResponseDto resetPassword(String email) {
 
-        String authCode = null;
-        try {
-            authCode = emailService.sendEmail(email);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println(" authCode : " + authCode);
+        EmailAuthResponseDto emailAuthResponseDto = null;
+
+        emailAuthResponseDto = emailService.sendEmail(email);
+
+        log.info(" authCode : " + emailAuthResponseDto.getAuthCode());
         Member member = memberRepository.findByEmail(email);
-        member.changePassword(passwordEncoder.encode(authCode));
+        member.changePassword(passwordEncoder.encode(emailAuthResponseDto.getAuthCode()));
 
         PasswordResetResponseDto passwordResetResponseDto = PasswordResetResponseDto.builder().dscCode("1").errMessage("complete reset password").build();
 

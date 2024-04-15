@@ -41,9 +41,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         OAuth2UserPrincipal member = (OAuth2UserPrincipal) authentication.getPrincipal();
 
-        System.out.println("onAuthenticationSuccess start");
-        System.out.println(member.getName());
-        System.out.println(member.getAuthorities());
 
         Collection<? extends GrantedAuthority> authorities = member.getAuthorities();
 
@@ -54,11 +51,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         createRefreshTokenCookie(response, refreshToken);
         //token 저장
-        System.out.println(accessToken);
-        System.out.println(refreshToken);
 
         String refreshTokenFromCookie = getCookie(request);
-        System.out.println(refreshTokenFromCookie);
+
 
         //response.setHeader("AccessToken" , accessToken);
         //response.sendRedirect("http://localhost:3000/");

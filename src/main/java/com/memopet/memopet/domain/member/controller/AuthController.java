@@ -47,9 +47,8 @@ public class  AuthController {
     })
     @PostMapping("/sign-in")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        System.out.println("sign-in start");
 
-        // chekc if the email is valid
+        // check if the email is valid
         boolean isValidEmail = loginService.isValidEmail(loginRequestDto.getEmail());
 
         if(!isValidEmail) {
@@ -116,7 +115,6 @@ public class  AuthController {
      */
     @PostMapping("/sign-up")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequestDto signUpRequestDto, BindingResult bindingResult, HttpServletResponse httpServletResponse){
-        System.out.println("registerUser start");
         boolean isValidEmail = loginService.isValidEmail(signUpRequestDto.getEmail());
         if(isValidEmail) {
             ErrorResponseDto errorResponse = ErrorResponseDto.builder()
@@ -133,12 +131,4 @@ public class  AuthController {
     public ResponseEntity<?> getAccessToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
         return ResponseEntity.ok(authService.getAccessTokenUsingRefreshToken(authorizationHeader));
     }
-
-    @GetMapping("/main")
-    public String authenticateUser(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("main");
-
-        return "TEST";
-    }
-
 }

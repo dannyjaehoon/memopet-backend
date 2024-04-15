@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -34,12 +35,12 @@ public class NotificationController {
     //Last-Event-ID는 SSE 연결이 끊어졌을 경우, 클라이언트가 수신한 마지막 데이터의 id 값을 의미합니다.
     //항상 있는 것이 아니기 때문에 required = false 로 설정했습니다.
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(@RequestParam("pet_id") String id, @RequestHeader(value="Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
+    public SseEmitter subscribe(@RequestParam("petId") String id, @RequestHeader(value="Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
         return notificationService.subscribe(id,lastEventId);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @GetMapping("/api/notification")
+    @GetMapping("/notification")
     public NotificationsResponseDto findUnReadNotifications(NotificationsRequestDto notificationsRequestDto) {
 
         NotificationsResponseDto notificationsResponseDto = notificationService.createNotificationsSlicePagable(notificationsRequestDto.getPetId(), notificationsRequestDto.getCurrentPage(), notificationsRequestDto.getDataCounts());

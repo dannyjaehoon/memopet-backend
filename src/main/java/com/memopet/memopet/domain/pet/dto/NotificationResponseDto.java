@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NotificationResponseDto {
 
-    @JsonProperty("notification_id")
+
     private Long notificationId;
-    @JsonProperty("receiver")
+
     private Long receiver;
-    @JsonProperty("sender")
+
     private Long sender;
-    @JsonProperty("notification_type")
+
     private NotificationType notificationType;
-    @JsonProperty("created_date")
+
     private LocalDateTime createdDate;
 }

@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationDeleteRequestDto {
-    @JsonProperty("notification_id")
+
     private Long notificationId;
 }

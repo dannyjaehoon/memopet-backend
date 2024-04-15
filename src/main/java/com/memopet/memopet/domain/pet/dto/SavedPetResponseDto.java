@@ -9,10 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SavedPetResponseDto {
-    @JsonProperty("dec_code")
-    private char decCode;
 
-    @JsonProperty("message")
+    private char decCode;
     private String message;
 
 }

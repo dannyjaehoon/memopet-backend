@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class WarmCommentUpdateRequestDto {
 
-    @JsonProperty("comment_id")
     private Long commentId;
     private String comment;
 }

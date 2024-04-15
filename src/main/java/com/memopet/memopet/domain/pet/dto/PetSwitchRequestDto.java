@@ -10,9 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetSwitchRequestDto {
-    @JsonProperty("pet_id")
+
     Long petId;
-    @JsonProperty("new_rep_pet_id")
     Long newRepPetId;
 
 

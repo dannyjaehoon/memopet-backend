@@ -13,8 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecentSearchResponseDto {
-    @JsonProperty("data_counts")
+
     private int dataCounts;
-    @JsonProperty("search_texts")
+
     private List<String> searchTexts;
 }

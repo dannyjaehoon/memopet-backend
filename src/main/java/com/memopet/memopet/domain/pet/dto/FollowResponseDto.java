@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class FollowResponseDto {
-    @JsonProperty("dec_code")
+
     private char decCode;
 
     private String message;

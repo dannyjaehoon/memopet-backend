@@ -12,12 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class RecentMainMemoriesResponseDto {
 
-
-    @JsonProperty("total_page")
     private int totalPage;
-    @JsonProperty("current_page")
     private int currentPage;
-    @JsonProperty("data_counts")
     private int dataCounts;
     private List<MemoryResponseDto> memoryResponseDto;
 

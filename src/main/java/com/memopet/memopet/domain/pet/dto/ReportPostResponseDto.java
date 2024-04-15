@@ -10,8 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ReportPostResponseDto {
 
-    @JsonProperty("dec_code")
+
     private char decCode;
-    @JsonProperty("err_msg")
     private String errMsg;
 }

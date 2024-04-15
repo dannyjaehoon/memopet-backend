@@ -10,8 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 public class CommentPostResponseDto {
 
-    @JsonProperty("dec_code")
+
     private char decCode;
-    @JsonProperty("error_msg")
+
     private String errorMsg;
 }

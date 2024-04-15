@@ -13,11 +13,11 @@ import java.util.List;
 public class MonthMemoriesResponseDto {
 
 
-    @JsonProperty("total_pages")
+
     private int totalPages;
-    @JsonProperty("current_page")
+
     private int currentPage;
-    @JsonProperty("data_counts")
+
     private int dataCounts;
     private List<MemoryResponseDto> memoryResponseDto;
 

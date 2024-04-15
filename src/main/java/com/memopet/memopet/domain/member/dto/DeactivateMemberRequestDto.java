@@ -17,10 +17,8 @@ public class DeactivateMemberRequestDto {
     private String email;
 
     @NotBlank
-    @JsonProperty("deactivation_reason")
     private String deactivationReason;
 
-    @JsonProperty("deactivation_reason_comment")
     private String deactivationReasonComment;
 
 }

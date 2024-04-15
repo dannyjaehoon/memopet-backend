@@ -12,14 +12,14 @@ import java.util.List;
 @Builder
 public class BlockListResponseDto {
 
-    @JsonProperty("has_next")
+
     private boolean hasNext;
-    @JsonProperty("current_page")
+
     private int currentPage;
-    @JsonProperty("data_counts")
+
     private int dataCounts;
     private List<BlockedListResponseDto> petList;
-    @JsonProperty("dec_code")
+
     private char decCode;
     private String message;
 }

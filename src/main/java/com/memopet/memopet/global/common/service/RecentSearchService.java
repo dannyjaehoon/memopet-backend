@@ -94,6 +94,7 @@ public class RecentSearchService {
 
         Slice<Pet> slice = petRepository.findPetBySearchText(blockedList, searchText, pageRequest);
 
+         //fixme 이런식으로 변경할 필요있습니다. if(slice.getContent().isEmpty())
         if(slice.getContent().size() == 0) return SearchResponseDTO.builder().build();
         List<Pet> pets = slice.getContent();
 

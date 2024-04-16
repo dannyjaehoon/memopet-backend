@@ -77,10 +77,16 @@ public class EmailService {
 //            e.printStackTrace();
 //            // 에러처리 필요
 //        }
-        VerificationStatusEntity verificationStatusEntity = VerificationStatusEntity.builder().expiredAt(LocalDateTime.now().plusMinutes(3)).authKey(authKey).build();
+
+        // tip 빌더패턴을 사용하는거면 이렇게 필듭별로 줄바꿈처리를 해주는게 그나마 가독성에 좋을 것 같습니다.
+        VerificationStatusEntity verificationStatusEntity = VerificationStatusEntity.builder()
+            .expiredAt(LocalDateTime.now().plusMinutes(3))
+            .authKey(authKey)
+            .build();
 
         VerificationStatusEntity savedEntity = vertificationStatusRepository.save(verificationStatusEntity);
 
+        // tip 여기에서 값을 리턴하는 이유는 무엇인가요? 프론트엔드로 전달해서 추후에 값을 사용해서 매칭하는데 활용하나요?
         return savedEntity.getId();
     }
     private String getCertificationMessage(String certificationNum) {
@@ -119,6 +125,9 @@ public class EmailService {
             }
         }
         authNum = key.toString();
+
+        // tip 이렇게 멤버변수에 할당하는것보다는 리턴을 받고 활용하는게 나아보입니다. 밖에서 이 메소드를 호출결과로서 랜덤값을 활용할수 있기 때문입니다.
+        // tip 오히려 static method 로 유틸성에 가깝기 때문에 따로 클래스로 빼주는게 좋습니다.
     }
 
     public EmailAuthResponseDto checkVerificationCode(EmailAuthRequestDto emailAuthRequestDto) {

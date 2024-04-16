@@ -62,8 +62,10 @@ public class EmailService {
 
         long verificationEntityId = setDataExpire(authNum);
 
+        log.info("authNum : {}", authNum);  // tip 이게 올바른 사용법입니다.
         log.info("authNum : " + authNum);
 
+//        return new EmailAuthResponseDto(authNum, verificationEntityId);   tip 옆처럼 차라리 생성자로 만드는게 나을수도 있기 때문에 한번더 고민이 필요(빌더패턴의 단점인 코드의 양이 많아지게 됨)
         return EmailAuthResponseDto.builder().authCode(authNum).verificationStatusId(verificationEntityId).build();
     }
 
@@ -82,6 +84,15 @@ public class EmailService {
         return savedEntity.getId();
     }
     private String getCertificationMessage(String certificationNum) {
+
+        // tip 아래처럼 Text Block 으로 가독성 높게 만들수 있습니다.
+        String message = """
+            <h1 style='test-align:certer;'>[이메일 인증 코드]</h1>
+            <h3 style='test-align:certer;'>인증코드 : <strong style='front-size: 32px; letter-spacing:8px;'>
+            %s
+            </strong></h3>
+            """.formatted(certificationNum);
+
         String certificationMessage = "";
         certificationMessage += "<h1 style='test-align:certer;'>[이메일 인증 코드]</h1>";
         certificationMessage += "<h3 style='test-align:certer;'>인증코드 : <strong style='front-size: 32px; letter-spacing:8px;'>" + certificationNum + "</strong></h3>";

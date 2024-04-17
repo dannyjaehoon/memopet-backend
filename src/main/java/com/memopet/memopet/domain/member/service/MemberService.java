@@ -6,10 +6,13 @@ import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.entity.Comment;
 import com.memopet.memopet.domain.pet.entity.Memory;
+import com.memopet.memopet.domain.pet.entity.MemoryImage;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.CommentRepository;
+import com.memopet.memopet.domain.pet.repository.MemoryImageRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryRepository;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
+import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,8 @@ public class MemberService  {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final MemoryRepository memoryRepository;
+    private final MemoryImageRepository memoryImageRepository;
+    private final S3Uploader s3Uploader;
     private final PasswordEncoder passwordEncoder;
     private final EntityManager em;
 
@@ -42,13 +48,12 @@ public class MemberService  {
     public DeactivateMemberResponseDto deactivateMember(String email, String deactivationReason, String deactivationReasonComment) {
 
         // insert deleted_date, activated = false, deactivation_reason, deactivation_reason_comment
-        Member member = memberRepository.findByEmail(email);
-        DeactivateMemberResponseDto deactivateMemberResponseDto;
-        if(member == null)  {
-            deactivateMemberResponseDto = DeactivateMemberResponseDto.builder().dscCode("0").errMessage("member does not exist").build();
-            return deactivateMemberResponseDto;
-        }
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
 
+        Member member = memberByEmail.get();
+
+        DeactivateMemberResponseDto deactivateMemberResponseDto;
 
         member.deactivateMember(LocalDateTime.now(),deactivationReason,deactivationReasonComment, false);
 
@@ -62,7 +67,17 @@ public class MemberService  {
 
         // memory
         List<Memory> memories = memoryRepository.findByPetIds(petIds);
+        List<Long> memoryImageIds = new ArrayList<>();
         for (Memory memory : memories) {
+            List<MemoryImage> memoryImages = memoryImageRepository.findByMemoryId(memory.getId());
+
+            // delete uploaded images from aws s3.
+            for(MemoryImage memoryImage : memoryImages) {
+                memoryImageIds.add(memoryImage.getId());
+                s3Uploader.deleteS3(memoryImage.getImageUrl());
+            }
+            memoryImageRepository.updateDeletedDate(memoryImageIds);
+
             memory.updateDeleteDate(LocalDateTime.now());
         }
 
@@ -77,30 +92,21 @@ public class MemberService  {
         return deactivateMemberResponseDto;
     }
 
-
-
     public MemberProfileResponseDto getMemberProfile(String email) {
-        Member member = memberRepository.findByEmail(email);
-        MemberProfileResponseDto memberProfileResponseDto = MemberProfileResponseDto.builder().build();
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
 
-        if(member == null) return memberProfileResponseDto;
+        Member member = memberByEmail.get();
 
-        memberProfileResponseDto = MemberProfileResponseDto.builder().email(member.getEmail()).username(member.getUsername()).phoneNum(member.getPhoneNum()).build();
-        return memberProfileResponseDto;
+        return MemberProfileResponseDto.builder().email(member.getEmail()).username(member.getUsername()).phoneNum(member.getPhoneNum()).build();
     }
-
 
     public MemberInfoResponseDto changeMemberInfo(MemberInfoRequestDto memberInfoRequestDto) {
 
-        Member member = memberRepository.findByEmail(memberInfoRequestDto.getEmail());
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
 
-        //fixme 이런식으로 예외처리하는것이 좋습니다.
-        if(member == null) {
-            throw new BadRequestRuntimeException("member does not exist");
-        }
-
-        MemberInfoResponseDto memberInfoResponseDto = MemberInfoResponseDto.builder().dscCode("0").build();
-        if(member == null) return memberInfoResponseDto;
+        Member member = memberByEmail.get();
 
         if(memberInfoRequestDto.getDscCode() == 1) { // password changes
             member.changePassword(passwordEncoder.encode(memberInfoRequestDto.getPassword()));
@@ -112,10 +118,11 @@ public class MemberService  {
         em.flush();
         em.clear();
 
-        Member member1 = memberRepository.findByEmail(memberInfoRequestDto.getEmail());
-        memberInfoResponseDto = MemberInfoResponseDto.builder().dscCode("1").username(member1.getUsername()).phoneNum(member1.getPhoneNum()).email(member1.getEmail()).build();
+        Optional<Member> savedMemberByEmail = memberRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
+        Member savedmember = savedMemberByEmail.get();
 
-        return memberInfoResponseDto;
+        return MemberInfoResponseDto.builder().dscCode("1").username(savedmember.getUsername()).phoneNum(savedmember.getPhoneNum()).email(savedmember.getEmail()).build();
+
 
     }
 }

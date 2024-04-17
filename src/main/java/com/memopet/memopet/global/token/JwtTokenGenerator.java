@@ -23,7 +23,7 @@ public class JwtTokenGenerator {
 
     private final JwtEncoder jwtEncoder;
 
-    public String generateAccessToken(Authentication authentication) {
+    public String generateAccessToken(Authentication authentication, long ACCESSTOKENEXPIRYTIME) {
 
         log.info("[JwtTokenGenerator:generateAccessToken] Token Creation Started for:{}", authentication.getName());
 
@@ -34,7 +34,7 @@ public class JwtTokenGenerator {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("atquil")
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plus(10, ChronoUnit.MINUTES))
+                .expiresAt(Instant.now().plus(ACCESSTOKENEXPIRYTIME, ChronoUnit.MINUTES))
                 .subject(authentication.getName())
                 .claim("scope", permissions)
                 .build();

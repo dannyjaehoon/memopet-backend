@@ -38,7 +38,7 @@ public class JwtTokenUtils {
 
     public UserDetails userDetails(String email){
         return memberRepository
-                .findOptionalMemberByEmail(email)
+                .findMemberByEmail(email)
                 .map(UserInfoConfig::new)
                 .orElseThrow(()-> new UsernameNotFoundException("UserEmail: "+email+" does not exist"));
     }

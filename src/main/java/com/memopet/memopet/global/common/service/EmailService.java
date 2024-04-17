@@ -46,11 +46,9 @@ public class EmailService {
             throw new RuntimeException("이메일 서버 문제");
         }
 
-
         return message;
-
     }
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     //실제 메일 전송
     public EmailAuthResponseDto sendEmail(String toEmail)  {
 

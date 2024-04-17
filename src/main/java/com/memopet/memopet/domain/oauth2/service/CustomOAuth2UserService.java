@@ -26,6 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Map;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -76,9 +77,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private Member saveOrUpdate(String registrationId, Map<String,Object> attrs){
         Map<String, String> personalInfoMap = (Map<String, String>) attrs.get("response");
 
-        Member member = memberRepository.findByEmail(personalInfoMap.get("email"));
-
-        if (member == null) {
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(personalInfoMap.get("email"));
+        Member member = null;
+        if (memberByEmail.isEmpty()) {
             Member memberInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(registrationId,
                     personalInfoMap);
 

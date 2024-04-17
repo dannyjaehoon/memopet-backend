@@ -11,6 +11,4 @@ import lombok.*;
 public class DeactivateMemberResponseDto {
 
     private String dscCode;
-
-    private String errMessage;
 }

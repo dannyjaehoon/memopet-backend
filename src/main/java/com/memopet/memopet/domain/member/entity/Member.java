@@ -77,7 +77,7 @@ public class Member extends FirstCreatedEntity implements Serializable {
         this.password = password;
     }
 
-    public void deactivateMember(LocalDateTime deletedDate, String deactivationReason, String deactivation_reason_comment, boolean activated) {
+    public void deactivateMember(LocalDateTime deletedDate, String deactivationReason, String deactivationReasonComment, boolean activated) {
         this.deletedDate =deletedDate;
         this.deactivationReason = deactivationReason;
         this.deactivationReasonComment = deactivationReasonComment;

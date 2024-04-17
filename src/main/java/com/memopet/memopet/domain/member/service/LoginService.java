@@ -6,6 +6,8 @@ import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.LoginFailedRepository;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.global.common.dto.EmailAuthResponseDto;
+import com.memopet.memopet.global.common.exception.BadCredentialsRuntimeException;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.EmailService;
 import com.memopet.memopet.global.config.SecurityConfig;
 import com.memopet.memopet.global.config.UserInfoConfig;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.security.auth.login.AccountLockedException;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 
 import static com.memopet.memopet.domain.member.entity.QMember.member;
 
@@ -47,36 +50,48 @@ public class LoginService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info("loadUserByUsername start with Email : " + email);
 
-        return memberRepository.findOptionalMemberByEmail(email)
+        return memberRepository.findMemberByEmail(email)
                 .map(UserInfoConfig::new)
-                .orElseThrow(() -> {throw new UsernameNotFoundException(email + " -> 데이터베이스에서 찾을 수 없습니다.");});
+                .orElseThrow(() -> {throw new UsernameNotFoundException("User not found");});
     }
 
     public boolean isAccountLock(String email) {
-        Member member = memberRepository.findByEmail(email);
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+
+        Member member = memberByEmail.get();
+
         if(member.getMemberStatus().equals(MemberStatus.LOCKED)) {
             return true;
         }
-
         return false;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void loginAttemptCheck(String email,String password) {
-        Member member  = memberRepository.findByEmail(email);
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
 
+        Member member = memberByEmail.get();
+
+        log.info("loginAttemptCheck method starts");
         if(member != null) {
+            log.info("member exists");
             // 비밀번호가 맞는지 체크
             if (passwordEncoder.matches(password, member.getPassword())) {
                 loginFailedRepository.resetCount(member); // 계정 잠금 후 실패 횟수 초기화
             } else {
+                log.info("password incorrect");
+                log.info("member.getLoginFailCount() : " + member.getLoginFailCount());
                 // 비밀번호가 맞지 않으면 로그인 login_fail_count +1
+
                 if (member.getLoginFailCount() >= MAX_ATTEMPT_COUNT) {
+                    log.info("login failed attempt : " + member.getLoginFailCount());
                     changeAccountStatus(member, MemberStatus.LOCKED);
-
                 } else {
-
+                    member.increaseLoginFailCount(member.getLoginFailCount()+1);
                 }
+
             }
         }
     }
@@ -95,7 +110,10 @@ public class LoginService implements UserDetailsService {
         emailAuthResponseDto = emailService.sendEmail(email);
 
         log.info(" authCode : " + emailAuthResponseDto.getAuthCode());
-        Member member = memberRepository.findByEmail(email);
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+
+        Member member = memberByEmail.get();
         member.changePassword(passwordEncoder.encode(emailAuthResponseDto.getAuthCode()));
 
         PasswordResetResponseDto passwordResetResponseDto = PasswordResetResponseDto.builder().dscCode("1").errMessage("complete reset password").build();
@@ -106,29 +124,20 @@ public class LoginService implements UserDetailsService {
         return passwordResetResponseDto;
     }
 
-    public PasswordResetResponseDto checkValidEmail(String email) {
-        PasswordResetResponseDto passwordResetResponseDto;
-        if(isValidEmail(email)) {
-            passwordResetResponseDto = PasswordResetResponseDto.builder().dscCode("1").errMessage("Email is valid").build();
-        } else {
-            passwordResetResponseDto = PasswordResetResponseDto.builder().dscCode("0").errMessage("Email is not valid").build();
-        }
-        return passwordResetResponseDto;
-    }
 
     public DuplicationCheckResponseDto checkDupplication(String email) {
         DuplicationCheckResponseDto duplicationCheckResponseDto;
         if(!isValidEmail(email)) {
-            duplicationCheckResponseDto = DuplicationCheckResponseDto.builder().dscCode("1").errMessage("사용가능한 이메일 입니다").build();
+            duplicationCheckResponseDto = DuplicationCheckResponseDto.builder().dscCode("1").errMessage("Email is valid").build();
         } else {
-            duplicationCheckResponseDto = DuplicationCheckResponseDto.builder().dscCode("0").errMessage("이미 저장된 이메일입니다").build();
+            duplicationCheckResponseDto = DuplicationCheckResponseDto.builder().dscCode("0").errMessage("Email is invalid").build();
         }
         return duplicationCheckResponseDto;
     }
 
     public boolean isValidEmail(String email) {
-        Member member  = memberRepository.findByEmail(email);
-        if(member == null) return false;
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) return false;
         return true;
     }
 
@@ -149,7 +158,10 @@ public class LoginService implements UserDetailsService {
     }
 
     public MyPasswordResponseDto saveNewPassword(String email, String password) {
-        Member member = memberRepository.findByEmail(email);
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+
+        Member member = memberByEmail.get();
         MyPasswordResponseDto myPasswordResponseDto;
         if(member != null) {
             member.changePassword(passwordEncoder.encode(password));

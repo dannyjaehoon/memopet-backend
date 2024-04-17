@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import java.util.Collection;
 
-public interface MemoryImageRepository  extends JpaRepository<MemoryImage, Long> {
+public interface MemoryImageRepository  extends JpaRepository<MemoryImage, Long>,CustomMemoryImageRepository {
 
     @Query(value = "select * from memory_image where memory_id = ?1 and deleted_date IS NULL", nativeQuery = true)
     List<MemoryImage> findByMemoryId(Long memoryId);

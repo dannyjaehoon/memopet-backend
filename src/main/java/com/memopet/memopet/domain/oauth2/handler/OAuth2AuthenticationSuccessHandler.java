@@ -24,11 +24,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static com.memopet.memopet.domain.member.service.AuthService.ACCESSTOKENEXPIRYTIME;
+import static com.memopet.memopet.domain.member.service.AuthService.REFRESHTOKENEXPIRYTIME;
+
 @Slf4j
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private static final int ACCESSTOKENEXPIRYTIME = 3 * 60;
-    private static final int REFRESHTOKENEXPIRYTIME = 15 * 24 * 60 * 60;
+
     private final JwtTokenGenerator jwtTokenGenerator ;
 
     public OAuth2AuthenticationSuccessHandler(JwtTokenGenerator jwtTokenGenerator) {
@@ -46,7 +48,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         Authentication authentication1 = new UsernamePasswordAuthenticationToken(member.getName(), member.getPassword(), authorities);
 
-        String accessToken = jwtTokenGenerator.generateAccessToken(authentication1);
+        String accessToken = jwtTokenGenerator.generateAccessToken(authentication, Long.valueOf(ACCESSTOKENEXPIRYTIME));
         String refreshToken = jwtTokenGenerator.generateRefreshToken(authentication1);
 
         createRefreshTokenCookie(response, refreshToken);

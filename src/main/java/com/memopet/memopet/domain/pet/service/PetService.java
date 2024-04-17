@@ -6,6 +6,7 @@ import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class PetService {
 
 
     @Transactional(readOnly = false)
-    public SavedPetResponseDto savePet(MultipartFile petImg, MultipartFile backgroundImg, SavedPetRequestDto petRequestDto) throws IOException {
+    public SavedPetResponseDto savePet(MultipartFile petImg, MultipartFile backgroundImg, SavedPetRequestDto petRequestDto){
         String storedPetImgName = null;
 
         if (!petImg.isEmpty()) {
@@ -60,7 +61,11 @@ public class PetService {
 
         Species species = Species.builder().largeCategory("포유류").midCategory(petRequestDto.getPetSpecM()).smallCategory(petRequestDto.getPetSpecS()).build();
         Species savedSpecies = speciesRepository.save(species);
-        Member member = memberRepository.findByEmail(petRequestDto.getEmail());
+
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(petRequestDto.getEmail());
+        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+
+        Member member = memberByEmail.get();
 
         List<Pet> petInfoByEmail = petRepository.findPetInfoByEmail(petRequestDto.getEmail());
 
@@ -281,7 +286,7 @@ public class PetService {
     @Transactional(readOnly = false)
     public PetProfileResponseDto deletePetProfile(PetDeleteRequestDto petDeleteRequestDTO) {
         try {
-            Optional<Member> member = memberRepository.findOptionalMemberByEmail(petDeleteRequestDTO.getEmail());
+            Optional<Member> member = memberRepository.findMemberByEmail(petDeleteRequestDTO.getEmail());
             if (member.isEmpty()) {
                 return PetProfileResponseDto.builder().decCode('0').message("존재하지 않거나 삭제된 이메일입니다").build(); // Member not found
             }
@@ -345,10 +350,11 @@ public class PetService {
         }
     }
     public boolean validatePetRequest(String email, Long petId) {
-        Member member= memberRepository.findByEmail(email);
-        if (member == null) {
-            return false;
-        }
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        if(memberByEmail.isEmpty()) return  false;
+
+        Member member = memberByEmail.get();
+
         List<Pet> pets = member.getPets();
         for (Pet pet : pets) {
             if (pet.getId().equals(petId)&& pet.getPetStatus().equals(PetStatus.ACTIVE)) {

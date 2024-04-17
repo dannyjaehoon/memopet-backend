@@ -11,11 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 public class MemberInfoResponseDto {
 
-
-    private String dscCode;
     private String email;
     private String username;
     private String phoneNum;
-    private String errMessage;
 
 }

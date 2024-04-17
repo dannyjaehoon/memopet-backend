@@ -15,11 +15,8 @@ import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +32,7 @@ public class MemberService  {
     private final MemoryRepository memoryRepository;
     private final MemoryImageRepository memoryImageRepository;
     private final S3Uploader s3Uploader;
-    private final PasswordEncoder passwordEncoder;
+
     private final EntityManager em;
 
     /**
@@ -87,7 +84,6 @@ public class MemberService  {
             comment.updateDeleteDate(LocalDateTime.now());
         }
 
-
         deactivateMemberResponseDto = DeactivateMemberResponseDto.builder().dscCode("1").build();
         return deactivateMemberResponseDto;
     }
@@ -106,23 +102,14 @@ public class MemberService  {
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
         if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
 
-        Member member = memberByEmail.get();
+        memberRepository.UpdateMemberInfo(memberInfoRequestDto);
 
-        if(memberInfoRequestDto.getDscCode() == 1) { // password changes
-            member.changePassword(passwordEncoder.encode(memberInfoRequestDto.getPassword()));
-        } else if(memberInfoRequestDto.getDscCode() == 2) { // username changes
-            member.changeUsername(memberInfoRequestDto.getUsername());
-        }else if(memberInfoRequestDto.getDscCode() == 3) { // cellphoneNum changes
-            member.changePhoneNum(memberInfoRequestDto.getPhoneNum());
-        }
         em.flush();
         em.clear();
 
         Optional<Member> savedMemberByEmail = memberRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
         Member savedmember = savedMemberByEmail.get();
 
-        return MemberInfoResponseDto.builder().dscCode("1").username(savedmember.getUsername()).phoneNum(savedmember.getPhoneNum()).email(savedmember.getEmail()).build();
-
-
+        return MemberInfoResponseDto.builder().username(savedmember.getUsername()).phoneNum(savedmember.getPhoneNum()).email(savedmember.getEmail()).build();
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MemberRepository extends JpaRepository<Member, UUID> {
+public interface MemberRepository extends JpaRepository<Member, UUID>, CustomMemberRepository {
 
     @Query("select m from Member m where m.email = :email and deletedDate IS NULL")
     Optional<Member> findMemberByEmail(String email);

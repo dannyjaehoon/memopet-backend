@@ -27,9 +27,8 @@ public class EmailService {
     private final RedisUtil redisUtil;
     private final VertificationStatusRepository vertificationStatusRepository;
     private final String SUBJECT = "[이메일 인증 메일]";
-    private String authNum; //랜덤 인증 코드
 
-    public MimeMessage createEmailForm(String email) {
+    public MimeMessage createEmailForm(String email, String authNum) {
         createCode(); //인증 코드 생성
         String setFrom = "jaelee9212@naver.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
         String toEmail = email; //받는 사람
@@ -52,8 +51,10 @@ public class EmailService {
     //실제 메일 전송
     public EmailAuthResponseDto sendEmail(String toEmail)  {
 
+        // auth num 값 생성
+        String authNum = createCode();
         //메일전송에 필요한 정보 설정
-        MimeMessage emailForm = createEmailForm(toEmail);
+        MimeMessage emailForm = createEmailForm(toEmail,authNum);
 
         //실제 메일 전송
         emailSender.send(emailForm);
@@ -97,13 +98,13 @@ public class EmailService {
             </strong></h3>
             """.formatted(certificationNum);
 
-        String certificationMessage = "";
-        certificationMessage += "<h1 style='test-align:certer;'>[이메일 인증 코드]</h1>";
-        certificationMessage += "<h3 style='test-align:certer;'>인증코드 : <strong style='front-size: 32px; letter-spacing:8px;'>" + certificationNum + "</strong></h3>";
-        return certificationMessage;
+//        String certificationMessage = "";
+//        certificationMessage += "<h1 style='test-align:certer;'>[이메일 인증 코드]</h1>";
+//        certificationMessage += "<h3 style='test-align:certer;'>인증코드 : <strong style='front-size: 32px; letter-spacing:8px;'>" + certificationNum + "</strong></h3>";
+        return message;
     }
     //랜덤 인증 코드 생성
-    public void createCode() {
+    public static String createCode() {
         Random random = new Random();
         StringBuffer key = new StringBuffer();
 
@@ -122,17 +123,16 @@ public class EmailService {
                     break;
             }
         }
-        authNum = key.toString();
-
+        String authNum = key.toString();
+        return authNum;
         // tip 이렇게 멤버변수에 할당하는것보다는 리턴을 받고 활용하는게 나아보입니다. 밖에서 이 메소드를 호출결과로서 랜덤값을 활용할수 있기 때문입니다.
         // tip 오히려 static method 로 유틸성에 가깝기 때문에 따로 클래스로 빼주는게 좋습니다.
+
     }
 
     public EmailAuthResponseDto checkVerificationCode(EmailAuthRequestDto emailAuthRequestDto) {
-
         log.info("email : " + emailAuthRequestDto.getEmail());
         log.info("code : " + emailAuthRequestDto.getCode());
-        EmailAuthResponseDto emailAuthResponseDto = EmailAuthResponseDto.builder().build();
 
         //String codeSaved = redisUtil.getValues(email);
         Optional<VerificationStatusEntity> verificationStatus = vertificationStatusRepository.findById(emailAuthRequestDto.getVerificationStatusId());
@@ -150,6 +150,6 @@ public class EmailService {
         if(!emailAuthRequestDto.getCode().equals(verificationStatusEntity.getAuthKey())) {
             throw new BadRequestRuntimeException("different");
         }
-        return emailAuthResponseDto;
+        return EmailAuthResponseDto.builder().build();
     }
 }

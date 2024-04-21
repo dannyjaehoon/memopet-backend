@@ -6,6 +6,7 @@ import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
+import com.memopet.memopet.global.common.exception.BadCredentialsRuntimeException;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,13 +65,13 @@ public class PetService {
         Species savedSpecies = speciesRepository.save(species);
 
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(petRequestDto.getEmail());
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
 
         List<Pet> petInfoByEmail = petRepository.findPetInfoByEmail(petRequestDto.getEmail());
 
-        if (petInfoByEmail.size()>4) return  SavedPetResponseDto.builder().decCode('0').message("프로필은 5개 이하로 만들수있습니다.").build();
+        if (petInfoByEmail.size()>4) throw new BadRequestRuntimeException("프로필은 5개 이하로 만들수있습니다.");
         PetStatus petStatus = petInfoByEmail.size()> 0 ? PetStatus.ACTIVE : PetStatus.DEACTIVE;
 
         Pet pet = Pet.builder()
@@ -96,7 +98,7 @@ public class PetService {
     public PetsResponseDto findPetsByPetId(PetsRequestDto petsRequestDto) {
         // 펫 id로 펫 정보 조회
         Optional<Pet> pet = petRepository.findById(petsRequestDto.getPetId());
-        if(!pet.isPresent()) return PetsResponseDto.builder().build();
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
 
         // 사용자가 차단하거나 사용자를 차단한 펫 id 가져오기
         HashMap<Long, Integer> blockList = blockedService.findBlockList(petsRequestDto.getPetId());
@@ -154,6 +156,7 @@ public class PetService {
         Long myPetId = petDetailInfoRequestDto.getMyPetId(); // 내 프로필 pet_id
 
         Optional<Pet> petInfo = petRepository.findById(petId);
+        if(petInfo.isEmpty()) throw new BadRequestRuntimeException("Pet Not Found");
         Pet pet = petInfo.get();
 
         // 사용자가 차단하거나 사용자를 차단한 펫 id 가져오기
@@ -162,7 +165,7 @@ public class PetService {
 
         // 조회하는 펫 소유자가 사용자를 차단한경우 노출이 안되게 조치
         for (Long blockPetId :blockedPetList) {
-            if(blockPetId == pet.getId()) return PetDetailInfoResponseDto.builder().build();
+            if(blockPetId == pet.getId()) throw new BadRequestRuntimeException("Pet's owner blocks the user ");
         }
 
         // follow count
@@ -222,7 +225,7 @@ public class PetService {
     @Transactional(readOnly = false)
     public PetUpdateInfoResponseDto updatePetInfo(MultipartFile backgroundImg , MultipartFile petImg, PetUpdateInfoRequestDto petUpdateInfoRequestDto) throws Exception {
         Optional<Pet> petOptional = petRepository.findById(petUpdateInfoRequestDto.getPetId());
-        if(!petOptional.isPresent()) return PetUpdateInfoResponseDto.builder().decCode('0').errMsg("해당 펫 ID로 조회된 데이터가 없습니다.").build();
+        if(petOptional.isEmpty()) throw new BadRequestRuntimeException("Pet Not Found");
         Pet pet = petOptional.get();
         String storedPetImgName = null;
         String storedBackgroundImgName = null;
@@ -238,10 +241,7 @@ public class PetService {
             s3Uploader.deleteS3(pet.getBackImgUrl());
             storedBackgroundImgName = s3Uploader.uploadFileToS3(backgroundImg, "static/pet-image");
         }
-
         petRepository.updateMemoryInfo(storedPetImgName, storedBackgroundImgName, petUpdateInfoRequestDto);
-
-
 
         return PetUpdateInfoResponseDto.builder().decCode('1').errMsg("수정 완료됬습니다.").build();
     }
@@ -251,13 +251,8 @@ public class PetService {
      */
     @Transactional(readOnly = true)
     public PetProfileResponseDto profileList(Long petId) {
-
-        if (petId == null) {
-            // Set error code and description for missing or invalid email
-           return PetProfileResponseDto.builder().decCode('0').build();
-        } else {
-            return PetProfileResponseDto.builder().petList(petRepository.findPetsById(petId)).decCode('1').build();
-        }
+        List<PetListResponseDto> petsById = petRepository.findPetsById(petId);
+        return PetProfileResponseDto.builder().petList(petsById).decCode('1').build();
     }
 
     /**
@@ -265,20 +260,18 @@ public class PetService {
      */
     @Transactional(readOnly = false)
     public PetProfileResponseDto switchProfile(PetSwitchRequestDto petSwitchRequestDTO) {
-
-
         Optional<Pet> pet = petRepository.findById(petSwitchRequestDTO.getPetId());
         Optional<Pet> newRepPet = petRepository.findById(petSwitchRequestDTO.getNewRepPetId());
 
-        if(!pet.isPresent()) return PetProfileResponseDto.builder().decCode('0').message("대표 프로필 정보가 없습니다.").build();
-        if(!newRepPet.isPresent()) return PetProfileResponseDto.builder().decCode('0').message("새로운 대표 프로필 정보가 없습니다.").build();
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
+        if(!newRepPet.isPresent()) throw new BadRequestRuntimeException("New Rep Pet Not Found");
 
         Pet pet1 = pet.get();
         Pet pet2 = newRepPet.get();
 
         pet1.updatePetStatus(PetStatus.DEACTIVE);
         pet2.updatePetStatus(PetStatus.ACTIVE);
-        return PetProfileResponseDto.builder().decCode('1').message("대표 프로필 정보가 정상 처리되었습니다.").build();
+        return PetProfileResponseDto.builder().decCode('1').message("The process is successfully completed").build();
     }
     /**
      * 펫 프로필 삭제 -Pet(deletedDate)
@@ -287,29 +280,24 @@ public class PetService {
     public PetProfileResponseDto deletePetProfile(PetDeleteRequestDto petDeleteRequestDTO) {
         try {
             Optional<Member> member = memberRepository.findMemberByEmail(petDeleteRequestDTO.getEmail());
-            if (member.isEmpty()) {
-                return PetProfileResponseDto.builder().decCode('0').message("존재하지 않거나 삭제된 이메일입니다").build(); // Member not found
-            }
+            if (member.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
             if (!passwordEncoder.matches(petDeleteRequestDTO.getPassword(), member.get().getPassword())) {
-
-                return PetProfileResponseDto.builder().decCode('0').message("비밀번호를 다시 입력하세요.").build();
+                throw new BadCredentialsRuntimeException("Password is incorrect");
             }
             Pet deletePet = petRepository.getReferenceById(petDeleteRequestDTO.getPetId());
-            if (!member.get().getPets().contains(deletePet)) {
-                return PetProfileResponseDto.builder().decCode('0').message("존재하지않거나 나의 프로필이 아닙니다.").build();
-            }
+
             // Attempt to delete the pet profile
             boolean deletionSuccessful = petRepository.deleteAPet(member.get().getId(), petDeleteRequestDTO.getPetId());
 
             if (!deletionSuccessful) {
-                return PetProfileResponseDto.builder().decCode('0').message("프로필 삭제를 실패했습니다.").build();
+                throw new BadRequestRuntimeException("Error occurred during the pet delection process");
             }
             deletePetsAssociate(deletePet);
             return PetProfileResponseDto.builder().decCode('1').message("프로필이 삭제되었습니다.").build();
 
         } catch (Exception e) {
-            return PetProfileResponseDto.builder().decCode('0').message("프로필 삭제를 실패했습니다.").build();
+            throw new BadRequestRuntimeException("Error occurred during the pet delection process");
         }
     }
 
@@ -327,9 +315,7 @@ public class PetService {
         List<Memory> deletePetMemory = memoryRepository.findByPetIds(Collections.singletonList(pet.getId()));
         for (Memory memory:deletePetMemory){
             deleteMemoryAndAssociatedEntities(memory);
-
         }
-
     }
 
     private void deleteMemoryAndAssociatedEntities(Memory memory) {
@@ -351,7 +337,7 @@ public class PetService {
     }
     public boolean validatePetRequest(String email, Long petId) {
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) return  false;
+        if(memberByEmail.isEmpty()) return false;
 
         Member member = memberByEmail.get();
 
@@ -362,6 +348,5 @@ public class PetService {
             }
         }
         return false;
-
     }
 }

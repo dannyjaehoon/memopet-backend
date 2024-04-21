@@ -57,7 +57,7 @@ public class LoginService implements UserDetailsService {
 
     public boolean isAccountLock(String email) {
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
 
@@ -70,18 +70,16 @@ public class LoginService implements UserDetailsService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void loginAttemptCheck(String email,String password) {
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
 
         log.info("loginAttemptCheck method starts");
         if(member != null) {
-            log.info("member exists");
             // 비밀번호가 맞는지 체크
             if (passwordEncoder.matches(password, member.getPassword())) {
                 loginFailedRepository.resetCount(member); // 계정 잠금 후 실패 횟수 초기화
             } else {
-                log.info("password incorrect");
                 log.info("member.getLoginFailCount() : " + member.getLoginFailCount());
                 // 비밀번호가 맞지 않으면 로그인 login_fail_count +1
 
@@ -111,7 +109,7 @@ public class LoginService implements UserDetailsService {
 
         log.info(" authCode : " + emailAuthResponseDto.getAuthCode());
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
         member.changePassword(passwordEncoder.encode(emailAuthResponseDto.getAuthCode()));
@@ -144,7 +142,6 @@ public class LoginService implements UserDetailsService {
 
 
     public MyIdResponseDto findIdByUsernameAndPhoneNum(String username, String phoneNum) {
-
         Member member = memberRepository.findIdByUsernameAndPhoneNum(username, phoneNum);
         MyIdResponseDto myIdResponseDto;
         if(member == null) {
@@ -159,16 +156,13 @@ public class LoginService implements UserDetailsService {
 
     public MyPasswordResponseDto saveNewPassword(String email, String password) {
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
         MyPasswordResponseDto myPasswordResponseDto;
-        if(member != null) {
-            member.changePassword(passwordEncoder.encode(password));
-            myPasswordResponseDto =MyPasswordResponseDto.builder().dscCode("1").build();
-        } else {
-            myPasswordResponseDto = MyPasswordResponseDto.builder().dscCode("0").build();
-        }
+
+        member.changePassword(passwordEncoder.encode(password));
+        myPasswordResponseDto = MyPasswordResponseDto.builder().dscCode("1").build();
 
         return myPasswordResponseDto;
     }

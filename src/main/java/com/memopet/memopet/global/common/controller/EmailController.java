@@ -27,7 +27,7 @@ public class EmailController {
     public RestResult sendVerificationEmail(@RequestBody EmailAuthRequestDto emailDto) {
 
         Map<String,Object> hashMap = new LinkedHashMap<>();
-        hashMap.put("response",emailService.sendEmail(emailDto.getEmail()));
+        hashMap.put("response", emailService.sendEmail(emailDto.getEmail()));
 
         return new RestResult(hashMap);
     }

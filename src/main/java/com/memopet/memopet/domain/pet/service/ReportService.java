@@ -10,6 +10,8 @@ import com.memopet.memopet.domain.pet.entity.Report;
 import com.memopet.memopet.domain.pet.repository.BlockedRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import com.memopet.memopet.domain.pet.repository.ReportRepository;
+import com.memopet.memopet.global.common.exception.BadCredentialsRuntimeException;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +28,13 @@ public class ReportService {
 
     @Transactional(readOnly = false)
     public ReportPostResponseDto registerReport(ReportPostRequestDto reportPostRequestDto) {
-
-        if(reportPostRequestDto.getReportCategory() == null || reportPostRequestDto.getReportCategory().equals("")) return ReportPostResponseDto.builder().decCode('0').errMsg("신고 카타고리 정보가 없습니다.").build();
-        if(reportPostRequestDto.getReported() == null) return ReportPostResponseDto.builder().decCode('0').errMsg("신고당한 펫 id 정보가 없습니다.").build();
-        if(reportPostRequestDto.getReporter() == null) return ReportPostResponseDto.builder().decCode('0').errMsg("신고자 정보가 없습니다.").build();
+        if(reportPostRequestDto.getReportCategory() == null || reportPostRequestDto.getReportCategory().equals("")) throw new BadCredentialsRuntimeException("Report Category Not Found");
+        if(reportPostRequestDto.getReported() == null) throw new BadCredentialsRuntimeException("Reported pet Info Not Found");
+        if(reportPostRequestDto.getReporter() == null) throw new BadCredentialsRuntimeException("Reporter pet Info Not Found");
 
         Optional<Report> reportOptional = reportRepository.findByReportedIdAndReporterId(reportPostRequestDto.getReporter(), reportPostRequestDto.getReported());
 
-        if(reportOptional.isPresent()) return ReportPostResponseDto.builder().decCode('0').errMsg("이미 신고한 이력이 있습니다.").build();
+        if(reportOptional.isPresent()) throw new BadCredentialsRuntimeException("Reporter already reported the reported Pet");
 
         Long commentId = reportPostRequestDto.getCommentId();
         Report report = Report.builder()
@@ -49,6 +50,7 @@ public class ReportService {
 
         Optional<Pet> pet = petRepository.findById(reportPostRequestDto.getReported());
 
+        if(pet.isEmpty()) throw new BadRequestRuntimeException("Pet Not Found");
         Blocked blocked = Blocked.builder().blockedPet(pet.get()).createdDate(LocalDateTime.now()).blockerPetId(reportPostRequestDto.getReporter()).build();
         blockedRepository.save(blocked);
         return ReportPostResponseDto.builder().decCode('1').errMsg("").build();

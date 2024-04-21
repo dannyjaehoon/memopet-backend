@@ -5,6 +5,7 @@ import com.memopet.memopet.domain.pet.entity.Blocked;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.BlockedRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -48,10 +49,7 @@ public class BlockedService {
                     .decCode('1')
                     .build();
         } catch (Exception e) {
-            return BlockListResponseDto.builder()
-                    .decCode('0')
-                    .message("Error: "+ e.getMessage())
-                    .build();
+            throw new BadRequestRuntimeException(e.getMessage());
         }
 
     }
@@ -95,7 +93,6 @@ public class BlockedService {
                     .message("Error: "+ e.getMessage())
                     .build();
         }
-
     }
 
     /**
@@ -122,16 +119,11 @@ public class BlockedService {
                     .decCode('1')
                     .build();
         } catch (Exception e) {
-            String errorMessage;
             if (e instanceof IllegalArgumentException || e instanceof IllegalStateException) {
-                errorMessage = "Error: " + e.getMessage();
+                throw new BadRequestRuntimeException(e.getMessage());
             } else {
-                errorMessage = "Error: Unexpected error occurred";
+                throw new BadRequestRuntimeException("Error: Unexpected error occurred");
             }
-            return BlockedResponseDto.builder()
-                    .decCode('0')
-                    .message(errorMessage)
-                    .build();
         }
     }
 
@@ -183,16 +175,10 @@ public class BlockedService {
                     .message("Unblocked a pet successfully")
                     .build();
         } catch (Exception e) {
-            String errorMessage;
-            if (e instanceof IllegalStateException || e instanceof IllegalArgumentException) {
-                return BlockedResponseDto.builder()
-                        .message("error: " + e.getMessage())
-                        .decCode('0')
-                        .build();
+            if (e instanceof IllegalArgumentException || e instanceof IllegalStateException) {
+                throw new BadRequestRuntimeException(e.getMessage());
             } else {
-                return BlockedResponseDto.builder()
-                        .message("Error: Unexpected error occurred")
-                        .build();
+                throw new BadRequestRuntimeException("Error: Unexpected error occurred");
             }
         }
 

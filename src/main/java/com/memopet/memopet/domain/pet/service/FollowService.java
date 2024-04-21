@@ -34,10 +34,7 @@ public class FollowService {
 
         Optional<Pet> pet = petRepository.findById(followListRequestDto.getPetId());
         if (!pet.isPresent()) {
-            return FollowListResponseDto.builder()
-                    .errorDescription("Pet not available or not active.")
-                    .decCode('0')
-                    .build();
+            throw new BadRequestRuntimeException("Pet not available or not active.");
         }
 
         FollowListResponseDto followListResponseDto;
@@ -64,10 +61,7 @@ public class FollowService {
                         .decCode('1').build();
                 break;
             default:
-                followListResponseDto= FollowListResponseDto.builder()
-                        .errorDescription("Unexpected value: " + followListRequestDto.getFollowType())
-                        .decCode('0').build();
-                break;
+                throw new BadRequestRuntimeException("Unexpected value: " + followListRequestDto.getFollowType());
         }
 
         return followListResponseDto;
@@ -84,7 +78,7 @@ public class FollowService {
         if(pet.isEmpty()) throw new BadRequestRuntimeException("팔로잉 펫");
         Pet followingPet = pet.get();
         if (!followRepository.existsByPetIdAndFollowingPetId(petId, followingPet)) {
-            return new FollowResponseDto('0', "Following relation doesn't exist.");
+            throw new BadRequestRuntimeException("Following relationship doesn't exist.");
         }
         followRepository.deleteByPetIdAndFollowingPetId(petId, followingPet);
         return new FollowResponseDto('1', "Unfollowed the pet successfully");
@@ -100,18 +94,18 @@ public class FollowService {
     public FollowResponseDto followAPet(FollowRequestDto followRequestDTO) {
 
         if (followRequestDTO.getPetId().equals(followRequestDTO.getFollowingPetId())) {
-            return new FollowResponseDto('0', "A pet cannot follow itself");
+            throw new BadRequestRuntimeException("A pet cannot follow itself");
 
         }
         Pet followingPet = petRepository.findByIdAndDeletedDateIsNull(followRequestDTO.getFollowingPetId())
                 .orElse(null);
 
         if (followingPet == null) {
-            return new FollowResponseDto('0', "Pet not found");
+            throw new BadRequestRuntimeException("Pet not found");
         }
 
         if (followRepository.existsByPetIdAndFollowingPetId(followRequestDTO.getPetId(), followingPet)) {
-            return new FollowResponseDto('0',"Following relationship already exists");
+            throw new BadRequestRuntimeException("Following relationship already exists");
         }
 
         Follow follow = Follow.builder()
@@ -122,10 +116,10 @@ public class FollowService {
 
         Optional<Pet> pet = petRepository.findById(followRequestDTO.getPetId());
 
-        if(!pet.isPresent()) return new FollowResponseDto('0',"Followed Pet Info not found");
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Followed Pet Info not found");
 
         // 팔로우를 했을때 팔로우를 당한 프로필에 알림을 보낸다.
-        notificationService.saveNotificationInfo(NotificationType.FOLLOW_ALARM,pet.get(), followingPet.getId());
+        notificationService.saveNotificationInfo(NotificationType.FOLLOW_ALARM, pet.get(), followingPet.getId());
 
         return new FollowResponseDto('1', "Followed the pet successfully");
     }

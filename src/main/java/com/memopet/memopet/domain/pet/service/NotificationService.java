@@ -10,6 +10,7 @@ import com.memopet.memopet.domain.pet.repository.EmitterRepository;
 import com.memopet.memopet.domain.pet.repository.EmitterRepositoryImpl;
 import com.memopet.memopet.domain.pet.repository.NotificationRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -80,6 +81,7 @@ public class NotificationService {
         PageRequest pageRequest = PageRequest.of(currentPage-1, dataCounts, Sort.by("createdDate").descending());
         Optional<Pet> pet = petRepository.findById(petId);
 
+        if(pet.isEmpty()) throw new BadRequestRuntimeException("Pet Not Found");
         //slice로 안읽은 50개의 알림을 보내기
         Slice<Notification> slice = notificationRepository.findUnReadNotiByReceiverId(pet.get(), pageRequest);
 
@@ -162,8 +164,6 @@ public class NotificationService {
     }
     @Transactional(readOnly = false)
     public Notification saveNotificationInfo(NotificationType notificationType, Pet pet, Long petIdSend) {
-        Long result = 1L;
-
         Notification notification = Notification.builder().receiver(pet).sender(petIdSend).notificationType(notificationType).readYn(1).build();
         notificationRepository.save(notification);
 
@@ -175,11 +175,9 @@ public class NotificationService {
 
     @Transactional(readOnly = false)
     public NotificationDeleteResponseDto deleteNotificationInfo(long notificationId) {
-        Long result = 1L;
-
         Optional<Notification> notificationOptional = notificationRepository.findById(notificationId);
 
-        if(!notificationOptional.isPresent()) return NotificationDeleteResponseDto.builder().decCode('0').build();
+        if(!notificationOptional.isPresent()) throw new BadRequestRuntimeException("Notification Info Not Found");
 
         Notification notification = notificationOptional.get();
         notification.updateReadYN(0);

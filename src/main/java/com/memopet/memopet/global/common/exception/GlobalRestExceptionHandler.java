@@ -61,6 +61,19 @@ public class GlobalRestExceptionHandler {
 
         return new RestError("UsernameNotFoundException", "User Not Found");
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)   // 400
+    public RestError IllegalArgumentException(HttpServletRequest request, UsernameNotFoundException ex) {
+
+        return new RestError("IllegalArgumentException", ex.getMessage());
+    }
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)   // 400
+    public RestError IllegalStateException(HttpServletRequest request, UsernameNotFoundException ex) {
+
+        return new RestError("IllegalStateException", ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)   // 500
     public RestError internalServerException(HttpServletRequest request, Exception ex) {

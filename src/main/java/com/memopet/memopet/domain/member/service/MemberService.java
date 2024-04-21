@@ -16,6 +16,7 @@ import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -48,7 +49,7 @@ public class MemberService  {
 
         // insert deleted_date, activated = false, deactivation_reason, deactivation_reason_comment
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
 
@@ -86,24 +87,23 @@ public class MemberService  {
             comment.updateDeleteDate(LocalDateTime.now());
         }
 
-        deactivateMemberResponseDto = DeactivateMemberResponseDto.builder().dscCode("1").build();
-        return deactivateMemberResponseDto;
+        return DeactivateMemberResponseDto.builder().dscCode("1").build();
     }
 
     public MemberProfileResponseDto getMemberProfile(String email) {
-        log.info("step1");
+
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
-        log.info("step2");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
+
         Member member = memberByEmail.get();
-        log.info("step3");
+
         return MemberProfileResponseDto.builder().email(member.getEmail()).username(member.getUsername()).phoneNum(member.getPhoneNum()).build();
     }
 
     public MemberInfoResponseDto changeMemberInfo(MemberInfoRequestDto memberInfoRequestDto) {
 
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
-        if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
+        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         memberRepository.UpdateMemberInfo(memberInfoRequestDto);
 

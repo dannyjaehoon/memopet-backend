@@ -10,6 +10,7 @@ import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.LikesRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +33,12 @@ public class LikesService {
         Optional<Pet> myPet = petRepository.findById(likePostORDeleteRequestDto.getMyPetId()); //좋아요를 한 프로필
         Optional<Pet> pet = petRepository.findById(likePostORDeleteRequestDto.getPetId());
 
-        if(!myPet.isPresent()) LikePostORDeleteResponseDto.builder().decCode('0').errorMsg("좋아요를 한 프로필 정보가 없습니다.").build();
-        if(!pet.isPresent()) LikePostORDeleteResponseDto.builder().decCode('0').errorMsg("좋아요를 당한 프로필 정보가 없습니다.").build();
+        if(!myPet.isPresent()) throw new BadRequestRuntimeException("MyPet not found");
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet not found");
 
         Optional<Memory> memoryOptional = memoryRepository.findById(likePostORDeleteRequestDto.getMemoryId());
 
-        if(!memoryOptional.isPresent()) LikePostORDeleteResponseDto.builder().decCode('0').errorMsg("추억 정보가 없습니다.").build();
+        if(!memoryOptional.isPresent()) throw new BadRequestRuntimeException("Memory not found");
         Memory memory = memoryOptional.get();
 
         Optional<Likes> like = likesRepository.findByPetIdAndLikedOwnPetIdAndMemoryID(myPet.get(), pet.get().getId(), memory);
@@ -49,11 +50,9 @@ public class LikesService {
             // 추억 테이블의 좋아요 갯수를 하나 증가시킨다.
             memory.updateLikesCount(memory.getLikeCount()+1);
             // 알림을 보낸다.
-
             notificationService.saveNotificationInfo(NotificationType.LIKE_ALARM,pet.get(),myPet.get().getId());
 
         } else { // 좋아요를 한 상태이면
-
             Optional<Likes> likeOptional = likesRepository.findById(like.get().getId());
             // 좋아요를 없앤다.
             likesRepository.delete(likeOptional.get());

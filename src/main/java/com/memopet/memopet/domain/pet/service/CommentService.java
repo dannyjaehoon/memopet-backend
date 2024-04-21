@@ -6,6 +6,7 @@ import com.memopet.memopet.domain.pet.repository.CommentRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryImageRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,17 +26,14 @@ public class CommentService {
     private final MemoryImageRepository memoryImageRepository;
     private final NotificationService notificationService;
 
-
     @Transactional(readOnly = false)
     public CommentDeleteResponseDto deleteComment(CommentDeleteRequestDto commentDeleteRequestDto) {
-
         CommentDeleteResponseDto commentDeleteResponseDto = CommentDeleteResponseDto.builder().decCode('1').build();
 
         // comment_id로 넘겨받은것에 삭제 날짜
         Optional<Comment> comment = commentRepository.findById(commentDeleteRequestDto.getCommentId());
         Comment comment1 = comment.get();
         comment1.updateDeleteDate(LocalDateTime.now());
-
 
         return commentDeleteResponseDto;
     }
@@ -44,7 +42,7 @@ public class CommentService {
         Optional<Pet> pet = petRepository.findById(commentsRequestDto.getPetId());
 
         PageRequest pageRequest = PageRequest.of(commentsRequestDto.getCurrentPage()-1, commentsRequestDto.getDataCounts());
-        if(!pet.isPresent()) return CommentsResponseDto.builder().build();
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
 
         Page<Comment> page = commentRepository.findMemoryCommentsByCommenterId(pet.get().getId(), pageRequest);
         List<Comment> comments = page.getContent();
@@ -97,24 +95,24 @@ public class CommentService {
         Optional<Pet> pet = petRepository.findById(petId);
         Optional<Memory> memory = null;
 
-        if(!pet.isPresent()) return CommentPostResponseDto.builder().decCode('0').errorMsg("프로필 ID로 조회된 데이터가 없습니다.").build();
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
 
         if(commentGroup == 1) { // 따뜻한 한마디 등록
             // 댓글 그룹이 1일때는 펫 id가 필수
-            if(petId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("댓글 그룹이 따듯한 한마디일때 펫 id 필수입니다.").build();
+            if(petId == null) throw new BadRequestRuntimeException("댓글 그룹이 따듯한 한마디일때 펫 id 필수입니다.");
 
             // 뎁스가 2일때는 부모댓글 id가 필수
-            if(depth == 2 && parentCommentId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("대댓글 등록일때 부모 댓글 id 필수입니다.").build();
+            if(depth == 2 && parentCommentId == null) throw new BadRequestRuntimeException("대댓글 등록일때 부모 댓글 id 필수입니다.");
 
         } else { // 추억댓글 등록
             // 댓글 그룹이 2일때는 메모리 id가 필수
-            if(memoryId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("댓글 그룹이 추억댓글일때 메모리 id 필수입니다.").build();
+            if(memoryId == null) throw new BadRequestRuntimeException("댓글 그룹이 추억댓글일때 메모리 id 필수입니다.");
 
             memory = memoryRepository.findById(memoryId);
 
             // 뎁스가 2일때는 부모댓글 id가 필수
-            if(depth == 2 && parentCommentId == null) return CommentPostResponseDto.builder().decCode('0').errorMsg("대댓글 등록일때 부모 댓글 id 필수입니다.").build();
-            if(commentGroup == 2) if(!memory.isPresent()) return CommentPostResponseDto.builder().decCode('0').errorMsg("추억 ID로 조회된 데이터가 없습니다.").build();
+            if(depth == 2 && parentCommentId == null)  throw new BadRequestRuntimeException("대댓글 등록일때 부모 댓글 id 필수입니다.");
+            if(commentGroup == 2) if(!memory.isPresent())  throw new BadRequestRuntimeException("추억 ID로 조회된 데이터가 없습니다.");
         }
 
         // 알림 달기
@@ -179,7 +177,6 @@ public class CommentService {
         if(petAndMemoryCommentsRequestDto.getCommentGroup() == 1) { // 1: 따뜻한 한마디
             Optional<Pet> pet = petRepository.findById(petAndMemoryCommentsRequestDto.getPetId());
             page = commentRepository.findCommentsByPetId(pet.get(), commentGroup, depth, pageRequest);
-
         } else if(petAndMemoryCommentsRequestDto.getCommentGroup() == 2) { // 2: 추억댓글
             Optional<Memory> memoryOptional = memoryRepository.findById(petAndMemoryCommentsRequestDto.getMemoryId());
             page = commentRepository.findCommentsByMemoryId(memoryOptional.get(),commentGroup, depth, pageRequest);

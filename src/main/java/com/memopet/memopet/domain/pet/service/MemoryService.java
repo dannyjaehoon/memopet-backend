@@ -58,14 +58,14 @@ public class MemoryService {
 
         Optional<Memory> memory1 = memoryRepository.findById(memoryRequestDto.getMemoryId());
 
-        if(!memory1.isPresent()) return MemoryResponseDto.builder().build();
+        if(!memory1.isPresent()) throw new BadRequestRuntimeException("Memory not found");
         Memory memory = memory1.get();
 
         // 차단된 프로필 목록이 있을때
         if(petList != null) {
             //차단된 계정중에서 해당 추억을 소유를 했다면 노출하면안됨
             for(Blocked blocked : petList) {
-                if(blocked.getBlockedPet().getId() == memory.getPet().getId()) return MemoryResponseDto.builder().build();
+                if(blocked.getBlockedPet().getId() == memory.getPet().getId()) throw new BadRequestRuntimeException("User Is Blocked");
             }
         }
 
@@ -86,12 +86,12 @@ public class MemoryService {
                 }
             }
             // 자기자신 또는 친구가 없다면 빈값으로 보내줌
-            return MemoryResponseDto.builder().build();
+            throw new BadRequestRuntimeException("Memory is not supposed to expose to the user");
         }
 
         // 추억 공개 제한이 비공개
         if(memory.getAudience().equals(Audience.ME) && memory.getPet().getId() != memoryRequestDto.getPetId()) {
-            return MemoryResponseDto.builder().build();
+            throw new BadRequestRuntimeException("Memory is not supposed to expose to the user");
         }
 
         return createMemory(memory);
@@ -136,18 +136,17 @@ public class MemoryService {
      * @return
      */
     public LikedMemoryResponseDto findLikedMemoriesByPetId(LikedMemoryRequestDto likedMemoryRequestDto) {
-
         List<Long> memoryIds = new ArrayList<>();
         List<MemoryResponseDto> memoriesContent = new ArrayList<>();
 
         Optional<Pet> pet = petRepository.findById(likedMemoryRequestDto.getPetId());
 
-        if(!pet.isPresent()) return LikedMemoryResponseDto.builder().hasNext(false).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
 
         // 내가 좋아요한 정보를 가져온다.
         List<Likes> likesList = likesRepository.findLikesByPetId(pet.get().getId());
 
-        if(likesList == null) return LikedMemoryResponseDto.builder().hasNext(false).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
+        if(likesList == null) throw new BadRequestRuntimeException("Like info Not Found");
 
         Queue<MemoryImage> q = new LinkedList<>();
 
@@ -205,9 +204,7 @@ public class MemoryService {
 
         List<MemoryResponseDto> memoriesContent = new ArrayList<>();
 
-        if(!pet.isPresent()) {
-            return RecentMainMemoriesResponseDto.builder().totalPage(0).currentPage(0).dataCounts(0).memoryResponseDto(memoriesContent).build();
-        }
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
 
         // 사용자가 차단하거나 사용자를 차단한 펫 id 가져오기
         HashMap<Long, Integer> blockMap = blockedService.findBlockList(recentMainMemoriesRequestDto.getPetId());
@@ -262,13 +259,13 @@ public class MemoryService {
         MonthMemoriesResponseDto monthMemoriesResponseDto;
         // pet id로 펫 정보를 가져옴
         Optional<Pet> pet = petRepository.findById(monthMemoriesRequestDto.getPetId());
-        if(!pet.isPresent()) return MonthMemoriesResponseDto.builder().build();
+        if(!pet.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
 
         Pet petInfo = pet.get();
 
         // 프로필 소유자가 사용자를 차단한 경우 노출 x
         if(blockedRepository.existsByPetIds(monthMemoriesRequestDto.getPetId(), monthMemoriesRequestDto.getMyPetId())) {
-            return MonthMemoriesResponseDto.builder().build();
+            throw new BadRequestRuntimeException("Memory's owner blocks the user");
         }
 
         // yearMonth로 null 이면 최신 추억을 찾아 해당 달의 정보를 가져옴
@@ -278,7 +275,7 @@ public class MemoryService {
         LocalDateTime lastDayOfMonth;
         if(yearMonth == null) {
             Optional<Memory> theRecentMomory = memoryRepository.findTheRecentMomoryByPetId(petInfo.getId());
-            if(theRecentMomory.get() == null) return MonthMemoriesResponseDto.builder().build();
+            if(theRecentMomory.get() == null) throw new BadRequestRuntimeException("Recent Memory Not Found");
 
             Memory memory = theRecentMomory.get();
             LocalDateTime recentPostedDate = memory.getCreatedDate();
@@ -335,7 +332,7 @@ public class MemoryService {
         Long memoryId = memoryDeleteRequestDto.getMemoryId();
         Optional<Memory> memoryOptional = memoryRepository.findById(memoryId);
         MemoryDeleteResponseDto memoryDeleteResponseDto;
-        if(!memoryOptional.isPresent()) return memoryDeleteResponseDto = MemoryDeleteResponseDto.builder().decCode('0').errorMsg("해당 memory id로 조회되는 데이터가 없습니다.").build();
+        if(!memoryOptional.isPresent()) throw new BadRequestRuntimeException("Memory Not Found");
         Memory memory = memoryOptional.get();
         memory.updateDeleteDate(LocalDateTime.now());
 
@@ -355,7 +352,7 @@ public class MemoryService {
     public MemoryUpdateResponseDto updateMemoryInfo(MemoryUpdateRequestDto memoryUpdateRequestDto, List<MultipartFile> files) {
 
         Optional<Memory> memoryOptional = memoryRepository.findById(memoryUpdateRequestDto.getMemoryId());
-        if(!memoryOptional.isPresent()) return MemoryUpdateResponseDto.builder().decCode('0').errorMsg("해당 추억 ID로 조회된 데이터가 없습니다.").build();
+        if(!memoryOptional.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
         Memory memory = memoryOptional.get();
 
         memoryRepository.updateMemoryInfo(memoryUpdateRequestDto);
@@ -396,7 +393,7 @@ public class MemoryService {
     public MemoryPostResponseDto postMemoryAndMemoryImages(List<MultipartFile> files, MemoryPostRequestDto memoryPostRequestDTO) {
         Memory memory = createAMemory(memoryPostRequestDTO);
         if (memory == null) {
-            throw new BadRequestRuntimeException("No Memory Info");
+            throw new BadRequestRuntimeException("Memory Not Found");
         }
 
         if (!createMemoryImages(memory, files)) {

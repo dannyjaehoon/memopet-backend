@@ -15,6 +15,7 @@ import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = false)
+@Slf4j
 public class MemberService  {
 
     private final MemberRepository memberRepository;
@@ -89,11 +91,12 @@ public class MemberService  {
     }
 
     public MemberProfileResponseDto getMemberProfile(String email) {
+        log.info("step1");
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
         if(memberByEmail.isEmpty()) throw new BadRequestRuntimeException("User Not Found");
-
+        log.info("step2");
         Member member = memberByEmail.get();
-
+        log.info("step3");
         return MemberProfileResponseDto.builder().email(member.getEmail()).username(member.getUsername()).phoneNum(member.getPhoneNum()).build();
     }
 

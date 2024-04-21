@@ -4,6 +4,7 @@ import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.member.service.AuthService;
 import com.memopet.memopet.domain.member.service.LoginService;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.config.UserInfoConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
@@ -40,6 +41,6 @@ public class JwtTokenUtils {
         return memberRepository
                 .findMemberByEmail(email)
                 .map(UserInfoConfig::new)
-                .orElseThrow(()-> new UsernameNotFoundException("UserEmail: "+email+" does not exist"));
+                .orElseThrow(()-> new BadRequestRuntimeException("UserEmail: "+email+" does not exist"));
     }
 }

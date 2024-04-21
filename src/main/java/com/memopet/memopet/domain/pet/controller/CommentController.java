@@ -5,54 +5,74 @@ import com.memopet.memopet.domain.member.dto.DeactivateMemberResponseDto;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.service.CommentService;
 import com.memopet.memopet.domain.pet.service.MemoryService;
+import com.memopet.memopet.global.common.dto.RestResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class CommentController {
     private final CommentService commentService;
+
     // 추억 댓글 다건 조회
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/memory-comments")
-    public ResponseEntity<CommentsResponseDto> findMemoryComments(CommentsRequestDto commentsRequestDto) {
+    public RestResult findMemoryComments(CommentsRequestDto commentsRequestDto) {
 
         CommentsResponseDto commentsResponseDto = commentService.findMemoryCommentsByPetId(commentsRequestDto);
-        return new ResponseEntity<>(commentsResponseDto, HttpStatus.OK);
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("findMemoryCommentsResponse", commentsResponseDto);
+
+        return new RestResult(dataMap);
     }
 
 
     // 댓글 단건 삭제
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @DeleteMapping("/comment")
-    public ResponseEntity<CommentDeleteResponseDto> deleteMemoryComment(@RequestBody CommentDeleteRequestDto commentDeleteRequestDto) {
-
+    public RestResult deleteMemoryComment(@RequestBody CommentDeleteRequestDto commentDeleteRequestDto) {
         CommentDeleteResponseDto commentDeleteResponseDto = commentService.deleteComment(commentDeleteRequestDto);
-        return new ResponseEntity<>(commentDeleteResponseDto, HttpStatus.OK);
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("commentDeletionResponse", commentDeleteResponseDto);
+
+        return new RestResult(dataMap);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PostMapping("/comment")
-    public ResponseEntity<CommentPostResponseDto> postAComment(@RequestBody CommentPostRequestDto commentPostResponseDto ) {
+    public RestResult postAComment(@RequestBody CommentPostRequestDto commentPostResponseDto ) {
 
         CommentPostResponseDto commentsResponseDto  = commentService.PostAComment(commentPostResponseDto);
-        return new ResponseEntity<>(commentsResponseDto, HttpStatus.OK);
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("postCommentResponse", commentsResponseDto);
+
+        return new RestResult(dataMap);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping("/comment")
-    public ResponseEntity<WarmCommentUpdateResponseDto> updateComment(@RequestBody WarmCommentUpdateRequestDto warmCommentUpdateRequestDto ) {
+    public RestResult updateComment(@RequestBody WarmCommentUpdateRequestDto warmCommentUpdateRequestDto ) {
 
         WarmCommentUpdateResponseDto warmCommentUpdateResponseDto  = commentService.updateWarmComment(warmCommentUpdateRequestDto);
-        return new ResponseEntity<>(warmCommentUpdateResponseDto, HttpStatus.OK);
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("warmCommentUpdateResponse", warmCommentUpdateResponseDto);
+
+        return new RestResult(dataMap);
     }
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/comments")
-    public ResponseEntity<PetAndMemoryCommentsResponseDto> findComments(PetAndMemoryCommentsRequestDto petAndMemoryCommentsRequestDto) {
+    public RestResult findComments(PetAndMemoryCommentsRequestDto petAndMemoryCommentsRequestDto) {
         PetAndMemoryCommentsResponseDto petAndMemoryCommentsResponseDto = null;
         if(petAndMemoryCommentsRequestDto.getDepth() == 1) { // 댓글 조회
             petAndMemoryCommentsResponseDto = commentService.findComments(petAndMemoryCommentsRequestDto);
@@ -60,6 +80,9 @@ public class CommentController {
             petAndMemoryCommentsResponseDto = commentService.findReply(petAndMemoryCommentsRequestDto);
         }
 
-        return new ResponseEntity<>(petAndMemoryCommentsResponseDto, HttpStatus.OK);
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("findComments", petAndMemoryCommentsResponseDto);
+
+        return new RestResult(dataMap);
     }
 }

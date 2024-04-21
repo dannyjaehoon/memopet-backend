@@ -4,6 +4,8 @@ package com.memopet.memopet.domain.pet.controller;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.service.MemoryService;
 import com.memopet.memopet.domain.pet.service.PetService;
+import com.memopet.memopet.global.common.dto.RestResult;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -12,7 +14,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Validated
@@ -25,16 +29,24 @@ public class MemoryController {
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/memory")
-    public MemoryResponseDto memory(MemoryRequestDto memoryRequestDto) {
+    public RestResult memory(MemoryRequestDto memoryRequestDto) {
         MemoryResponseDto memoryResponseDto = memoryService.findMemoryByMemoryId(memoryRequestDto);
-        return memoryResponseDto;
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("memoryInfoResponse", memoryResponseDto);
+
+        return new RestResult(dataMap);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/liked-memories")
-    public LikedMemoryResponseDto likedMemories(LikedMemoryRequestDto likedMemoryRequestDto) {
+    public RestResult likedMemories(LikedMemoryRequestDto likedMemoryRequestDto) {
         LikedMemoryResponseDto likedMemoryResponseDto = memoryService.findLikedMemoriesByPetId(likedMemoryRequestDto);
-        return likedMemoryResponseDto;
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("likedMemoryInfoResponse", likedMemoryResponseDto);
+
+        return new RestResult(dataMap);
     }
 
     /**
@@ -42,41 +54,59 @@ public class MemoryController {
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PostMapping(value = "/memory", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public MemoryPostResponseDto postAMemory(@RequestPart List<MultipartFile> files, @Valid @RequestPart MemoryPostRequestDto memoryPostRequestDTO) {
-        if (files.size() > 10) {
-            return MemoryPostResponseDto.builder().decCode('0').build();
+    public RestResult postAMemory(@RequestPart List<MultipartFile> files, @Valid @RequestPart MemoryPostRequestDto memoryPostRequestDTO) {
+        if (files.size() > 4) {
+            throw new BadRequestRuntimeException("No more than 4 images");
         }
 
-        boolean isPosted = memoryService.postMemoryAndMemoryImages(files, memoryPostRequestDTO);
-        return MemoryPostResponseDto.builder().decCode(isPosted ? '1' : '0').build();
+        MemoryPostResponseDto memoryPostResponseDto = memoryService.postMemoryAndMemoryImages(files, memoryPostRequestDTO);
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("postMemoryResponse", memoryPostResponseDto);
+
+        return new RestResult(dataMap);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/recent-memories")
-    public RecentMainMemoriesResponseDto mainMemories(RecentMainMemoriesRequestDto recentMainMemoriesRequestDto) {
+    public RestResult mainMemories(RecentMainMemoriesRequestDto recentMainMemoriesRequestDto) {
         RecentMainMemoriesResponseDto recentMainMemoriesResponseDto = memoryService.findMainMemoriesByPetId(recentMainMemoriesRequestDto);
-        return recentMainMemoriesResponseDto;
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("recentMemoryInfoResponse", recentMainMemoriesResponseDto);
+
+        return new RestResult(dataMap);
     }
 
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/month-memories")
-    public MonthMemoriesResponseDto monthMemories(MonthMemoriesRequestDto monthMemoriesRequestDto) {
+    public RestResult monthMemories(MonthMemoriesRequestDto monthMemoriesRequestDto) {
         MonthMemoriesResponseDto monthMemoriesResponseDto = memoryService.findMonthMemoriesByPetId(monthMemoriesRequestDto);
-        return monthMemoriesResponseDto;
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("monthMemoryInfoResponse", monthMemoriesResponseDto);
+
+        return new RestResult(dataMap);
+
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @DeleteMapping("/memory")
-    public MemoryDeleteResponseDto deleteMemory(@RequestBody MemoryDeleteRequestDto memoryDeleteRequestDto) throws Exception {
+    public RestResult deleteMemory(@RequestBody MemoryDeleteRequestDto memoryDeleteRequestDto) throws Exception {
         MemoryDeleteResponseDto memoryDeleteResponseDto  = memoryService.deleteMemory(memoryDeleteRequestDto);
-        return memoryDeleteResponseDto;
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("memoryDeletionResponse", memoryDeleteResponseDto);
+
+        return new RestResult(dataMap);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping(value="/memory")
-    public MemoryUpdateResponseDto updateMemory(@RequestPart List<MultipartFile> files, @RequestPart(value = "memoryUpdateRequestDto") @Valid MemoryUpdateRequestDto memoryUpdateRequestDto) {
+    public RestResult updateMemory(@RequestPart List<MultipartFile> files, @RequestPart(value = "memoryUpdateRequestDto") @Valid MemoryUpdateRequestDto memoryUpdateRequestDto) {
         MemoryUpdateResponseDto memoryUpdateResponseDto = memoryService.updateMemoryInfo(memoryUpdateRequestDto, files);
-        return memoryUpdateResponseDto;
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("memoryUpdateResponse", memoryUpdateResponseDto);
+
+        return new RestResult(dataMap);
     }
 }

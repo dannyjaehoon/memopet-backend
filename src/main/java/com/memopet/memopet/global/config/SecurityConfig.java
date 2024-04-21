@@ -70,6 +70,7 @@ public class SecurityConfig {
                 .userDetailsService(loginService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> {
+                    log.error("signInSecurityFilterChain :");
                     ex.authenticationEntryPoint(customFailureHandler);
                     ex.accessDeniedHandler(customAccessDeniedHandler);})
                 .httpBasic(withDefaults())
@@ -108,6 +109,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAccessTokenFilter(rsaKeyRecord, jwtTokenUtils), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> {
+                    log.error("apiSecurityFilterChain :");
                     log.error("[SecurityConfig:apiSecurityFilterChain] Exception due to :{}",ex);
                     ex.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint());
                     ex.accessDeniedHandler(new BearerTokenAccessDeniedHandler());

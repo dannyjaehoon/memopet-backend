@@ -3,6 +3,7 @@ package com.memopet.memopet.domain.pet.service;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
+import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -392,17 +393,16 @@ public class MemoryService {
     /**
      * 추억 생성
      */
-    public boolean postMemoryAndMemoryImages(List<MultipartFile> files, MemoryPostRequestDto memoryPostRequestDTO) {
+    public MemoryPostResponseDto postMemoryAndMemoryImages(List<MultipartFile> files, MemoryPostRequestDto memoryPostRequestDTO) {
         Memory memory = createAMemory(memoryPostRequestDTO);
         if (memory == null) {
-            return false;
+            throw new BadRequestRuntimeException("No Memory Info");
         }
 
         if (!createMemoryImages(memory, files)) {
             memoryRepository.deleteById(memory.getId());
-            return false;
         }
-        return true;
+        return MemoryPostResponseDto.builder().decCode('1').build();
     }
 
 

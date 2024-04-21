@@ -6,11 +6,15 @@ import com.memopet.memopet.domain.pet.dto.NotificationDeleteResponseDto;
 import com.memopet.memopet.domain.pet.dto.NotificationsRequestDto;
 import com.memopet.memopet.domain.pet.dto.NotificationsResponseDto;
 import com.memopet.memopet.domain.pet.service.NotificationService;
+import com.memopet.memopet.global.common.dto.RestResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,13 +23,15 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @DeleteMapping("/notification")
-    public NotificationDeleteResponseDto deleteNotification(@RequestBody NotificationDeleteRequestDto notificationDeleteRequestDto) {
+    public RestResult cancelNotification(@RequestBody NotificationDeleteRequestDto notificationDeleteRequestDto) {
         NotificationDeleteResponseDto notificationDeleteResponseDto = notificationService.deleteNotificationInfo(notificationDeleteRequestDto.getNotificationId());
 
-        return notificationDeleteResponseDto;
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("notificationCancelResponse", notificationDeleteResponseDto);
+
+        return new RestResult(dataMap);
     }
 
     //@PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
@@ -41,10 +47,14 @@ public class NotificationController {
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/notification")
-    public NotificationsResponseDto findUnReadNotifications(NotificationsRequestDto notificationsRequestDto) {
+    public RestResult findUnReadNotifications(NotificationsRequestDto notificationsRequestDto) {
 
         NotificationsResponseDto notificationsResponseDto = notificationService.createNotificationsSlicePagable(notificationsRequestDto.getPetId(), notificationsRequestDto.getCurrentPage(), notificationsRequestDto.getDataCounts());
 
-        return notificationsResponseDto;
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("findNotificationsResponse", notificationsResponseDto);
+
+        return new RestResult(dataMap);
     }
 }

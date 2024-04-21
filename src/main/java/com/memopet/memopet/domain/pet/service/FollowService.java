@@ -93,6 +93,9 @@ public class FollowService {
 
     /**
      * 팔로우
+     * tip: 팔로우를 했을때 팔로우를 당한 프로필에 알림을 보내는데, 이때 알림을 보내는건 좋은데, 알림을 받는 사람이 누구인지 알수가 없는데, 이부분은 어떻게 처리하는지 궁금합니다.
+     * tip: 누가 팔로우하는지를 알 필요가 없는걸까요?
+     * tip: 만약 로그인한 사람이 팔로워 라면 여기로 Member 를 넘겨야 합니다. 다른 메소드들도 마찬가지인데요 Member 를 ArgumentResolver 를 통해서 받아오는게 좋습니다.
      */
     public FollowResponseDto followAPet(FollowRequestDto followRequestDTO) {
 

@@ -74,7 +74,7 @@ public class PetController {
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping("/profile")
-    public RestResult findPets(@RequestPart(value="back_img_url") MultipartFile backImgUrl, @RequestPart(value="pet_profile_url") MultipartFile petProfileUrl, @RequestPart(value = "petUpdateInfoRequestDto") PetUpdateInfoRequestDto petUpdateInfoRequestDto) throws Exception {
+    public RestResult findPets(@RequestPart(value="backImgUrl") MultipartFile backImgUrl, @RequestPart(value="petProfileUrl") MultipartFile petProfileUrl, @RequestPart(value = "petUpdateInfoRequestDto") PetUpdateInfoRequestDto petUpdateInfoRequestDto) throws Exception {
         PetUpdateInfoResponseDto petUpdateInfoResponseDto  = petService.updatePetInfo(backImgUrl, petProfileUrl, petUpdateInfoRequestDto);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();

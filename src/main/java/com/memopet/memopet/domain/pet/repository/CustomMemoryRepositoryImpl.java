@@ -37,8 +37,8 @@ public class CustomMemoryRepositoryImpl implements CustomMemoryRepository{
 
         JPAUpdateClause clause  = queryFactory
                 .update(memory);
-                if(memoryDescriptionEq(memoryUpdateRequestDto.getMemoryDescription()) != null) {
-                    clause.set(memory.memoryDescription, memoryUpdateRequestDto.getMemoryDescription());
+                if(memoryDescriptionEq(memoryUpdateRequestDto.getMemoryDesc()) != null) {
+                    clause.set(memory.memoryDescription, memoryUpdateRequestDto.getMemoryDesc());
                 }
                 if(memoryDateEq(memoryUpdateRequestDto.getMemoryDate()) != null) {
                     clause.set(memory.memoryDate, memoryUpdateRequestDto.getMemoryDate());

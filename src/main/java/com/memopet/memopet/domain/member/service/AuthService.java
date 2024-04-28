@@ -39,7 +39,7 @@ import java.util.Optional;
 public class AuthService  {
 
 
-    public static final int ACCESSTOKENEXPIRYTIME = 1;
+    public static final int ACCESSTOKENEXPIRYTIME = 3;
     public static final int REFRESHTOKENEXPIRYTIME = 15 * 24 * 60 * 60;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -111,7 +111,7 @@ public class AuthService  {
             return  LoginResponseDto.builder()
                                     .username(savedmember.getUsername())
                                     .userStatus(savedmember.getMemberStatus())
-                                    .userRole(savedmember.getRoles() == "ROLE_USER" ? "GU" : "SA")
+                                    .userRole(savedmember.getRoles().equals("ROLE_USER") ? "GU" : "SA")
                                     .loginFailCount(savedmember.getLoginFailCount())
                                     .accessToken(accessToken)
                                     .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)

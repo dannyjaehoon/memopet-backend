@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 
-@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -53,13 +52,9 @@ public class MemoryController {
      * 추억 생성
      */
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @PostMapping(value = "/memory", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public RestResult postAMemory(@RequestPart List<MultipartFile> files, @Valid @RequestPart MemoryPostRequestDto memoryPostRequestDTO) {
-        if (files.size() > 4) {
-            throw new BadRequestRuntimeException("No more than 4 images");
-        }
-
-        MemoryPostResponseDto memoryPostResponseDto = memoryService.postMemoryAndMemoryImages(files, memoryPostRequestDTO);
+    @PostMapping(value = "/memory")
+    public RestResult postAMemory(@RequestBody MemoryPostRequestDto memoryPostRequestDTO) {
+        MemoryPostResponseDto memoryPostResponseDto = memoryService.postMemoryAndMemoryImages(memoryPostRequestDTO);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("postMemoryResponse", memoryPostResponseDto);
@@ -86,7 +81,6 @@ public class MemoryController {
         dataMap.put("monthMemoryInfoResponse", monthMemoriesResponseDto);
 
         return new RestResult(dataMap);
-
     }
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
@@ -102,8 +96,8 @@ public class MemoryController {
 
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping(value="/memory")
-    public RestResult updateMemory(@RequestPart List<MultipartFile> files, @RequestPart(value = "memoryUpdateRequestDto") @Valid MemoryUpdateRequestDto memoryUpdateRequestDto) {
-        MemoryUpdateResponseDto memoryUpdateResponseDto = memoryService.updateMemoryInfo(memoryUpdateRequestDto, files);
+    public RestResult updateMemory(@RequestBody MemoryUpdateRequestDto memoryUpdateRequestDto) {
+        MemoryUpdateResponseDto memoryUpdateResponseDto = memoryService.updateMemoryInfo(memoryUpdateRequestDto);
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("memoryUpdateResponse", memoryUpdateResponseDto);
 

@@ -1,4 +1,4 @@
-package com.memopet.memopet.domain.oauth2;
+package com.memopet.memopet.domain.oauth2.controller;
 
 
 import com.memopet.memopet.domain.member.dto.LoginResponseDto;

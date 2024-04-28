@@ -332,7 +332,7 @@ public class MemoryService {
         Long memoryId = memoryDeleteRequestDto.getMemoryId();
         Optional<Memory> memoryOptional = memoryRepository.findById(memoryId);
         MemoryDeleteResponseDto memoryDeleteResponseDto;
-        if(!memoryOptional.isPresent()) throw new BadRequestRuntimeException("Memory Not Found");
+        if(memoryOptional.isEmpty()) throw new BadRequestRuntimeException("Memory Not Found");
         Memory memory = memoryOptional.get();
         memory.updateDeleteDate(LocalDateTime.now());
 
@@ -349,68 +349,24 @@ public class MemoryService {
     }
 
     @Transactional(readOnly = false)
-    public MemoryUpdateResponseDto updateMemoryInfo(MemoryUpdateRequestDto memoryUpdateRequestDto, List<MultipartFile> files) {
+    public MemoryUpdateResponseDto updateMemoryInfo(MemoryUpdateRequestDto memoryUpdateRequestDto) {
 
         Optional<Memory> memoryOptional = memoryRepository.findById(memoryUpdateRequestDto.getMemoryId());
-        if(!memoryOptional.isPresent()) throw new BadRequestRuntimeException("Pet Not Found");
-        Memory memory = memoryOptional.get();
+        if(memoryOptional.isEmpty()) throw new BadRequestRuntimeException("Pet Not Found");
 
         memoryRepository.updateMemoryInfo(memoryUpdateRequestDto);
 
-        if(Objects.nonNull(memoryUpdateRequestDto.getMemoryImageUrlId1())) {
-            Optional<MemoryImage> memoryImage1 = memoryImageRepository.findById(memoryUpdateRequestDto.getMemoryImageUrlId1());
-            if(memoryImage1.isPresent()) memoryImageRepository.delete(memoryImage1.get());
-        }
-
-        if(Objects.nonNull(memoryUpdateRequestDto.getMemoryImageUrlId2())) {
-            Optional<MemoryImage> memoryImage2 = memoryImageRepository.findById(memoryUpdateRequestDto.getMemoryImageUrlId2());
-            if(memoryImage2.isPresent())  memoryImageRepository.delete(memoryImage2.get());
-        }
-
-        if(Objects.nonNull(memoryUpdateRequestDto.getMemoryImageUrlId3())) {
-            Optional<MemoryImage> memoryImage3 = memoryImageRepository.findById(memoryUpdateRequestDto.getMemoryImageUrlId3());
-            if(memoryImage3.isPresent()) memoryImageRepository.delete(memoryImage3.get());
-        }
-
-
-        List<MemoryImage> memoryImages = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            String storedMemoryImgUrl = s3Uploader.uploadFileToS3(file, "static/memory-image");
-            MemoryImage memoryImage = getMemoryImage(memory, file, storedMemoryImgUrl);
-
-            memoryImages.add(memoryImage);
-        }
-        if(memoryImages.size() > 0) {
-            memoryImageRepository.saveAll(memoryImages);
-        }
         return MemoryUpdateResponseDto.builder().decCode('1').errorMsg("수정 완료됬습니다.").build();
     }
 
     /**
      * 추억 생성
      */
-    public MemoryPostResponseDto postMemoryAndMemoryImages(List<MultipartFile> files, MemoryPostRequestDto memoryPostRequestDTO) {
-        Memory memory = createAMemory(memoryPostRequestDTO);
-        if (memory == null) {
-            throw new BadRequestRuntimeException("Memory Not Found");
-        }
-
-        if (!createMemoryImages(memory, files)) {
-            memoryRepository.deleteById(memory.getId());
-        }
-        return MemoryPostResponseDto.builder().decCode('1').build();
-    }
-
-
-    /**
-     * (추억 생성)-추억 글
-     */
-    public Memory createAMemory(MemoryPostRequestDto memoryPostRequestDTO) {
+    public MemoryPostResponseDto postMemoryAndMemoryImages(MemoryPostRequestDto memoryPostRequestDTO) {
         Pet pet = petRepository.findById(memoryPostRequestDTO.getPetId())
-                .orElseThrow(() -> new EntityNotFoundException("Pet not found with id: " + memoryPostRequestDTO.getPetId()));
-
+                .orElseThrow(() -> new BadRequestRuntimeException("Pet not found with id: " + memoryPostRequestDTO.getPetId()));
         Audience audience = memoryPostRequestDTO.getAudience().equals("1") ? Audience.ALL : memoryPostRequestDTO.getAudience().equals("2") ? Audience.FRIEND : Audience.ME;
+
         Memory memory = Memory.builder()
                 .pet(pet)
                 .title(memoryPostRequestDTO.getMemoryTitle())
@@ -418,70 +374,24 @@ public class MemoryService {
                 .memoryDescription(memoryPostRequestDTO.getMemoryDesc())
                 .audience(audience)
                 .build();
-        return memoryRepository.save(memory);
-    }
 
-    /**
-     * (추억 생성)-사진
-     */
-    public boolean createMemoryImages(Memory memory, List<MultipartFile> files) {
-        List<MemoryImage> images = new ArrayList<>();
-        try {
-            for (MultipartFile file : files) {
-                String storedMemoryImgUrl = s3Uploader.uploadFileToS3(file, "static/memory-image");
-                MemoryImage memoryImage = getMemoryImage(memory, file, storedMemoryImgUrl);
-
-                images.add(memoryImage);
-            }
-
-            if (images.size() == files.size()) {
-                memoryImageRepository.saveAll(images);
-                return true;
-            } else {
-                throw new RuntimeException("Not all memory images were created successfully");
-            }
-        } catch (Exception e) {
-            cleanupAndThrowException(images, e);
-            return false; // Return false to indicate that the operation failed
+        Memory savedMemory = memoryRepository.save(memory);
+        List<MemoryImage> memoryImages = new ArrayList<>();
+        for(MemoryImageUploadedDto m :memoryPostRequestDTO.getMemoryImageInfo()) {
+            memoryImages.add(MemoryImage.builder()
+                                        .memory(memory)
+                                        .imageUrl(m.getImageUrl())
+                                        .imageFormat(m.getImageFormat())
+                                        .imageSize(m.getImageSize())
+                                        .imageLogicalName(UUID.randomUUID().toString())
+                                        .imagePhysicalName(m.getImagePhysicalName())
+                                        .build());
         }
+
+        memoryImageRepository.saveAll(memoryImages);
+        return MemoryPostResponseDto.builder().decCode('1').build();
     }
 
-    /**
-     * (추억 생성)-중간에 오류 나면 생성 중이던 사진을 지운다 (db와 s3)
-     */
-    private void cleanupAndThrowException(List<MemoryImage> images, Exception originalException) {
-        // If there was an issue saving images, delete uploaded files from S3
-        for (MemoryImage image : images) {
-            try {
-                s3Uploader.deleteS3(image.getImageUrl());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        // Remove any associated records from the database
-        memoryImageRepository.deleteAll(images);
-
-        // Throw original exception with additional context
-        throw new RuntimeException("Error occurred while creating memory images", originalException);
-    }
-
-    /**
-     * (추억 생성)-사진을 DB에 저장 한다.
-     */
-    private static MemoryImage getMemoryImage(Memory memory, MultipartFile file, String storedMemoryImgUrl) {
-        try {
-            return MemoryImage.builder()
-                    .imageUrl(storedMemoryImgUrl)
-                    .imageFormat(file.getContentType())
-                    .memory(memory)
-                    .imageSize(String.valueOf(file.getSize()))
-                    .imageLogicalName(UUID.randomUUID().toString())
-                    .imagePhysicalName(file.getOriginalFilename())
-                    .build();
-        } catch (Exception exp) {
-            throw new RuntimeException("Error creating MemoryImage Builder", exp);
-        }
-    }
 
     /**
      * beginningOfMonth

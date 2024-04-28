@@ -13,12 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MemoryUpdateRequestDto {
 
-    private Long memoryImageUrlId1;
-
-    private Long memoryImageUrlId2;
-
-    private Long memoryImageUrlId3;
-
     private Long memoryId;
 
     private Long petId;
@@ -27,7 +21,7 @@ public class MemoryUpdateRequestDto {
 
     private Integer openRestrictionLevel;
 
-    private String memoryDescription;
+    private String memoryDesc;
 
     private LocalDate memoryDate;
 

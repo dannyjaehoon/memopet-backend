@@ -115,4 +115,8 @@ public class MemberService  {
 
         return MemberInfoResponseDto.builder().username(savedmember.getUsername()).phoneNum(savedmember.getPhoneNum()).email(savedmember.getEmail()).build();
     }
+
+    public Optional<Member> getMemberByEmail(String email) {
+        return memberRepository.findMemberByEmail(email);
+    }
 }

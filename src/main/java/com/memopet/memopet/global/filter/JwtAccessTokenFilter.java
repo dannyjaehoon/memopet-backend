@@ -54,7 +54,6 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
             final String token = authHeader.substring(7);
             final Jwt jwtToken = jwtDecoder.decode(token);
 
-
             final String userName = jwtTokenUtils.getUserName(jwtToken);
 
             if(!userName.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null){

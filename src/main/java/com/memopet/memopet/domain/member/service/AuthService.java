@@ -39,7 +39,7 @@ import java.util.Optional;
 public class AuthService  {
 
 
-    public static final int ACCESSTOKENEXPIRYTIME = 3 * 60;
+    public static final int ACCESSTOKENEXPIRYTIME = 1;
     public static final int REFRESHTOKENEXPIRYTIME = 15 * 24 * 60 * 60;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -68,7 +68,7 @@ public class AuthService  {
             Authentication authentication = createAuthenticationObject(member);
 
             // Generate a JWT token
-            String accessToken = jwtTokenGenerator.generateAccessToken(authentication, Long.valueOf(ACCESSTOKENEXPIRYTIME));
+            String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
             String refreshToken = jwtTokenGenerator.generateRefreshToken(authentication);
 
             Member savedmember = memberRepository.save(member);
@@ -101,7 +101,7 @@ public class AuthService  {
                         throw new BadRequestRuntimeException("USER NOT FOUND");
                     });
 
-            String accessToken = jwtTokenGenerator.generateAccessToken(authentication, Long.valueOf(ACCESSTOKENEXPIRYTIME));
+            String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
             String refreshToken = jwtTokenGenerator.generateRefreshToken(authentication);
 
             createRefreshTokenCookie(response,refreshToken);
@@ -159,12 +159,12 @@ public class AuthService  {
         Authentication authentication =  createAuthenticationObject(savedmember);
 
         //Use the authentication object to generate new accessToken as the Authentication object that we will have may not contain correct role.
-        String accessToken = jwtTokenGenerator.generateAccessToken(authentication, Long.valueOf(ACCESSTOKENEXPIRYTIME));
+        String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
 
         return  LoginResponseDto.builder()
                                 .username(savedmember.getUsername())
                                 .userStatus(savedmember.getMemberStatus())
-                                .userRole(savedmember.getRoles() == "ROLE_USER" ? "GU" : "SA")
+                                .userRole(savedmember.getRoles().equals("ROLE_USER") ? "GU" : "SA")
                                 .loginFailCount(savedmember.getLoginFailCount())
                                 .accessToken(accessToken)
                                 .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)

@@ -132,7 +132,7 @@ public class EmailService {
 
     public EmailAuthResponseDto checkVerificationCode(EmailAuthRequestDto emailAuthRequestDto) {
         log.info("email : " + emailAuthRequestDto.getEmail());
-        log.info("code : " + emailAuthRequestDto.getCode());
+        log.info("code : " + emailAuthRequestDto.getConfirmCode());
 
         //String codeSaved = redisUtil.getValues(email);
         Optional<VerificationStatusEntity> verificationStatus = vertificationStatusRepository.findById(emailAuthRequestDto.getVerificationStatusId());
@@ -147,7 +147,7 @@ public class EmailService {
         if(LocalDateTime.now().isAfter(verificationStatusEntity.getExpiredAt())) {
             throw new BadRequestRuntimeException("expired");
         }
-        if(!emailAuthRequestDto.getCode().equals(verificationStatusEntity.getAuthKey())) {
+        if(!emailAuthRequestDto.getConfirmCode().equals(verificationStatusEntity.getAuthKey())) {
             throw new BadRequestRuntimeException("different");
         }
         return EmailAuthResponseDto.builder().build();

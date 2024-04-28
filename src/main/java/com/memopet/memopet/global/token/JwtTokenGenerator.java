@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.memopet.memopet.domain.member.service.AuthService.ACCESSTOKENEXPIRYTIME;
+import static com.memopet.memopet.domain.member.service.AuthService.REFRESHTOKENEXPIRYTIME;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,7 +26,7 @@ public class JwtTokenGenerator {
 
     private final JwtEncoder jwtEncoder;
 
-    public String generateAccessToken(Authentication authentication, long ACCESSTOKENEXPIRYTIME) {
+    public String generateAccessToken(Authentication authentication) {
 
         log.info("[JwtTokenGenerator:generateAccessToken] Token Creation Started for:{}", authentication.getName());
 
@@ -67,7 +70,7 @@ public class JwtTokenGenerator {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("atquil")
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plus(15 , ChronoUnit.DAYS))
+                .expiresAt(Instant.now().plus(REFRESHTOKENEXPIRYTIME , ChronoUnit.DAYS))
                 .subject(authentication.getName())
                 .claim("scope", "REFRESH_TOKEN")
                 .build();

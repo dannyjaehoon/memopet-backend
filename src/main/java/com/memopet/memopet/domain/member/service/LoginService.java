@@ -60,7 +60,6 @@ public class LoginService implements UserDetailsService {
         if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
-
         if(member.getMemberStatus().equals(MemberStatus.LOCKED)) {
             return true;
         }
@@ -89,7 +88,6 @@ public class LoginService implements UserDetailsService {
                 } else {
                     member.increaseLoginFailCount(member.getLoginFailCount()+1);
                 }
-
             }
         }
     }
@@ -102,9 +100,7 @@ public class LoginService implements UserDetailsService {
 
 
     public PasswordResetResponseDto resetPassword(String email) {
-
         EmailAuthResponseDto emailAuthResponseDto = null;
-
         emailAuthResponseDto = emailService.sendEmail(email);
 
         log.info(" authCode : " + emailAuthResponseDto.getAuthCode());
@@ -118,7 +114,6 @@ public class LoginService implements UserDetailsService {
 
         // unlock the account
         changeAccountStatus(member, MemberStatus.NORMAL);
-
         return passwordResetResponseDto;
     }
 

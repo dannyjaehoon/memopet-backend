@@ -4,7 +4,9 @@ import com.memopet.memopet.global.common.dto.RestError;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.sqm.sql.ConversionException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -72,6 +74,17 @@ public class GlobalRestExceptionHandler {
     public RestError IllegalStateException(HttpServletRequest request, UsernameNotFoundException ex) {
 
         return new RestError("IllegalStateException", ex.getMessage());
+    }
+    // 처리 과정에 생기는 예외를 custom exception 으로 처리
+    @ExceptionHandler(OAuthException.class)
+    public ResponseEntity<String> oAuthExceptionHandler(OAuthException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    // SocialLoginType Enum에 없는 type이 요청되면 ConversionException예외 처리
+    @ExceptionHandler(ConversionException.class)
+    public ResponseEntity<String> conversionExceptionHandler() {
+        return new ResponseEntity<>("알 수 없는 SocialLoginType 입니다.", HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)

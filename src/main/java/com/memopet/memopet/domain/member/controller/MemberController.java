@@ -50,14 +50,12 @@ public class MemberController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @DeleteMapping("/user")
     public RestResult deactivateMember(@RequestBody DeactivateMemberRequestDto deactivateMemberRequestDto) {
-
         DeactivateMemberResponseDto deactivateMemberResponseDto = memberService.deactivateMember(deactivateMemberRequestDto.getEmail(), deactivateMemberRequestDto.getDeactivationReason(), deactivateMemberRequestDto.getDeactivationReasonComment());
 
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("deactivateMemberResponse", deactivateMemberResponseDto);
 
         return new RestResult(dataMap);
-
     }
 
     //@PreAuthorize("hasAnyRole('SCOPE_USER','SCOPE_ADMIN')")

@@ -1,15 +1,12 @@
 package com.memopet.memopet.global.config;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.memopet.memopet.domain.member.handler.CustomAccessDeniedHandler;
 import com.memopet.memopet.domain.member.handler.CustomAuthenticationEntryPoint;
 import com.memopet.memopet.domain.member.repository.RefreshTokenRepository;
 import com.memopet.memopet.domain.member.service.LoginService;
 import com.memopet.memopet.domain.member.service.LogoutHandlerService;
-import com.memopet.memopet.domain.oauth2.handler.OAuth2AuthenticationFailureHandler;
-import com.memopet.memopet.domain.oauth2.handler.OAuth2AuthenticationSuccessHandler;
-import com.memopet.memopet.domain.oauth2.service.CustomOAuth2UserService;
+import com.memopet.memopet.domain.oauth2.service.OauthService;
 import com.memopet.memopet.global.filter.JwtAccessTokenFilter;
 import com.memopet.memopet.global.filter.JwtRefreshTokenFilter;
 import com.memopet.memopet.global.token.JwtTokenUtils;
@@ -24,6 +21,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
@@ -53,10 +51,8 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint customFailureHandler;
     private final RefreshTokenRepository refreshTokenRepository;
     private final LogoutHandlerService logoutHandlerService;
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OauthService oauthService;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
-    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
     @Order(1)
     @Bean
@@ -87,12 +83,11 @@ public class SecurityConfig {
                         auth.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
-                        configure.redirectionEndpoint(endpoint-> endpoint.baseUri("/oauth2/callback/*"))
-                                .userInfoEndpoint(endpoint -> endpoint.userService(customOAuth2UserService))
-                                .successHandler(oAuth2AuthenticationSuccessHandler)
-                                .failureHandler(oAuth2AuthenticationFailureHandler)
+                        configure.userInfoEndpoint(endpoint -> endpoint.userService(oauthService))
                 )
-                .httpBasic(withDefaults())
+                .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)) // For H2 DB
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .build();
     }
 

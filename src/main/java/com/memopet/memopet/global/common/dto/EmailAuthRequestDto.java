@@ -13,6 +13,6 @@ public class EmailAuthRequestDto {
     @Email
     @NotBlank
     private String email;
-    private String code;
+    private String confirmCode;
     private long verificationStatusId;
 }

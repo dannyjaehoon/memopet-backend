@@ -55,7 +55,7 @@ public class ImageUploadService {
         MemoryImage memoryImage = memoryImageOptional.get();
         memoryImage.updateDeletedDate(LocalDateTime.now());
 
-        s3Uploader.deleteS3(memoryImage.getImageUrl());
+        s3Uploader.deleteS3(memoryImage.getImageUrl()); // soft delete 은 나중에 일괄처리 가능 - s3 가격이 저렴하기 때문에 한달에 한번씩 삭제 가능
         return ResponseDto.builder().dscCode("1").build();
     }
 

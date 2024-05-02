@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,12 +48,16 @@ public class S3Uploader {
             throw new RuntimeException(e);
         }
 
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+        String YYYYMM = currentDate.format(formatter);
         // S3에 저장된 파일 이름
-        String fileName = filePath + "/" + UUID.randomUUID();
+        String fileName = filePath + "/" + YYYYMM + "/" + UUID.randomUUID();
 
         // s3로 업로드 후 로컬 파일 삭제
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
+
         return uploadImageUrl;
     }
 

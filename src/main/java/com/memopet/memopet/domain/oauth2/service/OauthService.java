@@ -1,6 +1,7 @@
 package com.memopet.memopet.domain.oauth2.service;
 
 import com.memopet.memopet.domain.member.dto.LoginResponseDto;
+import com.memopet.memopet.domain.member.dto.SocialLoginResponseDto;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
@@ -58,7 +59,7 @@ public class OauthService extends DefaultOAuth2UserService {
                 .orElseThrow(() -> new OAuthException("알 수 없는 SocialLoginType 입니다."));
     }
     // 4. 클라이언트로 보낼 GetSocialOAuthRes 객체 만들기
-    public LoginResponseDto oAuthLogin(String socialLoginTypeStr, String code, HttpServletRequest request, HttpServletResponse response) {
+    public SocialLoginResponseDto oAuthLogin(String socialLoginTypeStr, String code, HttpServletRequest request, HttpServletResponse response) {
         SocialLoginType socialLoginType = null;
         if(socialLoginTypeStr.equals("google")) {
             socialLoginType = SocialLoginType.GOOGLE;
@@ -121,15 +122,14 @@ public class OauthService extends DefaultOAuth2UserService {
 
         authService.saveUserRefreshToken(member,refreshToken);
 
+
+        //createAccessTokenCookie(response,accessToken);
         // 액세스 토큰과 위에서 만든 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
 
-        return LoginResponseDto.builder()
+        return SocialLoginResponseDto.builder()
                 .username(member.getUsername())
-                .userStatus(member.getMemberStatus())
-                .userRole(member.getRoles().equals("ROLE_USER") ? "GU" : "SA")
-                .loginFailCount(member.getLoginFailCount())
+                .email(member.getEmail())
                 .accessToken(accessToken)
-                .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
                 .build();
 
     }
@@ -142,6 +142,15 @@ public class OauthService extends DefaultOAuth2UserService {
         response.addCookie(refreshTokenCookie);
         return refreshTokenCookie;
     }
+    public Cookie createAccessTokenCookie(HttpServletResponse response, String accessToken) {
+        Cookie accessTokenCookie = new Cookie("access_token",accessToken);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(true);
+        accessTokenCookie.setMaxAge(ACCESSTOKENEXPIRYTIME); // in seconds
+        response.addCookie(accessTokenCookie);
+        return accessTokenCookie;
+    }
+
     public static String getCookie(HttpServletRequest req){
         Cookie[] cookies=req.getCookies(); // 모든 쿠키 가져오기
         if(cookies!=null){

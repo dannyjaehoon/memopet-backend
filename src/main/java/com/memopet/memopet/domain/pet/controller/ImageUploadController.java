@@ -21,6 +21,7 @@ import java.util.Map;
 public class ImageUploadController {
     private final ImageUploadService imageUploadService;
 
+
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PostMapping(value="/image-upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RestResult imageUpload(@RequestPart MultipartFile file) {

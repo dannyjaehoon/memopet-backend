@@ -161,12 +161,17 @@ public class MemoryService {
         Slice<Memory> memorySlice = memoryRepository.findByMemoryIdsWithSlice(memoryIds, pageRequest);
 
         List<Memory> filteredMemories = memorySlice.getContent();
+
+        HashMap<Long, List<MemoryImage>> hashMap = getMemoryImages(filteredMemories);
         List<MemoryImage> memoryImages = null;
         for(Memory memory : filteredMemories) {
-            memoryImages = memoryImageRepository.findByMemoryId(memory.getId());
-            memoryImages.forEach(memoryImage -> {
-                q.offer(memoryImage);
-            });
+
+            memoryImages = hashMap.getOrDefault(memory.getId(),null);
+            if(memoryImages != null) {
+                memoryImages.forEach(memoryImage -> {
+                    q.offer(memoryImage);
+                });
+            }
 
             memoriesContent.add(MemoryResponseDto.builder()
                     .memoryId(memory.getId())
@@ -184,6 +189,30 @@ public class MemoryService {
 
         LikedMemoryResponseDto likedMemoryResponseDto = LikedMemoryResponseDto.builder().hasNext(memorySlice.hasNext()).currentPage(memorySlice.getNumber()+1).dataCounts(memorySlice.getContent().size()).memoryResponseDto(memoriesContent).build();
         return likedMemoryResponseDto;
+    }
+
+    private HashMap<Long, List<MemoryImage>> getMemoryImages(List<Memory> filteredMemories) {
+        List<Long> filteredMemoryIds = new ArrayList<>();
+        for(Memory memory : filteredMemories) {
+            filteredMemoryIds.add(memory.getId());
+        }
+
+        List<MemoryImage> memoryImages = memoryImageRepository.findByMemoryIds(filteredMemoryIds);
+
+        HashMap<Long, List<MemoryImage>> memoryImageMap = new LinkedHashMap<>();
+
+        if(memoryImages.size() == 0) return memoryImageMap;
+
+        for(MemoryImage memoryImage : memoryImages) {
+            if(memoryImageMap.containsKey(memoryImage.getMemory().getId())) {
+                memoryImageMap.get(memoryImage.getMemory().getId()).add(memoryImage);
+            } else {
+                List<MemoryImage> temp = new ArrayList<>();
+                temp.add(memoryImage);
+                memoryImageMap.put(memoryImage.getMemory().getId(),temp);
+            }
+        }
+        return memoryImageMap;
     }
 
     /**
@@ -223,11 +252,15 @@ public class MemoryService {
         List<MemoryImage> memoryImages = null;
         Queue<MemoryImage> q = new LinkedList<>();
 
+        HashMap<Long, List<MemoryImage>> hashMap = getMemoryImages(filteredMemories);
+
         for (Memory m : filteredMemories) {
-            memoryImages = memoryImageRepository.findByMemoryId(m.getId());
-            memoryImages.forEach(memoryImage -> {
-                q.offer(memoryImage);
-            });
+            memoryImages = hashMap.getOrDefault(m.getId(),null);
+            if(memoryImages != null) {
+                memoryImages.forEach(memoryImage -> {
+                    q.offer(memoryImage);
+                });
+            }
 
             memoriesContent.add(MemoryResponseDto.builder()
                     .memoryId(m.getId())

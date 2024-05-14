@@ -6,7 +6,7 @@ import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.service.PetService;
 import com.memopet.memopet.global.common.dto.RestResult;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
-import com.memopet.memopet.global.config.Authed;
+import com.memopet.memopet.global.config.annotation.Authed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

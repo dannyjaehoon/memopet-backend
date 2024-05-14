@@ -1,6 +1,5 @@
 package com.memopet.memopet.domain.member.service;
 
-import com.memopet.memopet.domain.member.dto.ErrorResponseDto;
 import com.memopet.memopet.domain.member.dto.LoginRequestDto;
 import com.memopet.memopet.domain.member.dto.LoginResponseDto;
 import com.memopet.memopet.domain.member.dto.SignUpRequestDto;
@@ -10,27 +9,26 @@ import com.memopet.memopet.domain.member.mapper.MemberInfoMapper;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.member.repository.RefreshTokenRepository;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
+import com.memopet.memopet.global.common.utils.BusinessUtil;
 import com.memopet.memopet.global.token.JwtTokenGenerator;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.security.auth.login.AccountLockedException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static com.memopet.memopet.global.token.TokenConstant.ACCESSTOKENEXPIRYTIME;
+import static com.memopet.memopet.global.token.TokenConstant.REFRESHTOKENEXPIRYTIME;
 
 @Service
 @Slf4j
@@ -38,15 +36,13 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class AuthService  {
 
-
-    public static final int ACCESSTOKENEXPIRYTIME = 3;
-    public static final int REFRESHTOKENEXPIRYTIME = 15 * 24 * 60 * 60;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenGenerator jwtTokenGenerator;
     private final MemberInfoMapper memberInfoMapper;
     private final LoginService loginService;
+    private final BusinessUtil businessUtil;
 
     /**
      * return the user id if the sign up process is successfully completed
@@ -56,88 +52,59 @@ public class AuthService  {
      * @return user_id
      */
     @Transactional(readOnly = false)
-    public LoginResponseDto join (SignUpRequestDto signUpDto, HttpServletResponse httpServletResponse)  {
-        try{
-            log.info("[AuthService:registerUser]User Registration Started with :::{}", signUpDto);
+    public LoginResponseDto join (SignUpRequestDto signUpDto)  {
 
-            Optional<Member> memberOptional = memberRepository.findMemberByEmail(signUpDto.getEmail());
-            if(memberOptional.isPresent()) throw new BadRequestRuntimeException("User Already Exists");
+        log.info("[AuthService:registerUser]User Registration Started with :::{}", signUpDto.getEmail());
 
+        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(signUpDto.getEmail());
+        if(memberByEmail.isPresent()) throw new BadRequestRuntimeException("User Already Exists");
 
-            Member member = memberInfoMapper.convertToEntity(signUpDto);
-            Authentication authentication = createAuthenticationObject(member);
+        Member member = memberInfoMapper.convertToEntity(signUpDto);
+        Authentication authentication = createAuthenticationObject(member);
 
-            // Generate a JWT token
-            String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
-            String refreshToken = jwtTokenGenerator.generateRefreshToken(authentication);
+        // Generate a JWT token
+        String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
+        Member savedmember = memberRepository.save(member);
 
-            Member savedmember = memberRepository.save(member);
-            saveUserRefreshToken(savedmember,refreshToken);
-
-            createRefreshTokenCookie(httpServletResponse,refreshToken);
-
-            log.info("[AuthService:registerUser] User:{} Successfully registered",member.getUsername());
-            return  LoginResponseDto.builder()
-                    .username(savedmember.getUsername())
-                    .userStatus(savedmember.getMemberStatus())
-                    .userRole(savedmember.getRoles() == "ROLE_USER" ? "GU" : "SA")
-                    .loginFailCount(savedmember.getLoginFailCount())
-                    .accessToken(accessToken)
-                    .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
-                    .build();
-
-        }catch (Exception e){
-            log.error("[AuthService:registerUser]Exception while registering the user due to :"+e.getMessage());
-            throw new BadRequestRuntimeException(e.getMessage());
-        }
-    }
-
-    @Transactional(readOnly = false)
-    public LoginResponseDto getJWTTokensAfterAuthentication(Authentication authentication, HttpServletResponse response) {
-        try {
-            var savedmember = memberRepository.findMemberByEmail(authentication.getName())
-                    .orElseThrow(()->{
-                        log.error("[AuthService:userSignInAuth] User :{} not found", authentication.getName());
-                        throw new BadRequestRuntimeException("USER NOT FOUND");
-                    });
-
-            String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
-            String refreshToken = jwtTokenGenerator.generateRefreshToken(authentication);
-
-            createRefreshTokenCookie(response,refreshToken);
-
-            saveUserRefreshToken(savedmember,refreshToken);
-            log.info("[AuthService:userSignInAuth] Access token for user:{}, has been generated",savedmember.getUsername());
-            return  LoginResponseDto.builder()
-                                    .username(savedmember.getUsername())
-                                    .userStatus(savedmember.getMemberStatus())
-                                    .userRole(savedmember.getRoles().equals("ROLE_USER") ? "GU" : "SA")
-                                    .loginFailCount(savedmember.getLoginFailCount())
-                                    .accessToken(accessToken)
-                                    .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
-                                    .build();
-        } catch(Exception e) {
-            log.error("[AuthService:userSignInAuth]Exception while authenticating the user due to :" + e.getMessage());
-            throw new BadRequestRuntimeException("An error occurred during the authentication process. Please Try Again");
-        }
-    }
-
-    @Transactional(readOnly = false)
-    public void saveUserRefreshToken(Member member, String refreshToken) {
-        var refreshTokenEntity = RefreshTokenEntity.builder()
-                .member(member)
-                .refreshToken(refreshToken)
-                .revoked(false)
+        log.info("[AuthService:registerUser] User:{} Successfully registered",member.getUsername());
+        return  LoginResponseDto.builder()
+                .username(savedmember.getUsername())
+                .userStatus(savedmember.getMemberStatus())
+                .userRole(savedmember.getRoles() == "ROLE_USER" ? "GU" : "SA")
+                .loginFailCount(savedmember.getLoginFailCount())
+                .accessToken(accessToken)
+                .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
                 .build();
-        refreshTokenRepository.save(refreshTokenEntity);
     }
 
-    public Cookie createRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+
+    public LoginResponseDto getJWTTokensAfterAuthentication(Authentication authentication) {
+        Member savedmember = businessUtil.getValidEmail(authentication.getName());
+        String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
+
+        log.info("[AuthService:userSignInAuth] Access token for user:{}, has been generated",savedmember.getUsername());
+        return  LoginResponseDto.builder()
+                                .username(savedmember.getUsername())
+                                .userStatus(savedmember.getMemberStatus())
+                                .userRole(savedmember.getRoles().equals("ROLE_USER") ? "GU" : "SA")
+                                .loginFailCount(savedmember.getLoginFailCount())
+                                .accessToken(accessToken)
+                                .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
+                                .build();
+    }
+
+    @Transactional(readOnly = false)
+    public Cookie retrieveRefreshToken(String email) {
+        String refreshToken = jwtTokenGenerator.generateRefreshToken(email);
+        Member savedmember = businessUtil.getValidEmail(email);
+
         Cookie refreshTokenCookie = new Cookie("refresh_token",refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setMaxAge(REFRESHTOKENEXPIRYTIME); // in seconds
-        response.addCookie(refreshTokenCookie);
+
+        saveUserRefreshToken(savedmember, refreshToken);
+
         return refreshTokenCookie;
     }
 
@@ -190,13 +157,10 @@ public class AuthService  {
 
         log.info("authenticateUser method starts");
         // check if the email is valid
-        boolean isValidEmail = loginService.isValidEmail(loginRequestDto.getEmail());
-        if(!isValidEmail) throw new UsernameNotFoundException("User not found");
+        businessUtil.isValidEmail(loginRequestDto.getEmail());
 
         // check if the account is locked
-        boolean accountLock = loginService.isAccountLock(loginRequestDto.getEmail());
-        if(accountLock) throw new BadRequestRuntimeException("Your account is locked because of 5 failed Login attempts");
-
+        businessUtil.isAccountLock(loginRequestDto.getEmail());
 
         loginService.loginAttemptCheck(loginRequestDto.getEmail(), loginRequestDto.getPassword());
 
@@ -212,5 +176,16 @@ public class AuthService  {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return authentication;
+    }
+
+    @Transactional(readOnly = false)
+    public void saveUserRefreshToken(Member member, String refreshToken) {
+        var refreshTokenEntity = RefreshTokenEntity.builder()
+                .member(member)
+                .refreshToken(refreshToken)
+                .revoked(false)
+                .build();
+
+        refreshTokenRepository.save(refreshTokenEntity);
     }
 }

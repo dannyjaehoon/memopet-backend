@@ -1,4 +1,4 @@
-package com.memopet.memopet.domain.oauth2.util;
+package com.memopet.memopet.global.common.utils;
 
 
 import jakarta.servlet.http.Cookie;

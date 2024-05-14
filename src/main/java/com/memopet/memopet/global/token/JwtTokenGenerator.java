@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-//import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.memopet.memopet.domain.member.service.AuthService.ACCESSTOKENEXPIRYTIME;
-import static com.memopet.memopet.domain.member.service.AuthService.REFRESHTOKENEXPIRYTIME;
+import static com.memopet.memopet.global.token.TokenConstant.ACCESSTOKENEXPIRYTIME;
+import static com.memopet.memopet.global.token.TokenConstant.REFRESHTOKENEXPIRYTIME;
+
 
 @Service
 @RequiredArgsConstructor
@@ -63,15 +63,15 @@ public class JwtTokenGenerator {
 
         return String.join(" ", permissions);
     }
-    public String generateRefreshToken(Authentication authentication) {
+    public String generateRefreshToken(String email) {
 
-        log.info("[JwtTokenGenerator:generateRefreshToken] Token Creation Started for:{}", authentication.getName());
+        log.info("[JwtTokenGenerator:generateRefreshToken] Token Creation Started for:{}", email);
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("atquil")
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plus(REFRESHTOKENEXPIRYTIME , ChronoUnit.DAYS))
-                .subject(authentication.getName())
+                .subject(email)
                 .claim("scope", "REFRESH_TOKEN")
                 .build();
 

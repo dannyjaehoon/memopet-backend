@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+User -> FrontEnd: Social Login button click
+FrontEnd -> AuthorizationServer: Request Access Token
+AuthorizationServer->User: Show Social Login Page
+User -> AuthorizationServer: Social Login complete
+AuthorizationServer -> FrontEnd: Send the Code
+FrontEnd -> Backend: Request social Login with the Code
+Backend -> AuthorizationServer: Request AccessToken with the Code
+AuthorizationServer->Backend: Send AccessToken
+Backend -> ResourceServer: Request UserInfo With Access Token
+Backend -> FrontEnd: Save UserInfo, create JWT and then Send JWT to FrontEnd
+@enduml
+
+예시 (구글)
+1. 프론트에서 구글서버로 인증요청한다.
+2. 구글서버에서 성공적으로 인증이 되면 redirectURI 로 code 값을 리다이렉트 시켜준다.
+3. 프론트엔드에서 code 값을 확인하고 서버로 전달한다.
+4. 서버에서 구글서버로 code 를 기준으로 accessToken, refreshToken 요청한다.
+5. 서버에서 accessToken 을 기반으로 구글서버로 userInfo 조회한다.
+6. 서버에서 userInfo 를 DB에 저장한다.
+7. 서버에서 jwt 토큰이 포함된 json 을 클라이언트로 리턴한다.
+8. 클라이언트에서 jwt 를 저장하여 서버에 요청할 때 마다 jwt 를 헤더에 포함되어 요청한다.

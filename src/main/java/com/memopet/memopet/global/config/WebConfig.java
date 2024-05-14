@@ -3,6 +3,7 @@ package com.memopet.memopet.global.config;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.service.MemberService;
 import com.memopet.memopet.global.common.utils.Utils;
+import com.memopet.memopet.global.config.annotation.Authed;
 import com.memopet.memopet.global.interceptor.LoggingInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

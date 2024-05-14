@@ -3,28 +3,18 @@ package com.memopet.memopet.domain.member.controller;
 import com.memopet.memopet.domain.member.dto.*;
 import com.memopet.memopet.domain.member.service.AuthService;
 import com.memopet.memopet.domain.member.service.LoginService;
-import com.memopet.memopet.global.common.dto.EmailAuthRequestDto;
 import com.memopet.memopet.global.common.dto.RestResult;
-import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -45,12 +35,14 @@ public class  AuthController {
      */
     @PostMapping("/sign-in")
     public RestResult authenticateUser(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-
         log.info("sign-in start");
         // get an authentication object to generate access and refresh token
         Authentication authentication = authService.authenticateUser(loginRequestDto);
         // generate access and refresh token
-        LoginResponseDto loginResponseDto = authService.getJWTTokensAfterAuthentication(authentication,response);
+        LoginResponseDto loginResponseDto = authService.getJWTTokensAfterAuthentication(authentication);
+        log.info("getJWTTokensAfterAuthentication finished");
+        Cookie refreshTokenCookie = authService.retrieveRefreshToken(authentication.getName());
+        response.addCookie(refreshTokenCookie);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("loginInfo", loginResponseDto);
@@ -90,12 +82,15 @@ public class  AuthController {
     /**
      * when a user tries to sign-up
      * @param signUpRequestDto
-     * @param httpServletResponse
      * @return
      */
     @PostMapping("/sign-up")
-    public RestResult registerUser(@Valid @RequestBody SignUpRequestDto signUpRequestDto, HttpServletResponse httpServletResponse){
-        LoginResponseDto loginResponseDto = authService.join(signUpRequestDto, httpServletResponse);
+    public RestResult registerUser(@Valid @RequestBody SignUpRequestDto signUpRequestDto, HttpServletResponse response){
+        log.info("sign-up start");
+        LoginResponseDto loginResponseDto = authService.join(signUpRequestDto);
+
+        Cookie refreshTokenCookie = authService.retrieveRefreshToken(signUpRequestDto.getEmail());
+        response.addCookie(refreshTokenCookie);
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("sigupInfo", loginResponseDto);
         return new RestResult(dataMap);

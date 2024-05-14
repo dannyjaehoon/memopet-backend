@@ -24,7 +24,6 @@ public class MemberController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping("/member-info")
     public RestResult changeMemberInfo(@RequestBody MemberInfoRequestDto memberInfoRequestDto) {
-
         MemberInfoResponseDto memberInfoResponseDto = memberService.changeMemberInfo(memberInfoRequestDto);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();
@@ -37,7 +36,6 @@ public class MemberController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/member-profile")
     public RestResult retrieveMemberProfile(Authentication authentication) {
-
         MemberProfileResponseDto memberProfileResponseDto = memberService.getMemberProfile(authentication.getName());
 
         Map<String, Object> dataMap = new LinkedHashMap<>();
@@ -68,7 +66,7 @@ public class MemberController {
     //@PreAuthorize("hasRole('SCOPE_ADMIN')")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN_AUTHORITY')")
     @GetMapping("/admin-message")
-    public ResponseEntity<String> getAdminData(){
+    public ResponseEntity<String> getAdminData() {
         return ResponseEntity.ok("admin");
     }
 }

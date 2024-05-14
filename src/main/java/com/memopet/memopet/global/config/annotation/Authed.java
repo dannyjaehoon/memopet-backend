@@ -1,4 +1,4 @@
-package com.memopet.memopet.global.config;
+package com.memopet.memopet.global.config.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

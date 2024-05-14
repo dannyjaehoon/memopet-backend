@@ -200,6 +200,4 @@ public class SecurityConfig {
             }
         };
     }
-
-
 }

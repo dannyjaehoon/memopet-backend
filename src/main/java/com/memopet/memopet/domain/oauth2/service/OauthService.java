@@ -1,6 +1,5 @@
 package com.memopet.memopet.domain.oauth2.service;
 
-import com.memopet.memopet.domain.member.dto.LoginResponseDto;
 import com.memopet.memopet.domain.member.dto.SocialLoginResponseDto;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
@@ -22,13 +21,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static com.memopet.memopet.domain.member.service.AuthService.ACCESSTOKENEXPIRYTIME;
-import static com.memopet.memopet.domain.member.service.AuthService.REFRESHTOKENEXPIRYTIME;
+import static com.memopet.memopet.global.token.TokenConstant.ACCESSTOKENEXPIRYTIME;
+import static com.memopet.memopet.global.token.TokenConstant.REFRESHTOKENEXPIRYTIME;
+
 
 @Service
 @Slf4j
@@ -46,20 +47,15 @@ public class OauthService extends DefaultOAuth2UserService {
         return socialOauth.getOauthRedirectURL();
     }
 
-    // 2. 액세스 토큰 만들기
-    public ResponseEntity<String> requestAccessToken(SocialLoginType socialLoginType, String code) {
-        SocialOauth socialOauth = this.findSocialOauthByType(socialLoginType);
-        return socialOauth.requestAccessToken(code);
-    }
-    // 3. 소셜 타입 찾기
+    // 2. 소셜 타입 찾기
     private SocialOauth findSocialOauthByType(SocialLoginType socialLoginType) {
         return socialOauthList.stream()
                 .filter(x -> x.type() == socialLoginType)
                 .findFirst()
                 .orElseThrow(() -> new OAuthException("알 수 없는 SocialLoginType 입니다."));
     }
-    // 4. 클라이언트로 보낼 GetSocialOAuthRes 객체 만들기
-    public SocialLoginResponseDto oAuthLogin(String socialLoginTypeStr, String code, HttpServletRequest request, HttpServletResponse response) {
+    // 3. 클라이언트로 보낼 GetSocialOAuthRes 객체 만들기
+    public SocialLoginResponseDto oAuthLogin(String socialLoginTypeStr, String code, HttpServletRequest request) {
         SocialLoginType socialLoginType = null;
         if(socialLoginTypeStr.equals("google")) {
             socialLoginType = SocialLoginType.GOOGLE;
@@ -116,15 +112,6 @@ public class OauthService extends DefaultOAuth2UserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetailsInfo.getName(), member.getPassword(), authorities);
 
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
-        String refreshToken = jwtTokenGenerator.generateRefreshToken(authentication);
-
-        createRefreshTokenCookie(response,refreshToken);
-
-        authService.saveUserRefreshToken(member,refreshToken);
-
-
-        //createAccessTokenCookie(response,accessToken);
-        // 액세스 토큰과 위에서 만든 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
 
         return SocialLoginResponseDto.builder()
                 .username(member.getUsername())
@@ -134,34 +121,4 @@ public class OauthService extends DefaultOAuth2UserService {
 
     }
 
-    public static Cookie createRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie refreshTokenCookie = new Cookie("refresh_token",refreshToken);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setMaxAge(REFRESHTOKENEXPIRYTIME); // in seconds
-        response.addCookie(refreshTokenCookie);
-        return refreshTokenCookie;
-    }
-    public Cookie createAccessTokenCookie(HttpServletResponse response, String accessToken) {
-        Cookie accessTokenCookie = new Cookie("access_token",accessToken);
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setSecure(true);
-        accessTokenCookie.setMaxAge(ACCESSTOKENEXPIRYTIME); // in seconds
-        response.addCookie(accessTokenCookie);
-        return accessTokenCookie;
-    }
-
-    public static String getCookie(HttpServletRequest req){
-        Cookie[] cookies=req.getCookies(); // 모든 쿠키 가져오기
-        if(cookies!=null){
-            for (Cookie c : cookies) {
-                String name = c.getName(); // 쿠키 이름 가져오기
-                String value = c.getValue(); // 쿠키 값 가져오기
-                if (name.equals("refresh_token")) {
-                    return value;
-                }
-            }
-        }
-        return null;
-    }
 }

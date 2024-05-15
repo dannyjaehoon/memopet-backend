@@ -24,7 +24,6 @@ public class RecentSearchController {
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @GetMapping("/search")
     public RestResult search(SearchRequestDTO searchRequestDTO) {
-
         SearchResponseDTO searchResponseDTO = recentSearchService.search(searchRequestDTO);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();

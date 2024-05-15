@@ -2,6 +2,7 @@ package com.memopet.memopet.global.common.service;
 
 import com.memopet.memopet.global.common.dto.EmailAuthRequestDto;
 import com.memopet.memopet.global.common.dto.EmailAuthResponseDto;
+import com.memopet.memopet.global.common.dto.EmailMessageDto;
 import com.memopet.memopet.global.common.entity.VerificationStatusEntity;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.repository.VertificationStatusRepository;
@@ -23,41 +24,20 @@ import java.util.Random;
 @Slf4j
 @RequiredArgsConstructor
 public class EmailService {
-    private final JavaMailSender emailSender ;
-    private final RedisUtil redisUtil;
+    private final RabbitPublisher rabbitPublisher;
     private final VertificationStatusRepository vertificationStatusRepository;
-    private final String SUBJECT = "[이메일 인증 메일]";
 
-    public MimeMessage createEmailForm(String email, String authNum) {
-        createCode(); //인증 코드 생성
-        String setFrom = "jaelee9212@naver.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
-        String toEmail = email; //받는 사람
-        String title = SUBJECT; //제목
-        MimeMessage message = null;
-        try {
-            message = emailSender.createMimeMessage();
-            message.addRecipients(MimeMessage.RecipientType.TO, toEmail); //보낼 이메일 설정
-            message.setSubject(title); //제목 설정
-            message.setFrom(setFrom); //보내는 이메일
-            message.setText(getCertificationMessage(authNum), "utf-8", "html");
-        } catch (MessagingException e) {
-            log.error("email server occurs an error", e);
-            throw new RuntimeException("이메일 서버 문제");
-        }
-
-        return message;
+    public void sendRequestToRabbitMqForSendingEmail(String email, String authNum) {
+        EmailMessageDto emailMessageDto = EmailMessageDto.builder().auth(authNum).email(email).build();
+        rabbitPublisher.pubsubMessage(emailMessageDto);
     }
     @Transactional(readOnly = false)
     //실제 메일 전송
     public EmailAuthResponseDto sendEmail(String toEmail)  {
-
         // auth num 값 생성
         String authNum = createCode();
         //메일전송에 필요한 정보 설정
-        MimeMessage emailForm = createEmailForm(toEmail,authNum);
-
-        //실제 메일 전송
-        emailSender.send(emailForm);
+        sendRequestToRabbitMqForSendingEmail(toEmail,authNum);
 
         long verificationEntityId = setDataExpire(authNum);
 
@@ -88,8 +68,7 @@ public class EmailService {
         // tip 여기에서 값을 리턴하는 이유는 무엇인가요? 프론트엔드로 전달해서 추후에 값을 사용해서 매칭하는데 활용하나요?
         return savedEntity.getId();
     }
-    private String getCertificationMessage(String certificationNum) {
-
+    public String getCertificationMessage(String certificationNum) {
         // tip 아래처럼 Text Block 으로 가독성 높게 만들수 있습니다.
         String message = """
             <h1 style='test-align:certer;'>[이메일 인증 코드]</h1>
@@ -97,11 +76,7 @@ public class EmailService {
             %s
             </strong></h3>
             """.formatted(certificationNum);
-
-//        String certificationMessage = "";
-//        certificationMessage += "<h1 style='test-align:certer;'>[이메일 인증 코드]</h1>";
-//        certificationMessage += "<h3 style='test-align:certer;'>인증코드 : <strong style='front-size: 32px; letter-spacing:8px;'>" + certificationNum + "</strong></h3>";
-        return message;
+       return message;
     }
     //랜덤 인증 코드 생성
     public static String createCode() {

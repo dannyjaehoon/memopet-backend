@@ -7,11 +7,12 @@ User -> FrontEnd: Social Login button click
 FrontEnd -> AuthorizationServer: Request Access Token
 AuthorizationServer->User: Show Social Login Page
 User -> AuthorizationServer: Social Login complete
-AuthorizationServer -> FrontEnd: Send the Code
+AuthorizationServer --> FrontEnd: Redirect to frontend with the Code
 FrontEnd -> Backend: Request social Login with the Code
 Backend -> AuthorizationServer: Request AccessToken with the Code
 AuthorizationServer->Backend: Send AccessToken
 Backend -> ResourceServer: Request UserInfo With Access Token
+ResourceServer->Backend: send UserInfo
 Backend -> FrontEnd: Save UserInfo, create JWT and then Send JWT to FrontEnd
 @enduml
 

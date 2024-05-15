@@ -35,6 +35,12 @@ public class RabbitConsumer {
             message.setText(emailService.getCertificationMessage(emailMessageDto.getAuth()), "utf-8", "html");
         } catch (MessagingException e) {
             log.error("email server occurs an error", e);
+
+            /**
+             *todo 만약 이부분에서 에러가 발생하면 어떻게 처리할지 고민해보세요.
+             * 현재 여기서 에러가 발생하면 RabbitMQ로 nack 이 발생하여 다시 큐에 들어가게 됩니다.
+             * 만약 매번 같은 오류라면 무한루프가 발생할 수 있습니다. 이 부분에 대해서 고민해봤으면 합니다.
+             */
             throw new RuntimeException("이메일 서버 문제");
         }
 

@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
+    // fixme 아래 @Value 를 나열하는 것 보다는 @ConfigurationProperties(prefix = "spring.rabbitmq") 이걸 활용한 클래스를 하나 만들어서 사용하는 것이 좋을 것 같습니다.
+
     @Value("${spring.rabbitmq.host}")
     private String rabbitmqHost;
 

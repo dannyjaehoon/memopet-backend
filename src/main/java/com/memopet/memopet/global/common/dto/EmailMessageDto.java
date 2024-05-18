@@ -9,6 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 public class EmailMessageDto {
 
+    private String id;
     private String email;
     private String auth;
+    private int RetryCount;
 }

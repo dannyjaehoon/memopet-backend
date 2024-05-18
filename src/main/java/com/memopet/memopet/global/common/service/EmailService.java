@@ -24,23 +24,24 @@ import java.util.Random;
 @Slf4j
 @RequiredArgsConstructor
 public class EmailService {
-    private final RabbitPublisher rabbitPublisher;
+    private final EmailRabbitPublisher emailRabbitPublisher;
     private final VertificationStatusRepository vertificationStatusRepository;
 
-    public void sendRequestToRabbitMqForSendingEmail(String email, String authNum) {
-        EmailMessageDto emailMessageDto = EmailMessageDto.builder().auth(authNum).email(email).build();
-        rabbitPublisher.pubsubMessage(emailMessageDto);
+    public void sendRequestToRabbitMqForSendingEmail(long id, String email, String authNum) {
+        EmailMessageDto emailMessageDto = EmailMessageDto.builder().auth(authNum).RetryCount(0).email(email).id(String.valueOf(id)).build();
+        emailRabbitPublisher.pubsubMessage(emailMessageDto);
     }
     @Transactional(readOnly = false)
     //실제 메일 전송
     public EmailAuthResponseDto sendEmail(String toEmail)  {
         // auth num 값 생성
         String authNum = createCode();
-        //메일전송에 필요한 정보 설정
-        sendRequestToRabbitMqForSendingEmail(toEmail,authNum);
+
 
         long verificationEntityId = setDataExpire(authNum);
 
+        //메일전송에 필요한 정보 설정
+        sendRequestToRabbitMqForSendingEmail(verificationEntityId,toEmail,authNum);
         log.info("authNum : {}", authNum);  // tip 이게 올바른 사용법입니다.
         log.info("authNum : " + authNum);
 

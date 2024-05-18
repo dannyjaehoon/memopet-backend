@@ -36,24 +36,8 @@ public class PetController {
                               @RequestPart(value = "petRequestDto") @Valid SavedPetRequestDto petRequestDto,
                               @Authed Member member) throws IOException {
 
-        log.info("/pet/new member: {}, dto: {}", toJson(member), toJson(petRequestDto));    // 예시. 필요없으면 지우세요.
+        log.info("/pet/new member: {}, dto: {}", toJson(member), toJson(petRequestDto));
         log.info("save pet start");
-        log.info("backImgUrl : " + backImgUrl);
-        log.info("petProfileUrl : " + petProfileUrl);
-
-        // fixme json 형태로 한번에 출력하는게 좋아보입니다.
-
-        log.info("getEmail : " + petRequestDto.getEmail());
-        log.info("getPetDesc : " + petRequestDto.getPetDesc());
-        log.info("getPetName : " + petRequestDto.getPetName());
-        log.info("getPetSpecM : " + petRequestDto.getPetSpecM());
-        log.info("getPetSpecS : " + petRequestDto.getPetSpecS());
-        log.info("getPetGender : " + petRequestDto.getPetGender());
-        log.info("getBirthDate : " + petRequestDto.getBirthDate());
-        log.info("getPetDeathDate : " + petRequestDto.getPetDeathDate());
-        log.info("getPetFavs : " + petRequestDto.getPetFavs());
-        log.info("getPetFavs : 2" + petRequestDto.getPetFavs2());
-        log.info("getPetFavs : 3" + petRequestDto.getPetFavs3());
         SavedPetResponseDto savedPetResponseDto = petService.savePet(backImgUrl, petProfileUrl, petRequestDto);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();

@@ -1,11 +1,9 @@
 package com.memopet.memopet.domain.member.controller;
 
-import com.memopet.memopet.global.common.dto.EmailMessageDto;
-import com.memopet.memopet.global.common.service.RabbitPublisher;
+import com.memopet.memopet.global.common.service.EmailRabbitPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.IntStream;
@@ -14,7 +12,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 @Slf4j
 public class TestController {
-    private final RabbitPublisher rabbitPublisher;
+    //private final EmailRabbitPublisher emailRabbitPublisher;
 
 //    @PostMapping("/pubsub")
 //    public void pubsubMessage() {

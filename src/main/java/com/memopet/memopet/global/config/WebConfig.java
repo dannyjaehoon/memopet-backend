@@ -2,11 +2,20 @@ package com.memopet.memopet.global.config;
 
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.service.MemberService;
+import com.memopet.memopet.global.common.service.AccessLogRabbitPublisher;
+import com.memopet.memopet.global.common.service.ThreadLocalService;
+import com.memopet.memopet.global.common.service.UserAgentService;
+import com.memopet.memopet.global.common.utils.BusinessUtil;
 import com.memopet.memopet.global.common.utils.Utils;
 import com.memopet.memopet.global.config.annotation.Authed;
+import com.memopet.memopet.global.filter.AccessLogFilter;
 import com.memopet.memopet.global.interceptor.LoggingInterceptor;
+import jakarta.servlet.FilterRegistration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.metamodel.mapping.FilterRestrictable;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
@@ -31,6 +40,17 @@ public class WebConfig implements WebMvcConfigurer {
 
 	private final LoggingInterceptor loggingInterceptor;
 	private final MemberService memberService;
+	private final BusinessUtil businessUtil;
+	private final ThreadLocalService threadLocalService;
+	private final AccessLogRabbitPublisher accessLogRabbitPublisher;
+	private final UserAgentService userAgentService;
+
+	@Bean
+	public FilterRegistrationBean filterBea() {
+		final FilterRegistrationBean registrationBean = new FilterRegistrationBean(new AccessLogFilter(businessUtil,threadLocalService,userAgentService,accessLogRabbitPublisher));
+		registrationBean.addUrlPatterns("/*");
+		return registrationBean;
+	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

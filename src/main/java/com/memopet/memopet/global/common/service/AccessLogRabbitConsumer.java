@@ -7,6 +7,7 @@ import com.memopet.memopet.global.common.dto.AccessLogDto;
 import com.memopet.memopet.global.common.entity.AccessLog;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.repository.AccessLogRepository;
+import com.memopet.memopet.global.common.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -41,4 +42,20 @@ public class AccessLogRabbitConsumer {
         log.info(toJson(accesslog));
         accessLogRepository.save(accesslog);
     }
+
+    // 간단하게 다시 작성해봤습니다.
+    // todo : 매번 저장하기 보다는 모아서 저장해보는걸 추천합니다.
+    @RabbitListener(queues = "#{directQueue.name}")
+    public void consumeSubV2(String accessLogDtoStr) {
+        try {
+            log.info("ConsumeSub received, message: {}", accessLogDtoStr);
+            AccessLog accessLog = Utils.toObject(accessLogDtoStr, AccessLog.class);
+            accessLogRepository.save(accessLog);
+        }catch (Exception e) {
+            log.error("ConsumeSub error: {}", e.getMessage());
+            throw new BadRequestRuntimeException(e.getMessage());
+        }
+
+    }
+
 }

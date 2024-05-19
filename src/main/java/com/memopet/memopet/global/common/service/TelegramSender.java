@@ -22,9 +22,9 @@ public class TelegramSender extends TelegramLongPollingBot {
 
         var response = new SendMessage(configTelegram.getChatId(), message);
         try {
-            execute(response);
-        } catch (TelegramApiException e) {
-            throw new BadRequestRuntimeException(e.getMessage());
+            execute(response);  // 429 Too Many Requests 에러 발생. 1분에 20번 밖에 못보내요...
+        } catch (Exception e) {
+//            throw new BadRequestRuntimeException(e.getMessage());
         }
 
     }

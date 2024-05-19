@@ -44,10 +44,11 @@ public class AccessLogRabbitConsumer {
     }
 
     // 간단하게 다시 작성해봤습니다.
-    // todo : 매번 저장하기 보다는 모아서 저장해보는걸 추천합니다.
+    // todo : 매번 저장하기 보다는 모아서 저장해보는걸 추천합니다. 예) 0.5초마다 한번씩 모아서 저장하기.
     @RabbitListener(queues = "#{directQueue.name}")
     public void consumeSubV2(String accessLogDtoStr) {
         try {
+            final String name = Thread.currentThread().getName();
             log.info("ConsumeSub received, message: {}", accessLogDtoStr);
             AccessLog accessLog = Utils.toObject(accessLogDtoStr, AccessLog.class);
             accessLogRepository.save(accessLog);

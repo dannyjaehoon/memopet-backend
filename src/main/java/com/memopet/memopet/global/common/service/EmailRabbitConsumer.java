@@ -44,7 +44,7 @@ public class EmailRabbitConsumer {
         if (processedMessages.contains(messageId)) {
             try {
                 // channel.basicAck 메서드는 RabbitMQ에서 메시지가 성공적으로 처리되었음을 브로커에게 알리기 위해 사용됨. 이를 통해 메시지가 큐에서 제거
-                channel.basicAck(deliveryTag, false);
+                channel.basicAck(deliveryTag, false);   // false: 현재 메시지만 ack, true: 현재 메시지 이전의 모든 메시지 ack, default: false
                 return;
             } catch (IOException e) {
                 throw new BadRequestRuntimeException("The message is duplicated");
@@ -57,7 +57,7 @@ public class EmailRabbitConsumer {
             telegramSender.sendFailureNotification("test");
             channel.basicAck(deliveryTag, false);
         } catch (IOException | RuntimeException e) {
-            handleFailure(emailMessageDto,channel,deliveryTag);
+            handleFailure(emailMessageDto,channel,deliveryTag);   // fixme 여기서 BadRequestRuntimeException 발생시키면 retry queue로 다시 들어가게 됨
         }
     }
 
@@ -72,7 +72,7 @@ public class EmailRabbitConsumer {
             rabbitTemplate.convertAndSend(EMAIL_FANOUT_EXCHANGE_NAME, EMAIL_FAILED_QUEUE, emailMessageDto);
 
             String message = "failed to send an email to email:" + emailMessageDto.getEmail() +", id:" +  emailMessageDto.getId();
-            telegramSender.sendFailureNotification(message);
+            telegramSender.sendFailureNotification(message);    // fixme 여기서 BadRequestRuntimeException 발생시키면 retry queue로 다시 들어가게 됨
             emailMessageDto.setRetryCount(0);
         }
 

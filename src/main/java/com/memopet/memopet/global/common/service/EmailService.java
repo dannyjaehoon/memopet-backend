@@ -28,7 +28,7 @@ public class EmailService {
     private final VertificationStatusRepository vertificationStatusRepository;
 
     public void sendRequestToRabbitMqForSendingEmail(long id, String email, String authNum) {
-        EmailMessageDto emailMessageDto = EmailMessageDto.builder().auth(authNum).RetryCount(0).email(email).id(String.valueOf(id)).build();
+        EmailMessageDto emailMessageDto = EmailMessageDto.builder().auth(authNum).retryCount(0).email(email).id(String.valueOf(id)).build();
         emailRabbitPublisher.pubsubMessage(emailMessageDto);
     }
     @Transactional(readOnly = false)
@@ -36,7 +36,6 @@ public class EmailService {
     public EmailAuthResponseDto sendEmail(String toEmail)  {
         // auth num 값 생성
         String authNum = createCode();
-
 
         long verificationEntityId = setDataExpire(authNum);
 
@@ -69,6 +68,7 @@ public class EmailService {
         // tip 여기에서 값을 리턴하는 이유는 무엇인가요? 프론트엔드로 전달해서 추후에 값을 사용해서 매칭하는데 활용하나요?
         return savedEntity.getId();
     }
+
     public String getCertificationMessage(String certificationNum) {
         // tip 아래처럼 Text Block 으로 가독성 높게 만들수 있습니다.
         String message = """
@@ -79,6 +79,7 @@ public class EmailService {
             """.formatted(certificationNum);
        return message;
     }
+
     //랜덤 인증 코드 생성
     public static String createCode() {
         Random random = new Random();

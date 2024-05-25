@@ -16,39 +16,33 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQFanOutConfig {
 
     private final ConfigRabbitMQ configRabbitMQ;
-
-    public static final String EMAIL_FANOUT_EXCHANGE_NAME = "pubsub-exchange";
-
+    public static final String EMAIL_FANOUT_EXCHANGE_NAME = "pubsub-email-fanout-exchange";
+    public static final String EMAIL_DIRECT_EXCHANGE_NAME = "pubsub-email-direct-exchange";
     public static final String EMAIL_MAIN_QUEUE_1 = "main_queue_1";
-
     public static final String EMAIL_MAIN_QUEUE_2 = "main_queue_2";
-
     public static final String EMAIL_RETRY_QUEUE = "retry_queue";
     public static final String EMAIL_FAILED_QUEUE = "failed_queue";
-
 
     // Subscriber용 큐 2개 생성
     @Bean
     public Queue mainQueue1() {
         return QueueBuilder.durable(EMAIL_MAIN_QUEUE_1)
-                .withArgument("x-dead-letter-exchange", "")
-                .withArgument("x-dead-letter-routing-key", EMAIL_RETRY_QUEUE)
+                .withArgument("x-dead-letter-exchange", EMAIL_DIRECT_EXCHANGE_NAME)
                 .build();
     }
+
     @Bean
     public Queue mainQueue2() {
         return QueueBuilder.durable(EMAIL_MAIN_QUEUE_2)
-                .withArgument("x-dead-letter-exchange", "")
-                .withArgument("x-dead-letter-routing-key", EMAIL_RETRY_QUEUE)
+                .withArgument("x-dead-letter-exchange", EMAIL_DIRECT_EXCHANGE_NAME)
                 .build();
     }
+
     @Bean
     Queue retryQueue() {
         return QueueBuilder.durable(EMAIL_RETRY_QUEUE)
-                .withArgument("x-message-ttl", 60000) // 60 seconds TTL
-                .withArgument("x-dead-letter-exchange", "")
-                .withArgument("x-dead-letter-routing-key", EMAIL_MAIN_QUEUE_1)
-                .withArgument("x-dead-letter-routing-key", EMAIL_MAIN_QUEUE_2)
+                .withArgument("x-message-ttl", 5000) // 60 seconds TTL
+                .withArgument("x-dead-letter-exchange", EMAIL_FANOUT_EXCHANGE_NAME)
                 .build();
     }
 
@@ -57,11 +51,15 @@ public class RabbitMQFanOutConfig {
         return new Queue(EMAIL_FAILED_QUEUE);
     }
 
-
     // FanoutExchange 생성
     @Bean
     public FanoutExchange pubsubExchange() {
         return new FanoutExchange(EMAIL_FANOUT_EXCHANGE_NAME);
+    }
+
+    @Bean
+    public DirectExchange dlxExchange() {
+        return new DirectExchange(EMAIL_DIRECT_EXCHANGE_NAME);
     }
 
     // 각 큐에 binding 설정
@@ -74,13 +72,13 @@ public class RabbitMQFanOutConfig {
         return BindingBuilder.bind(mainQueue2).to(pubsubExchange);
     }
     @Bean
-    Binding retryBinding(Queue retryQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(retryQueue).to(exchange).with(EMAIL_RETRY_QUEUE);
+    Binding retryBinding(DirectExchange dlxExchange, Queue retryQueue) {
+        return BindingBuilder.bind(retryQueue).to(dlxExchange).with(EMAIL_RETRY_QUEUE);
     }
 
     @Bean
-    Binding failedBinding(Queue failedQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(failedQueue).to(exchange).with(EMAIL_FAILED_QUEUE);
+    Binding failedBinding(DirectExchange dlxExchange, Queue failedQueue) {
+        return BindingBuilder.bind(failedQueue).to(dlxExchange).with(EMAIL_FAILED_QUEUE);
     }
     /**
      * RabbitMQ 연결을 위한 ConnectionFactory 빈을 생성하여 반환

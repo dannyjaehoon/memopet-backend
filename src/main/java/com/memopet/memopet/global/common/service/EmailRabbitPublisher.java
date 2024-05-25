@@ -27,6 +27,7 @@ public class EmailRabbitPublisher {
      * Queue로 메시지를 발행
      *
      * @param message 발행할 메시지의 DTO 객체
+     *
      */
     public void pubsubMessage(EmailMessageDto message){
         rabbitTemplate.convertAndSend(fanoutExchange.getName(), "", message);

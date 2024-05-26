@@ -1,7 +1,10 @@
 package com.memopet.memopet.domain.member.service;
 
 
-import com.memopet.memopet.domain.member.dto.*;
+import com.memopet.memopet.domain.member.dto.DeactivateMemberResponseDto;
+import com.memopet.memopet.domain.member.dto.MemberInfoRequestDto;
+import com.memopet.memopet.domain.member.dto.MemberInfoResponseDto;
+import com.memopet.memopet.domain.member.dto.MemberProfileResponseDto;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.entity.Comment;
@@ -11,7 +14,6 @@ import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.CommentRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryImageRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryRepository;
-import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,6 @@ import com.memopet.memopet.global.common.entity.FirstCreatedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

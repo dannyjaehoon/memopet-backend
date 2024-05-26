@@ -1,10 +1,7 @@
 package com.memopet.memopet.domain.pet.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.data.domain.Page;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter

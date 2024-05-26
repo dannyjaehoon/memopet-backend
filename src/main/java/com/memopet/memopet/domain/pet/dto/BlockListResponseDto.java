@@ -1,10 +1,7 @@
 package com.memopet.memopet.domain.pet.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.memopet.memopet.domain.pet.entity.Blocked;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

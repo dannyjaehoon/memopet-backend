@@ -2,10 +2,8 @@ package com.memopet.memopet.domain.member.controller;
 
 import com.memopet.memopet.domain.member.dto.*;
 import com.memopet.memopet.domain.member.service.MemberService;
-
 import com.memopet.memopet.global.common.dto.RestResult;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

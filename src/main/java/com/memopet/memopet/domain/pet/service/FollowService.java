@@ -1,23 +1,18 @@
 package com.memopet.memopet.domain.pet.service;
 
-import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.pet.dto.*;
-import com.memopet.memopet.domain.pet.entity.NotificationType;
 import com.memopet.memopet.domain.pet.entity.Follow;
+import com.memopet.memopet.domain.pet.entity.NotificationType;
 import com.memopet.memopet.domain.pet.entity.Pet;
-import com.memopet.memopet.domain.pet.entity.PetStatus;
 import com.memopet.memopet.domain.pet.repository.FollowRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

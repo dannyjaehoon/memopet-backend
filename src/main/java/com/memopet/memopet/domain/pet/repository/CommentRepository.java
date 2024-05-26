@@ -1,8 +1,10 @@
 package com.memopet.memopet.domain.pet.repository;
 
-import com.memopet.memopet.domain.pet.dto.PetCommentResponseDto;
 import com.memopet.memopet.domain.pet.dto.ReplyPerCommentDto;
-import com.memopet.memopet.domain.pet.entity.*;
+import com.memopet.memopet.domain.pet.entity.Comment;
+import com.memopet.memopet.domain.pet.entity.CommentGroup;
+import com.memopet.memopet.domain.pet.entity.Memory;
+import com.memopet.memopet.domain.pet.entity.Pet;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

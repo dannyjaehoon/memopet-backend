@@ -1,11 +1,8 @@
 package com.memopet.memopet.domain.pet.dto;
 
-import com.memopet.memopet.domain.pet.entity.Audience;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 

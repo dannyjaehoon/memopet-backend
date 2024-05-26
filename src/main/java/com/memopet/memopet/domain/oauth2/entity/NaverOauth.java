@@ -1,6 +1,5 @@
 package com.memopet.memopet.domain.oauth2.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.exception.OAuthException;

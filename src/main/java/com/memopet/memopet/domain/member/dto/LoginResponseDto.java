@@ -1,8 +1,6 @@
 package com.memopet.memopet.domain.member.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
-import com.memopet.memopet.domain.member.entity.Roles;
 import lombok.*;
 
 @Getter

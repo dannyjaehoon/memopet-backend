@@ -3,9 +3,9 @@ package com.memopet.memopet.domain.pet.service;
 
 import com.memopet.memopet.domain.pet.dto.LikePostORDeleteRequestDto;
 import com.memopet.memopet.domain.pet.dto.LikePostORDeleteResponseDto;
-import com.memopet.memopet.domain.pet.entity.NotificationType;
 import com.memopet.memopet.domain.pet.entity.Likes;
 import com.memopet.memopet.domain.pet.entity.Memory;
+import com.memopet.memopet.domain.pet.entity.NotificationType;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.domain.pet.repository.LikesRepository;
 import com.memopet.memopet.domain.pet.repository.MemoryRepository;

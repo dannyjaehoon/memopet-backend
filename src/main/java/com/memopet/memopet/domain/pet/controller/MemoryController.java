@@ -3,19 +3,12 @@ package com.memopet.memopet.domain.pet.controller;
 
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.service.MemoryService;
-import com.memopet.memopet.domain.pet.service.PetService;
 import com.memopet.memopet.global.common.dto.RestResult;
-import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 

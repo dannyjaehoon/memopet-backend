@@ -1,6 +1,5 @@
 package com.memopet.memopet.domain.pet.service;
 
-import com.fasterxml.jackson.core.JsonToken;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.dto.*;
@@ -9,26 +8,20 @@ import com.memopet.memopet.domain.pet.repository.*;
 import com.memopet.memopet.global.common.exception.BadCredentialsRuntimeException;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static com.memopet.memopet.domain.pet.entity.QPet.pet;
 
 @Service
 @RequiredArgsConstructor

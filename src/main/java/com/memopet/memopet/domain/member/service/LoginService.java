@@ -75,7 +75,7 @@ public class LoginService implements UserDetailsService {
     public DuplicationCheckResponseDto checkDupplication(String email) {
         DuplicationCheckResponseDto duplicationCheckResponseDto;
         Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isPresent()) {
+        if(memberByEmail.isEmpty()) {
             duplicationCheckResponseDto = DuplicationCheckResponseDto.builder().dscCode("1").errMessage("Email is valid").build();
         } else {
             duplicationCheckResponseDto = DuplicationCheckResponseDto.builder().dscCode("0").errMessage("Email is invalid").build();

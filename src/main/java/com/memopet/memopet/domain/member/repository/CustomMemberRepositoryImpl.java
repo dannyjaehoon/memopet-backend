@@ -8,8 +8,8 @@ import jakarta.persistence.EntityManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-
 import static com.memopet.memopet.domain.member.entity.QMember.member;
+
 
 @Repository
 public class CustomMemberRepositoryImpl implements CustomMemberRepository {

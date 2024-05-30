@@ -26,7 +26,7 @@ public class AccessLogRabbitConsumer {
     @RabbitListener(queues = "#{directQueue.name}")
     @Transactional(readOnly = false)
     public void consumeSub(String accessLogDtoStr) {
-        log.info("consumeSub received");
+        //log.info("consumeSub received");
         ObjectMapper mapper = new ObjectMapper();
         AccessLogDto accessLogDto;
         try {
@@ -36,10 +36,9 @@ public class AccessLogRabbitConsumer {
             throw new BadRequestRuntimeException(e.getMessage());
         }
 
-        log.info(toJson(accessLogDto));
-
+        //log.info(toJson(accessLogDto));
         AccessLog accesslog = modelMapper.map(accessLogDto, AccessLog.class);
-        log.info(toJson(accesslog));
+        //log.info(toJson(accesslog));
         accessLogRepository.save(accesslog);
     }
 
@@ -49,7 +48,7 @@ public class AccessLogRabbitConsumer {
     public void consumeSubV2(String accessLogDtoStr) {
         try {
             final String name = Thread.currentThread().getName();
-            log.info("ConsumeSub received, message: {}", accessLogDtoStr);
+            //log.info("ConsumeSub received, message: {}", accessLogDtoStr);
             AccessLog accessLog = Utils.toObject(accessLogDtoStr, AccessLog.class);
             accessLogRepository.save(accessLog);
         }catch (Exception e) {

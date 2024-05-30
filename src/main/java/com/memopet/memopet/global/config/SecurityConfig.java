@@ -4,11 +4,13 @@ package com.memopet.memopet.global.config;
 import com.memopet.memopet.domain.member.handler.CustomAccessDeniedHandler;
 import com.memopet.memopet.domain.member.handler.CustomAuthenticationEntryPoint;
 import com.memopet.memopet.domain.member.repository.RefreshTokenRepository;
+import com.memopet.memopet.domain.member.service.AuthService;
 import com.memopet.memopet.domain.member.service.LoginService;
 import com.memopet.memopet.domain.member.service.LogoutHandlerService;
 import com.memopet.memopet.domain.oauth2.service.OauthService;
 import com.memopet.memopet.global.filter.JwtAccessTokenFilter;
 import com.memopet.memopet.global.filter.JwtRefreshTokenFilter;
+import com.memopet.memopet.global.token.JwtTokenGenerator;
 import com.memopet.memopet.global.token.JwtTokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +55,8 @@ public class SecurityConfig {
     private final LogoutHandlerService logoutHandlerService;
     private final OauthService oauthService;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final JwtTokenGenerator jwtTokenGenerator;
+    private final AuthService authService;
 
     @Order(1)
     @Bean
@@ -102,7 +106,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtAccessTokenFilter(rsaKeyRecord, jwtTokenUtils), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAccessTokenFilter(rsaKeyRecord, jwtTokenUtils,refreshTokenRepository,jwtTokenGenerator, authService), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> {
                     log.error("apiSecurityFilterChain :");
                     log.error("[SecurityConfig:apiSecurityFilterChain] Exception due to :{}",ex);
@@ -143,7 +147,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtAccessTokenFilter(rsaKeyRecord,jwtTokenUtils), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAccessTokenFilter(rsaKeyRecord,jwtTokenUtils,refreshTokenRepository,jwtTokenGenerator,authService), UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandlerService)

@@ -3,6 +3,7 @@ package com.memopet.memopet.domain.member.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import com.memopet.memopet.global.common.entity.FirstCreatedEntity;
+import com.nimbusds.oauth2.sdk.token.RefreshToken;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
@@ -49,7 +50,6 @@ public class Member extends FirstCreatedEntity implements Serializable {
     @Column(nullable = false)
     private String roles;
 
-
     @BatchSize(size = 10) // Batch size를 지정한다
     @Builder.Default
     @OneToMany(mappedBy = "member", fetch=FetchType.LAZY)
@@ -59,8 +59,6 @@ public class Member extends FirstCreatedEntity implements Serializable {
 
     private String provideId; // 해당 OAuth 의 key(id)
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RefreshTokenEntity> refreshTokens;
 
     /********** 변경감지용 메서드 **************/
     public void increaseLoginFailCount(int loginFailCount) {

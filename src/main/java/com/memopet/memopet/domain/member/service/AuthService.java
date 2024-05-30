@@ -4,14 +4,13 @@ import com.memopet.memopet.domain.member.dto.LoginRequestDto;
 import com.memopet.memopet.domain.member.dto.LoginResponseDto;
 import com.memopet.memopet.domain.member.dto.SignUpRequestDto;
 import com.memopet.memopet.domain.member.entity.Member;
-import com.memopet.memopet.domain.member.entity.RefreshTokenEntity;
+import com.memopet.memopet.domain.member.entity.RefreshToken;
 import com.memopet.memopet.domain.member.mapper.MemberInfoMapper;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.member.repository.RefreshTokenRepository;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.utils.BusinessUtil;
 import com.memopet.memopet.global.token.JwtTokenGenerator;
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,11 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
-
-import static com.memopet.memopet.global.token.TokenConstant.ACCESSTOKENEXPIRYTIME;
-import static com.memopet.memopet.global.token.TokenConstant.REFRESHTOKENEXPIRYTIME;
 
 @Service
 @Slf4j
@@ -65,7 +62,7 @@ public class AuthService  {
         // Generate a JWT token
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
         Member savedmember = memberRepository.save(member);
-
+        saveRefreshToken(savedmember, accessToken);
         log.info("[AuthService:registerUser] User:{} Successfully registered",member.getUsername());
         return  LoginResponseDto.builder()
                 .username(savedmember.getUsername())
@@ -73,7 +70,6 @@ public class AuthService  {
                 .userRole(savedmember.getRoles() == "ROLE_USER" ? "GU" : "SA")
                 .loginFailCount(savedmember.getLoginFailCount())
                 .accessToken(accessToken)
-                .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
                 .build();
     }
 
@@ -81,7 +77,7 @@ public class AuthService  {
     public LoginResponseDto getJWTTokensAfterAuthentication(Authentication authentication) {
         Member savedmember = businessUtil.getValidEmail(authentication.getName());
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
-
+        saveRefreshToken(savedmember, accessToken);
         log.info("[AuthService:userSignInAuth] Access token for user:{}, has been generated",savedmember.getUsername());
         return  LoginResponseDto.builder()
                                 .username(savedmember.getUsername())
@@ -89,23 +85,17 @@ public class AuthService  {
                                 .userRole(savedmember.getRoles().equals("ROLE_USER") ? "GU" : "SA")
                                 .loginFailCount(savedmember.getLoginFailCount())
                                 .accessToken(accessToken)
-                                .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
                                 .build();
     }
 
     @Transactional(readOnly = false)
-    public Cookie retrieveRefreshToken(String email) {
-        String refreshToken = jwtTokenGenerator.generateRefreshToken(email);
-        Member savedmember = businessUtil.getValidEmail(email);
+    public void saveRefreshToken(Member member, String accessToken) {
+        RefreshToken refreshToken = jwtTokenGenerator.generateRefreshToken(member.getEmail());
+        refreshToken.setAccessToken(accessToken);
+        refreshToken.setMember(member);
+        refreshToken.setRevoked(false);
 
-        Cookie refreshTokenCookie = new Cookie("refresh_token",refreshToken);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setMaxAge(REFRESHTOKENEXPIRYTIME); // in seconds
-
-        saveUserRefreshToken(savedmember, refreshToken);
-
-        return refreshTokenCookie;
+        refreshTokenRepository.save(refreshToken);
     }
 
     public Object getAccessTokenUsingRefreshToken(String authorizationHeader) {
@@ -134,11 +124,10 @@ public class AuthService  {
                                 .userRole(savedmember.getRoles().equals("ROLE_USER") ? "GU" : "SA")
                                 .loginFailCount(savedmember.getLoginFailCount())
                                 .accessToken(accessToken)
-                                .accessTokenExpiry(ACCESSTOKENEXPIRYTIME)
                                 .build();
 
     }
-    public static Authentication createAuthenticationObject(Member member) {
+    public Authentication createAuthenticationObject(Member member) {
         // Extract user details from UserDetailsEntity
         String username = member.getEmail();
         String password = member.getPassword();
@@ -176,16 +165,5 @@ public class AuthService  {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return authentication;
-    }
-
-    @Transactional(readOnly = false)
-    public void saveUserRefreshToken(Member member, String refreshToken) {
-        var refreshTokenEntity = RefreshTokenEntity.builder()
-                .member(member)
-                .refreshToken(refreshToken)
-                .revoked(false)
-                .build();
-
-        refreshTokenRepository.save(refreshTokenEntity);
     }
 }

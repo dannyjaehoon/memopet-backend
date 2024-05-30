@@ -40,9 +40,8 @@ public class  AuthController {
         Authentication authentication = authService.authenticateUser(loginRequestDto);
         // generate access and refresh token
         LoginResponseDto loginResponseDto = authService.getJWTTokensAfterAuthentication(authentication);
-        log.info("getJWTTokensAfterAuthentication finished");
-        Cookie refreshTokenCookie = authService.retrieveRefreshToken(authentication.getName());
-        response.addCookie(refreshTokenCookie);
+
+        response.setHeader("Authorization", "Bearer " + loginResponseDto.getAccessToken());
 
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("loginInfo", loginResponseDto);
@@ -89,8 +88,8 @@ public class  AuthController {
         log.info("sign-up start");
         LoginResponseDto loginResponseDto = authService.join(signUpRequestDto);
 
-        Cookie refreshTokenCookie = authService.retrieveRefreshToken(signUpRequestDto.getEmail());
-        response.addCookie(refreshTokenCookie);
+        response.setHeader("Authorization", "Bearer " + loginResponseDto.getAccessToken());
+
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("sigupInfo", loginResponseDto);
         return new RestResult(dataMap);

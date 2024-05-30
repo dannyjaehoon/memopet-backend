@@ -36,27 +36,21 @@ public class EmailRabbitConsumer {
      * PubSub Consumer 1
      */
     @RabbitListener(queues = EMAIL_MAIN_QUEUE_1)
-    public void consumeSub1(EmailMessageDto emailMessageDto, Channel channel, Message message) {
-        log.info("EMAIL_MAIN_QUEUE_1 start");
-        long deliveryTag = message.getMessageProperties().getDeliveryTag();
+    public void consumeSub1(EmailMessageDto emailMessageDto) {
         try {
             if(isSendAlready(emailMessageDto)){ // 멱등성 체크
                 return;
             }
             sendEmail(emailMessageDto);
-            channel.basicAck(deliveryTag, false);
 
         } catch (Throwable e) {
-            log.info("EMAIL_MAIN_QUEUE_1 failed");
             log.error(e.getMessage());
             try {
                 // 실패한 메시지를 재시도 큐로 전송
                 int retryCount = emailMessageDto.getRetryCount();
                 emailMessageDto.setRetryCount(retryCount+1);
                 rabbitTemplate.convertAndSend(EMAIL_DIRECT_EXCHANGE_NAME, EMAIL_RETRY_QUEUE, emailMessageDto);
-
                 // 메시지를 NACK 처리하여 재시도 큐로 이동
-                channel.basicNack(deliveryTag, false, false);
             } catch (Exception ex) {
                 log.error(ex.getMessage());
             }
@@ -64,16 +58,13 @@ public class EmailRabbitConsumer {
     }
 
     @RabbitListener(queues = EMAIL_RETRY_QUEUE)
-    public void consumeRetrySub(EmailMessageDto emailMessageDto, Message message, Channel channel) {
+    public void consumeRetrySub(EmailMessageDto emailMessageDto) {
         log.info("EMAIL_RETRY_QUEUE start");
-        long deliveryTag = message.getMessageProperties().getDeliveryTag();
         int retryCount = emailMessageDto.getRetryCount();
 
         try {
             if(isSendAlready(emailMessageDto)) return; // 멱등성 체크
             sendEmail(emailMessageDto);
-
-            channel.basicAck(deliveryTag, false);
         } catch (Throwable e) {
             log.info("EMAIL_RETRY_QUEUE failed");
             log.error(e.getMessage());
@@ -84,8 +75,7 @@ public class EmailRabbitConsumer {
 
                     emailMessageDto.setRetryCount(retryCount+1);
                     rabbitTemplate.convertAndSend(EMAIL_DIRECT_EXCHANGE_NAME, EMAIL_RETRY_QUEUE, emailMessageDto);
-                    // 예외가 발생하지 않으면 ack
-                    channel.basicAck(deliveryTag, false);
+
                 } else {
                     log.info("failed queue start");
                     emailMessageDto.setReason(e.getMessage());  // fixme: RabbitMQ 에서 수용가능한 사이즈를 알고 써야하는 지점이 생겼다. ! 왜냐면 모르는 지점. RabbitMQ에서는 256kb까지만 수용가능하다.
@@ -93,17 +83,12 @@ public class EmailRabbitConsumer {
 
                     String messageStr = "failed to send an email to email:" + emailMessageDto.getEmail() +", id:" +  emailMessageDto.getId();
                     telegramSender.sendFailureNotification(messageStr);    // fixme 여기서 BadRequestRuntimeException 발생시키면 retry queue로 다시 들어가게 됨
-
-                    // 예외가 발생하지 않으면 ack
-                    channel.basicNack(deliveryTag, false, false);
                 }
             } catch (Exception ex) {
                 log.error(ex.getMessage());
             }
         }
     }
-
-
 
     // todo: DB에서 확인한다.
     private boolean isSendAlready(EmailMessageDto emailMessageDto) {

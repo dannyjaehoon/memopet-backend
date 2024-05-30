@@ -30,12 +30,9 @@ public class SocialLoginController {
     @GetMapping("/login/oauth2/code/{socialLoginType}")
     public RestResult socialLogin(@PathVariable(name = "socialLoginType") String socialLoginType, @RequestParam(name = "code") String code, HttpServletRequest request, HttpServletResponse response){
         SocialLoginResponseDto socialLoginResponseDto = oauthService.oAuthLogin(socialLoginType, code, request);
-        Cookie refreshTokenCookie = authService.retrieveRefreshToken(socialLoginResponseDto.getEmail());
 
-        response.addCookie(refreshTokenCookie);
         Map<String, Object> dataMap = new LinkedHashMap<>();
         dataMap.put("loginResponseDto", "loginResponseDto");
-
         return new RestResult(dataMap);
     }
 }

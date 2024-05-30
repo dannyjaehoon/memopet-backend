@@ -27,8 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static com.memopet.memopet.global.token.TokenConstant.ACCESSTOKENEXPIRYTIME;
-import static com.memopet.memopet.global.token.TokenConstant.REFRESHTOKENEXPIRYTIME;
 
 
 @Service
@@ -112,6 +110,8 @@ public class OauthService extends DefaultOAuth2UserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetailsInfo.getName(), member.getPassword(), authorities);
 
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
+
+        authService.saveRefreshToken(member, accessToken);
 
         return SocialLoginResponseDto.builder()
                 .username(member.getUsername())

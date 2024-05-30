@@ -22,6 +22,5 @@ public class LoginResponseDto {
 
     private String accessToken;
 
-    private int accessTokenExpiry;
 
 }

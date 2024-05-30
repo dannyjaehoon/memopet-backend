@@ -24,26 +24,18 @@ public class RabbitMQFanOutConfig {
     public static final String EMAIL_FAILED_QUEUE = "failed_queue";
 
     // Subscriber용 큐 2개 생성
-    @Bean
-    public Queue mainQueue1() {
-        return QueueBuilder.durable(EMAIL_MAIN_QUEUE_1)
-                .withArgument("x-dead-letter-exchange", EMAIL_DIRECT_EXCHANGE_NAME)
-                .build();
-    }
 
     @Bean
-    public Queue mainQueue2() {
-        return QueueBuilder.durable(EMAIL_MAIN_QUEUE_2)
-                .withArgument("x-dead-letter-exchange", EMAIL_DIRECT_EXCHANGE_NAME)
-                .build();
+    Queue mainQueue1() {
+        return new Queue(EMAIL_MAIN_QUEUE_1);
     }
-
+    @Bean
+    Queue mainQueue2() {
+        return new Queue(EMAIL_MAIN_QUEUE_2);
+    }
     @Bean
     Queue retryQueue() {
-        return QueueBuilder.durable(EMAIL_RETRY_QUEUE)
-                .withArgument("x-message-ttl", 5000) // 60 seconds TTL
-                .withArgument("x-dead-letter-exchange", EMAIL_FANOUT_EXCHANGE_NAME)
-                .build();
+        return new Queue(EMAIL_RETRY_QUEUE);
     }
 
     @Bean
@@ -53,32 +45,32 @@ public class RabbitMQFanOutConfig {
 
     // FanoutExchange 생성
     @Bean
-    public FanoutExchange pubsubExchange() {
+    public FanoutExchange emailFanoutExchange() {
         return new FanoutExchange(EMAIL_FANOUT_EXCHANGE_NAME);
     }
 
     @Bean
-    public DirectExchange dlxExchange() {
+    public DirectExchange emailDirectExchange() {
         return new DirectExchange(EMAIL_DIRECT_EXCHANGE_NAME);
     }
 
     // 각 큐에 binding 설정
     @Bean
-    public Binding pubsubBinding1(FanoutExchange pubsubExchange, Queue mainQueue1) {
-        return BindingBuilder.bind(mainQueue1).to(pubsubExchange);
+    public Binding pubsubBinding1(FanoutExchange emailFanoutExchange, Queue mainQueue1) {
+        return BindingBuilder.bind(mainQueue1).to(emailFanoutExchange);
     }
     @Bean
-    public Binding pubsubBinding2(FanoutExchange pubsubExchange, Queue mainQueue2) {
-        return BindingBuilder.bind(mainQueue2).to(pubsubExchange);
+    public Binding pubsubBinding2(FanoutExchange emailFanoutExchange, Queue mainQueue2) {
+        return BindingBuilder.bind(mainQueue2).to(emailFanoutExchange);
     }
     @Bean
-    Binding retryBinding(DirectExchange dlxExchange, Queue retryQueue) {
-        return BindingBuilder.bind(retryQueue).to(dlxExchange).with(EMAIL_RETRY_QUEUE);
+    Binding retryBinding(DirectExchange emailDirectExchange, Queue retryQueue) {
+        return BindingBuilder.bind(retryQueue).to(emailDirectExchange).with(EMAIL_RETRY_QUEUE);
     }
 
     @Bean
-    Binding failedBinding(DirectExchange dlxExchange, Queue failedQueue) {
-        return BindingBuilder.bind(failedQueue).to(dlxExchange).with(EMAIL_FAILED_QUEUE);
+    Binding failedBinding(DirectExchange emailDirectExchange, Queue failedQueue) {
+        return BindingBuilder.bind(failedQueue).to(emailDirectExchange).with(EMAIL_FAILED_QUEUE);
     }
     /**
      * RabbitMQ 연결을 위한 ConnectionFactory 빈을 생성하여 반환

@@ -22,7 +22,7 @@
         </rollingPolicy>
     </appender>
     <springProfile name="local">
-        <logger name="com.feelcoding.logbackdemo" level="DEBUG" />
+        <logger name="com.feelcoding.logbackdemo" level="INFO" />
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
         </root>

@@ -74,6 +74,7 @@ public class AuthService  {
     }
 
 
+    @Transactional(readOnly = false)
     public LoginResponseDto getJWTTokensAfterAuthentication(Authentication authentication) {
         Member savedmember = businessUtil.getValidEmail(authentication.getName());
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
@@ -88,14 +89,15 @@ public class AuthService  {
                                 .build();
     }
 
-    @Transactional(readOnly = false)
     public void saveRefreshToken(Member member, String accessToken) {
         RefreshToken refreshToken = jwtTokenGenerator.generateRefreshToken(member.getEmail());
         refreshToken.setAccessToken(accessToken);
         refreshToken.setMember(member);
         refreshToken.setRevoked(false);
 
+
         refreshTokenRepository.save(refreshToken);
+
     }
 
     public Object getAccessTokenUsingRefreshToken(String authorizationHeader) {

@@ -53,8 +53,6 @@ public class MemberService  {
 
         Member member = memberByEmail.get();
 
-        DeactivateMemberResponseDto deactivateMemberResponseDto;
-
         member.deactivateMember(LocalDateTime.now(),deactivationReason,deactivationReasonComment, false);
 
         // find pet info and insert deleted_date

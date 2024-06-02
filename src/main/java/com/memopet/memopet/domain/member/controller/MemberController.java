@@ -4,6 +4,7 @@ import com.memopet.memopet.domain.member.dto.*;
 import com.memopet.memopet.domain.member.service.MemberService;
 
 import com.memopet.memopet.global.common.dto.RestResult;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class MemberController {
     // update member's info
     @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
     @PatchMapping("/member-info")
-    public RestResult changeMemberInfo(@RequestBody MemberInfoRequestDto memberInfoRequestDto) {
+    public RestResult changeMemberInfo(@RequestBody @Valid MemberInfoRequestDto memberInfoRequestDto) {
         MemberInfoResponseDto memberInfoResponseDto = memberService.changeMemberInfo(memberInfoRequestDto);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();

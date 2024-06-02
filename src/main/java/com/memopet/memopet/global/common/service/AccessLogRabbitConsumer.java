@@ -26,8 +26,6 @@ public class AccessLogRabbitConsumer {
     @RabbitListener(queues = "#{directQueue.name}")
     @Transactional(readOnly = false)
     public void consumeSub(String accessLogDtoStr) {
-        //log.info("consumeSub received");
-        ObjectMapper mapper = new ObjectMapper();
         AccessLogDto accessLogDto;
         try {
             // fixme 매번 ObjectMapper를 생성하는 것은 비효율적이므로, ObjectMapper를 Bean으로 등록하여 사용하거나 ObjectMapper를 static으로 선언하여 사용하는 것이 좋다.

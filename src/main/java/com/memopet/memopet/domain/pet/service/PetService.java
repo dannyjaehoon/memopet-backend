@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.memopet.memopet.domain.pet.entity.QPet.pet;
+import static com.memopet.memopet.global.common.utils.Utils.toJson;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +75,7 @@ public class PetService {
         if (petInfoByEmail.size()>4) throw new BadRequestRuntimeException("프로필은 5개 이하로 만들수있습니다.");
         PetStatus petStatus = petInfoByEmail.size()> 0 ? PetStatus.ACTIVE : PetStatus.DEACTIVE;
 
+        log.info("/pet/new, dto: {}", toJson(petRequestDto));
         Pet pet = Pet.builder()
                 .petName(petRequestDto.getPetName())
                 .gender(petRequestDto.getPetGender())
@@ -81,7 +83,7 @@ public class PetService {
                 .member(member)
                 .species(savedSpecies)
                 .petBirth(LocalDate.parse(petRequestDto.getBirthDate(), DateTimeFormatter.ISO_DATE))
-                .petDeathDate(LocalDate.parse(petRequestDto.getPetDeathDate(), DateTimeFormatter.ISO_DATE))
+                .petDeathDate(petRequestDto.getDeathDate().equals("") ? null : LocalDate.parse(petRequestDto.getDeathDate(), DateTimeFormatter.ISO_DATE))
                 .petFavs(petRequestDto.getPetFavs())
                 .petFavs2(petRequestDto.getPetFavs2())
                 .petFavs3(petRequestDto.getPetFavs3())

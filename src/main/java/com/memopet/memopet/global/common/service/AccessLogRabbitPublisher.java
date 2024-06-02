@@ -25,7 +25,7 @@ public class AccessLogRabbitPublisher {
      * @param accessLogDto 발행할 메시지의 DTO 객체
      */
     public void pubsubMessage(AccessLogDto accessLogDto) {
-        log.info("pubsubMessage received");
+        //log.info("pubsubMessage received");
 
         ObjectMapper mapper = new ObjectMapper();
 //        // Java 8에서 추가된 LocalDateTime 항목을 제대로 직렬화 또는 역직렬화를 못하는 현상 때문에 하는 조치

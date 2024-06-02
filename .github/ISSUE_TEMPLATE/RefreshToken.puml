@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+FrontEnd -> Backend: Request with Expired Access Token
+
+Backend -> FrontEnd: Send info with new Access Token in the Header
+Backend -> FrontEnd: Send 406 error if Refresh Token in DB is also expired
+@enduml
+
+예시
+1. 프론트 서버에서 유효기간이 끝난 어세스 토큰을 보낸다.
+2. db에서는 토큰의 유효기간이 끝났으면 db에 저장된 Refresh 토큰 정보를 가져와서 새로운 토큰을 만들어 요청한 데이터와 같이 넘겨준다.
+   - 만약에 리프레시 토큰 정보가 없거나 유효기간이 끝나면 406 에러를 프론트서버에 보내고 프론트 서버는 사용자에게 다시 로그인하라고 요청한다.
+

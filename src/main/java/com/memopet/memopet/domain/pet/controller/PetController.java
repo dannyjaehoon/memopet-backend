@@ -33,10 +33,10 @@ public class PetController {
     @PostMapping(value="/pet/new",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RestResult savePet(@RequestPart(value="back_img_url") MultipartFile backImgUrl,
                               @RequestPart(value="pet_profile_url") MultipartFile petProfileUrl,
-                              @RequestPart(value = "petRequestDto") @Valid SavedPetRequestDto petRequestDto,
-                              @Authed Member member) throws IOException {
+                              @RequestPart(value = "petRequestDto") @Valid SavedPetRequestDto petRequestDto
+                              ) throws IOException {
 
-        log.info("/pet/new member: {}, dto: {}", toJson(member), toJson(petRequestDto));
+
         log.info("save pet start");
         SavedPetResponseDto savedPetResponseDto = petService.savePet(backImgUrl, petProfileUrl, petRequestDto);
 

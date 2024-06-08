@@ -63,6 +63,7 @@ public class Member extends FirstCreatedEntity implements Serializable {
     private List<RefreshTokenEntity> refreshTokens;
 
     /********** 변경감지용 메서드 **************/
+    // todo 변경하면 확인할 수 있도록 AuditLog 테이블을 추가해 주시는게 좋을것 같아요. (변경전, 변경후, 변경일시, 변경자 등의) 정보가 들어가야 합니다.
     public void increaseLoginFailCount(int loginFailCount) {
         this.loginFailCount = loginFailCount;
     }

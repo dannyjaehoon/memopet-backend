@@ -20,10 +20,18 @@ import java.util.*;
 public class Member extends FirstCreatedEntity implements Serializable {
     private static final long serialVersionUID = 174726374856727L;
 
+    /**
+     *fixme auto increment 방식으로 변경하는게 좋을 것 같습니다. uuid 를 쓰는 경우는 최소한으로 하는게 좋긴해요. 왜냐면 너무 길어서 식별자체가 잘 안되서요.
+     *  또한 uuid 를 쓰는 경우보다 yyyyMMddHHmmss + 6자리 숫자로 이런식으로 하면 언제가입했는지도 알수있어서 더 좋을 것 같습니다. 더불어 uuid 보다 더 짧구요.
+     *  그러나 이런식으로 하면 중복이 발생할 수 있으니 중복을 방지하는 로직을 추가해야 합니다. --> 이때 MQ를 사용하면 됩니다. ! 한번 시도 해주시면 좋을 것 같아요.
+     *  이게 되면 Tx 처리를 MQ로 진행할 수 있게 되는 샘이 됩니다. 이메일 보낼때 사용하는 시나리오와는 다른 시나리오 입니다.
+     */
     @Id @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
+
+
     @Column(nullable = false)
     private String username;
     @Column(nullable = false)

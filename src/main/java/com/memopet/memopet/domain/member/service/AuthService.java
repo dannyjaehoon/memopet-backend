@@ -2,6 +2,7 @@ package com.memopet.memopet.domain.member.service;
 
 import com.memopet.memopet.domain.member.dto.LoginRequestDto;
 import com.memopet.memopet.domain.member.dto.LoginResponseDto;
+import com.memopet.memopet.domain.member.dto.MemberCreationDto;
 import com.memopet.memopet.domain.member.dto.SignUpRequestDto;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.RefreshToken;
@@ -9,8 +10,10 @@ import com.memopet.memopet.domain.member.mapper.MemberInfoMapper;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.member.repository.RefreshTokenRepository;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
+import com.memopet.memopet.global.common.service.MemberCreationRabbitPublisher;
 import com.memopet.memopet.global.common.utils.BusinessUtil;
 import com.memopet.memopet.global.token.JwtTokenGenerator;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -40,6 +45,7 @@ public class AuthService  {
     private final MemberInfoMapper memberInfoMapper;
     private final LoginService loginService;
     private final BusinessUtil businessUtil;
+    private final MemberCreationRabbitPublisher memberCreationRabbitPublisher;
 
     /**
      * return the user id if the sign up process is successfully completed
@@ -61,14 +67,25 @@ public class AuthService  {
 
         // Generate a JWT token
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
-        Member savedmember = memberRepository.save(member);
-        saveRefreshToken(savedmember, accessToken);
+
+        MemberCreationDto memberCreationDto = MemberCreationDto.builder()
+                .email(member.getEmail())
+                .username(member.getUsername())
+                .phoneNum(member.getPhoneNum())
+                .password(member.getPassword())
+                .accessToken(accessToken).build();
+
+        // RabbitMQ 로 따로 저장
+        memberCreationRabbitPublisher.pubsubMessage(memberCreationDto);
+
+        //saveRefreshToken(member, accessToken);
+
         log.info("[AuthService:registerUser] User:{} Successfully registered",member.getUsername());
         return  LoginResponseDto.builder()
-                .username(savedmember.getUsername())
-                .userStatus(savedmember.getMemberStatus())
-                .userRole(savedmember.getRoles() == "ROLE_USER" ? "GU" : "SA")
-                .loginFailCount(savedmember.getLoginFailCount())
+                .username(member.getUsername())
+                .userStatus(member.getMemberStatus())
+                .userRole(member.getRoles() == "ROLE_USER" ? "GU" : "SA")
+                .loginFailCount(member.getLoginFailCount())
                 .accessToken(accessToken)
                 .build();
     }
@@ -88,17 +105,16 @@ public class AuthService  {
                                 .accessToken(accessToken)
                                 .build();
     }
-
     public void saveRefreshToken(Member member, String accessToken) {
         RefreshToken refreshToken = jwtTokenGenerator.generateRefreshToken(member.getEmail());
         refreshToken.setAccessToken(accessToken);
         refreshToken.setMember(member);
         refreshToken.setRevoked(false);
 
-
         refreshTokenRepository.save(refreshToken);
 
     }
+
 
     public Object getAccessTokenUsingRefreshToken(String authorizationHeader) {
         if(!authorizationHeader.startsWith("Bearer")){

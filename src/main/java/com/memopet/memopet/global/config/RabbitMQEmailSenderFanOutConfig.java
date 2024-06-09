@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class RabbitMQFanOutConfig {
+public class RabbitMQEmailSenderFanOutConfig {
 
     private final ConfigRabbitMQ configRabbitMQ;
     public static final String EMAIL_FANOUT_EXCHANGE_NAME = "pubsub-email-fanout-exchange";

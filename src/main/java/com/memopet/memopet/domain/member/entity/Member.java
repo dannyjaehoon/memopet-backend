@@ -27,12 +27,10 @@ public class Member extends FirstCreatedEntity implements Serializable {
      *  그러나 이런식으로 하면 중복이 발생할 수 있으니 중복을 방지하는 로직을 추가해야 합니다. --> 이때 MQ를 사용하면 됩니다. ! 한번 시도 해주시면 좋을 것 같아요.
      *  이게 되면 Tx 처리를 MQ로 진행할 수 있게 되는 샘이 됩니다. 이메일 보낼때 사용하는 시나리오와는 다른 시나리오 입니다.
      */
-    @Id @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
-
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String memberId;
     @Column(nullable = false)
     private String username;
     @Column(nullable = false)
@@ -97,5 +95,8 @@ public class Member extends FirstCreatedEntity implements Serializable {
 
     public void changePhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
+    }
+    public void setMemberId(String memberId) {
+        this.memberId =memberId;
     }
 }

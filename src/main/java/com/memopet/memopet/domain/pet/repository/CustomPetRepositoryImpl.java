@@ -80,11 +80,10 @@ public class CustomPetRepositoryImpl implements CustomPetRepository{
     }
 
     @Override
-    public boolean deleteAPet(UUID memberId, Long petId) {
+    public boolean deleteAPet(Long memberId, Long petId) {
         long updatedCount = queryFactory.update(pet)
                 .set(pet.deletedDate, LocalDateTime.now())
                 .where(pet.id.eq(petId))
-                .where(pet.member.id.eq(memberId))
                 .where(pet.deletedDate.isNull())
                 .execute();
         return updatedCount > 0;

@@ -16,4 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, UUID>, CustomMem
     @Query("select m from Member m where m.username= :username and m.phoneNum = :phoneNum and deletedDate IS NULL")
     Member findIdByUsernameAndPhoneNum(@Param("username") String username, @Param("phoneNum") String phoneNum);
 
+    @Query("select m from Member m where m.memberId = :memberId and deletedDate IS NULL")
+    Optional<Member> findMemberByMemberId(String memberId);
 }

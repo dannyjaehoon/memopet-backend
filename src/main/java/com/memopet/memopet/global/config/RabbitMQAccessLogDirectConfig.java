@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class RabbitMQDirectConfig {
+public class RabbitMQAccessLogDirectConfig {
 
     public static final String ACCESS_LOG_Direct_EXCHANGE_NAME = "accessLog.exchange";
     public static final String ACCESS_LOG_DIRECT_QUEUE_NAME = "accessLog.queue";

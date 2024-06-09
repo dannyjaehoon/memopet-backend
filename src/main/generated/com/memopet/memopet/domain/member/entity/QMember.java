@@ -39,7 +39,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath email = createString("email");
 
-    public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
     public final StringPath lastModifiedBy = _super.lastModifiedBy;
@@ -48,6 +48,8 @@ public class QMember extends EntityPathBase<Member> {
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final NumberPath<Integer> loginFailCount = createNumber("loginFailCount", Integer.class);
+
+    public final StringPath memberId = createString("memberId");
 
     public final EnumPath<MemberStatus> memberStatus = createEnum("memberStatus", MemberStatus.class);
 

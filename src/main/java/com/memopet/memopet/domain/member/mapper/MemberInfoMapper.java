@@ -1,5 +1,6 @@
 package com.memopet.memopet.domain.member.mapper;
 
+import com.memopet.memopet.domain.member.dto.MemberCreationDto;
 import com.memopet.memopet.domain.member.dto.SignUpRequestDto;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
@@ -22,6 +23,20 @@ public class MemberInfoMapper {
                     .roles("ROLE_USER")
                     .activated(true)
                     .build();
+        return member;
+    }
+    public Member convertToEntity(MemberCreationDto memberCreationDto) {
+        Member member = Member.builder()
+                .username(memberCreationDto.getUsername())
+                .password(passwordEncoder.encode(memberCreationDto.getPassword()))
+                .memberId(memberCreationDto.getMemberId())
+                .email(memberCreationDto.getEmail())
+                .phoneNum(memberCreationDto.getPhoneNum())
+                .memberStatus(MemberStatus.NORMAL)
+                .loginFailCount(0)
+                .roles("ROLE_USER")
+                .activated(true)
+                .build();
         return member;
     }
 }

@@ -11,7 +11,7 @@ public interface CustomPetRepository {
 
     boolean switchPetProfile(Long petId);
 
-    boolean deleteAPet(UUID memberId, Long petId);
+    boolean deleteAPet(Long memberId, Long petId);
 
     void updateMemoryInfo(String petImgUrl, String backgroundImgUrl, PetUpdateInfoRequestDto petUpdateInfoRequestDto);
 }

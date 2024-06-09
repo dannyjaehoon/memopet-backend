@@ -1,21 +1,17 @@
 package com.memopet.memopet.global.common.service;
 
 import com.memopet.memopet.global.common.dto.EmailMessageDto;
-import com.rabbitmq.client.Channel;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
-import static com.memopet.memopet.global.config.RabbitMQFanOutConfig.*;
+import static com.memopet.memopet.global.config.RabbitMQEmailSenderFanOutConfig.*;
 
 
 @Service

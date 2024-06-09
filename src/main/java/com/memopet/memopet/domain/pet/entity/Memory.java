@@ -1,6 +1,5 @@
 package com.memopet.memopet.domain.pet.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.memopet.memopet.global.common.entity.FirstCreatedEntity;
 import jakarta.persistence.*;
 import lombok.*;

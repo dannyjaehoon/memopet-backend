@@ -1,6 +1,5 @@
 package com.memopet.memopet.domain.pet.service;
 
-import com.fasterxml.jackson.core.JsonToken;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.pet.dto.*;
@@ -9,27 +8,20 @@ import com.memopet.memopet.domain.pet.repository.*;
 import com.memopet.memopet.global.common.exception.BadCredentialsRuntimeException;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.S3Uploader;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static com.memopet.memopet.domain.pet.entity.QPet.pet;
-import static com.memopet.memopet.global.common.utils.Utils.toJson;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +67,6 @@ public class PetService {
         if (petInfoByEmail.size()>4) throw new BadRequestRuntimeException("프로필은 5개 이하로 만들수있습니다.");
         PetStatus petStatus = petInfoByEmail.size()> 0 ? PetStatus.ACTIVE : PetStatus.DEACTIVE;
 
-        log.info("/pet/new, dto: {}", toJson(petRequestDto));
         Pet pet = Pet.builder()
                 .petName(petRequestDto.getPetName())
                 .gender(petRequestDto.getPetGender())
@@ -83,7 +74,7 @@ public class PetService {
                 .member(member)
                 .species(savedSpecies)
                 .petBirth(LocalDate.parse(petRequestDto.getBirthDate(), DateTimeFormatter.ISO_DATE))
-                .petDeathDate(petRequestDto.getDeathDate().equals("") ? null : LocalDate.parse(petRequestDto.getDeathDate(), DateTimeFormatter.ISO_DATE))
+                .petDeathDate(LocalDate.parse(petRequestDto.getPetDeathDate(), DateTimeFormatter.ISO_DATE))
                 .petFavs(petRequestDto.getPetFavs())
                 .petFavs2(petRequestDto.getPetFavs2())
                 .petFavs3(petRequestDto.getPetFavs3())

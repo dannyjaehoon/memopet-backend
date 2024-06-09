@@ -1,26 +1,14 @@
 package com.memopet.memopet.domain.pet.repository;
 
 import com.memopet.memopet.domain.pet.dto.BlockedListResponseDto;
-import com.memopet.memopet.domain.pet.dto.FollowListResponseDto;
-
-import com.memopet.memopet.domain.pet.dto.PetFollowingResponseDto;
-import com.memopet.memopet.domain.pet.entity.QFollow;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import org.springframework.data.domain.*;
-import org.springframework.data.support.PageableExecutionUtils;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-
-import static com.memopet.memopet.domain.pet.entity.QFollow.follow;
-import static com.memopet.memopet.domain.pet.entity.QPet.*;
 
 @Repository
 public class CustomFollowRepositoryImpl implements CustomFollowRepository{

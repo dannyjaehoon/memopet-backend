@@ -1,8 +1,5 @@
 package com.memopet.memopet.domain.pet.repository;
 
-import com.memopet.memopet.domain.pet.dto.PetFollowingResponseDto;
-import com.memopet.memopet.domain.pet.entity.Likes;
-import com.memopet.memopet.domain.pet.entity.Memory;
 import com.memopet.memopet.domain.pet.entity.Pet;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -13,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 public interface PetRepository extends JpaRepository<Pet, Long>,CustomPetRepository  {
     @Query(value="select * from pet where pet_id NOT IN (:petIds) and deleted_date IS NULL", nativeQuery = true)

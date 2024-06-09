@@ -2,8 +2,6 @@ package com.memopet.memopet.domain.pet.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @Builder

@@ -1,18 +1,15 @@
 package com.memopet.memopet.domain.oauth2.controller;
 
 
-import com.memopet.memopet.domain.member.dto.LoginResponseDto;
 import com.memopet.memopet.domain.member.dto.SocialLoginResponseDto;
 import com.memopet.memopet.domain.member.service.AuthService;
 import com.memopet.memopet.domain.oauth2.service.OauthService;
 import com.memopet.memopet.global.common.dto.RestResult;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;

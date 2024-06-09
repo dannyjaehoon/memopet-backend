@@ -1,15 +1,14 @@
 package com.memopet.memopet.domain.pet.controller;
 
-import com.memopet.memopet.domain.pet.dto.*;
+import com.memopet.memopet.domain.pet.dto.FollowListRequestDto;
+import com.memopet.memopet.domain.pet.dto.FollowListResponseDto;
+import com.memopet.memopet.domain.pet.dto.FollowRequestDto;
+import com.memopet.memopet.domain.pet.dto.FollowResponseDto;
 import com.memopet.memopet.domain.pet.service.FollowService;
-import com.memopet.memopet.domain.pet.service.PetService;
 import com.memopet.memopet.global.common.dto.RestResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;

@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+유저디바이스 -> 클라이언트: 파일업로드
+클라이언트 -> 클라이언트: 파일셀렉터에서 파일을 선택
+클라이언트 -> 서버: 파일업로드 (.jpg, .png)
+'서버 -> 서버: 로컬로 저장(new File()) XX
+서버 -> S3: 파일업로드
+S3 -> 서버: 링크URL
+서버 -> 클라이언트: 링크URL
+클라이언트 -> 서버: 저장하기요청(링크URL)
+
+@enduml

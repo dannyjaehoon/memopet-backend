@@ -2,9 +2,6 @@ package com.memopet.memopet.domain.pet.repository;
 
 import com.memopet.memopet.domain.pet.dto.PetListResponseDto;
 import com.memopet.memopet.domain.pet.dto.PetUpdateInfoRequestDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;

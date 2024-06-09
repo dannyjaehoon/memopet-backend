@@ -71,6 +71,8 @@ dependencies {
     // https://mvnrepository.com/artifact/nl.basjes.parse.useragent/yauaa
     implementation group: 'nl.basjes.parse.useragent', name: 'yauaa', version: '7.5.0'
 
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+
 }
 
 

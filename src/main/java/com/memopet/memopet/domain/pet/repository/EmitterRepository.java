@@ -1,7 +1,5 @@
 package com.memopet.memopet.domain.pet.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Map;

@@ -1,6 +1,8 @@
 package com.memopet.memopet.domain.member.service;
 
-import com.memopet.memopet.domain.member.dto.*;
+import com.memopet.memopet.domain.member.dto.DuplicationCheckResponseDto;
+import com.memopet.memopet.domain.member.dto.MyIdResponseDto;
+import com.memopet.memopet.domain.member.dto.MyPasswordResponseDto;
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.LoginFailedRepository;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 @Service

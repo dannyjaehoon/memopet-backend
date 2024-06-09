@@ -5,13 +5,14 @@ import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
 import com.memopet.memopet.domain.member.service.AuthService;
-import com.memopet.memopet.domain.oauth2.entity.*;
+import com.memopet.memopet.domain.oauth2.entity.SocialLoginType;
+import com.memopet.memopet.domain.oauth2.entity.SocialOauth;
+import com.memopet.memopet.domain.oauth2.entity.SocialOauthToken;
+import com.memopet.memopet.domain.oauth2.entity.SocialUser;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.exception.OAuthException;
 import com.memopet.memopet.global.token.JwtTokenGenerator;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
 
 
 @Service
@@ -110,8 +109,6 @@ public class OauthService extends DefaultOAuth2UserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetailsInfo.getName(), member.getPassword(), authorities);
 
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
-
-        authService.saveRefreshToken(member, accessToken);
 
         return SocialLoginResponseDto.builder()
                 .username(member.getUsername())

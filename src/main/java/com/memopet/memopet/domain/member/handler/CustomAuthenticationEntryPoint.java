@@ -2,16 +2,12 @@ package com.memopet.memopet.domain.member.handler;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.memopet.memopet.domain.member.dto.ErrorResponseDto;
 import com.memopet.memopet.global.common.exception.BadCredentialsRuntimeException;
 import com.memopet.memopet.global.common.exception.ForbiddenRuntimeException;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -19,9 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor

@@ -1,14 +1,11 @@
 package com.memopet.memopet.domain.pet.repository;
 
-import com.memopet.memopet.domain.pet.entity.Memory;
 import com.memopet.memopet.domain.pet.entity.MemoryImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
-
-import java.util.Collection;
 
 public interface MemoryImageRepository  extends JpaRepository<MemoryImage, Long>,CustomMemoryImageRepository {
 

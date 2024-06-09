@@ -1,14 +1,9 @@
 package com.memopet.memopet.domain.pet.controller;
 
-import com.memopet.memopet.domain.member.dto.DeactivateMemberRequestDto;
-import com.memopet.memopet.domain.member.dto.DeactivateMemberResponseDto;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.service.CommentService;
-import com.memopet.memopet.domain.pet.service.MemoryService;
 import com.memopet.memopet.global.common.dto.RestResult;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

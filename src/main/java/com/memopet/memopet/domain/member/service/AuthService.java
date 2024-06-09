@@ -13,7 +13,6 @@ import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.MemberCreationRabbitPublisher;
 import com.memopet.memopet.global.common.utils.BusinessUtil;
 import com.memopet.memopet.global.token.JwtTokenGenerator;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,10 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -75,10 +71,14 @@ public class AuthService  {
                 .password(member.getPassword())
                 .accessToken(accessToken).build();
 
-        // RabbitMQ 로 따로 저장
-        memberCreationRabbitPublisher.pubsubMessage(memberCreationDto);
+        // RabbitMQ 로 채번
+        String memberId = memberCreationRabbitPublisher.pubsubMessage();
+        log.info("memberId : " + memberId);
+        member.setMemberId(memberId);
 
-        //saveRefreshToken(member, accessToken);
+        memberRepository.save(member);
+
+        saveRefreshToken(member, accessToken);
 
         log.info("[AuthService:registerUser] User:{} Successfully registered",member.getUsername());
         return  LoginResponseDto.builder()

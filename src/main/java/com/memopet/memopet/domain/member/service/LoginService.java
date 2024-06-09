@@ -53,24 +53,22 @@ public class LoginService implements UserDetailsService {
         Member member = memberByEmail.get();
 
         log.info("loginAttemptCheck method starts");
-        if(member != null) {
-            // check if the input password is correct
-            if (passwordEncoder.matches(password, member.getPassword())) {
-                loginFailedRepository.resetCount(member); // reset the count of login failure attempts
+        // check if the input password is correct
+        if (passwordEncoder.matches(password, member.getPassword())) {
+            loginFailedRepository.resetCount(member); // reset the count of login failure attempts
+        } else {
+            log.info("member.getLoginFailCount() : " + member.getLoginFailCount());
+            // login failure +1
+
+            if (member.getLoginFailCount() >= MAX_ATTEMPT_COUNT) {
+                log.info("login failed attempt : " + member.getLoginFailCount());
+                changeAccountStatus(member, MemberStatus.LOCKED);
+
+                Audit audit = Audit.builder().createdDate(LocalDateTime.now()).cnbf("account is active").cnaf("account is locked").modifier(member.getEmail()).build();
+                // save audit log
+                auditRepository.save(audit);
             } else {
-                log.info("member.getLoginFailCount() : " + member.getLoginFailCount());
-                // login failure +1
-
-                if (member.getLoginFailCount() >= MAX_ATTEMPT_COUNT) {
-                    log.info("login failed attempt : " + member.getLoginFailCount());
-                    changeAccountStatus(member, MemberStatus.LOCKED);
-
-                    Audit audit = Audit.builder().createdDate(LocalDateTime.now()).cnbf("account is active").cnaf("account is locked").modifier(member.getEmail()).build();
-                    // save audit log
-                    auditRepository.save(audit);
-                } else {
-                    member.increaseLoginFailCount(member.getLoginFailCount()+1);
-                }
+                member.increaseLoginFailCount(member.getLoginFailCount()+1);
             }
         }
     }

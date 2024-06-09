@@ -20,24 +20,16 @@ import org.springframework.stereotype.Service;
 public class MemberCreationRabbitPublisher {
     private final RabbitTemplate rabbitTemplate;
     private final DirectExchange memberDirectExchange;
-    private final ObjectMapper objectMapper;
 
     /**
      * Queue로 메시지를 발행
      *
      * @param
      */
-    public void pubsubMessage(MemberCreationDto memberCreationDto) {
+    public String pubsubMessage() {
         log.info(" MemberCreationRabbitPublisher start");
 
-        try {
-            String jsonMessage = objectMapper.writeValueAsString(memberCreationDto);
-            rabbitTemplate.convertAndSend(memberDirectExchange.getName(), "member.create.key", jsonMessage);
-        } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
-            throw new BadRequestRuntimeException("Problem with converting memberCreationDto to String during the process to save member");
-        }
-
+        return (String) rabbitTemplate.convertSendAndReceive(memberDirectExchange.getName(), "member.create.key", "");
     }
 
 }

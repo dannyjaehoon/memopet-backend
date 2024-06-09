@@ -74,7 +74,7 @@ public class PetService {
                 .member(member)
                 .species(savedSpecies)
                 .petBirth(LocalDate.parse(petRequestDto.getBirthDate(), DateTimeFormatter.ISO_DATE))
-                .petDeathDate(LocalDate.parse(petRequestDto.getPetDeathDate(), DateTimeFormatter.ISO_DATE))
+                .petDeathDate(LocalDate.parse(petRequestDto.getDeathDate(), DateTimeFormatter.ISO_DATE))
                 .petFavs(petRequestDto.getPetFavs())
                 .petFavs2(petRequestDto.getPetFavs2())
                 .petFavs3(petRequestDto.getPetFavs3())

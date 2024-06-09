@@ -7,6 +7,8 @@ import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.LoginFailedRepository;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.global.common.entity.Audit;
+import com.memopet.memopet.global.common.repository.AuditRepository;
 import com.memopet.memopet.global.config.UserInfoConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -29,6 +32,7 @@ public class LoginService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final LoginFailedRepository loginFailedRepository;
+    private final AuditRepository auditRepository;
     public static final int MAX_ATTEMPT_COUNT = 4;
 
     @Override
@@ -50,16 +54,20 @@ public class LoginService implements UserDetailsService {
 
         log.info("loginAttemptCheck method starts");
         if(member != null) {
-            // 비밀번호가 맞는지 체크
+            // check if the input password is correct
             if (passwordEncoder.matches(password, member.getPassword())) {
-                loginFailedRepository.resetCount(member); // 계정 잠금 후 실패 횟수 초기화
+                loginFailedRepository.resetCount(member); // reset the count of login failure attempts
             } else {
                 log.info("member.getLoginFailCount() : " + member.getLoginFailCount());
-                // 비밀번호가 맞지 않으면 로그인 login_fail_count +1
+                // login failure +1
 
                 if (member.getLoginFailCount() >= MAX_ATTEMPT_COUNT) {
                     log.info("login failed attempt : " + member.getLoginFailCount());
                     changeAccountStatus(member, MemberStatus.LOCKED);
+
+                    Audit audit = Audit.builder().createdDate(LocalDateTime.now()).cnbf("account is active").cnaf("account is locked").modifier(member.getEmail()).build();
+                    // save audit log
+                    auditRepository.save(audit);
                 } else {
                     member.increaseLoginFailCount(member.getLoginFailCount()+1);
                 }

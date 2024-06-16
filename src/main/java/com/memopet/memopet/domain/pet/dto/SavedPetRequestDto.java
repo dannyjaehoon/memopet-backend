@@ -12,7 +12,7 @@ import lombok.*;
 public class SavedPetRequestDto {
 
     @Email
-    private String email;
+    private String phoneNum;
     private String petName;
     private String petDesc;
     private String petSpecM;

@@ -54,18 +54,4 @@ public class MemberController {
 
         return new RestResult(dataMap);
     }
-
-    //@PreAuthorize("hasAnyRole('SCOPE_USER','SCOPE_ADMIN')")
-    @PreAuthorize("hasAuthority('SCOPE_USER_AUTHORITY')")
-    @GetMapping("/welcome-message")
-    public ResponseEntity<String> UserMemberMessageTest(Authentication authentication) {
-        return ResponseEntity.ok("Welcome to the JWT Tutorial:"+authentication.getName()+"with scope:"+authentication.getAuthorities());
-    }
-
-    //@PreAuthorize("hasRole('SCOPE_ADMIN')")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN_AUTHORITY')")
-    @GetMapping("/admin-message")
-    public ResponseEntity<String> getAdminData() {
-        return ResponseEntity.ok("admin");
-    }
 }

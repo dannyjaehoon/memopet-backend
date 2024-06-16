@@ -7,35 +7,30 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QMember is a Querydsl query type for Member
+ * QMemberSocial is a Querydsl query type for MemberSocial
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QMember extends EntityPathBase<Member> {
+public class QMemberSocial extends EntityPathBase<MemberSocial> {
 
-    private static final long serialVersionUID = -1070714820L;
+    private static final long serialVersionUID = -1968367927L;
 
-    public static final QMember member = new QMember("member1");
+    public static final QMemberSocial memberSocial = new QMemberSocial("memberSocial");
 
     public final com.memopet.memopet.global.common.entity.QFirstCreatedEntity _super = new com.memopet.memopet.global.common.entity.QFirstCreatedEntity(this);
-
-    public final DateTimePath<java.time.LocalDateTime> agreeDate = createDateTime("agreeDate", java.time.LocalDateTime.class);
-
-    public final BooleanPath agreeYn = createBoolean("agreeYn");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final StringPath deactivationReason = createString("deactivationReason");
-
-    public final StringPath deactivationReasonComment = createString("deactivationReasonComment");
-
     public final DateTimePath<java.time.LocalDateTime> deletedDate = createDateTime("deletedDate", java.time.LocalDateTime.class);
 
+    public final StringPath email = createString("email");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final DateTimePath<java.time.LocalDateTime> lastLoginDate = createDateTime("lastLoginDate", java.time.LocalDateTime.class);
 
     //inherited
     public final StringPath lastModifiedBy = _super.lastModifiedBy;
@@ -43,24 +38,34 @@ public class QMember extends EntityPathBase<Member> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
+    public final NumberPath<Integer> loginFailCount = createNumber("loginFailCount", Integer.class);
+
     public final StringPath memberId = createString("memberId");
 
-    public final ListPath<com.memopet.memopet.domain.pet.entity.Pet, com.memopet.memopet.domain.pet.entity.QPet> pets = this.<com.memopet.memopet.domain.pet.entity.Pet, com.memopet.memopet.domain.pet.entity.QPet>createList("pets", com.memopet.memopet.domain.pet.entity.Pet.class, com.memopet.memopet.domain.pet.entity.QPet.class, PathInits.DIRECT2);
+    public final EnumPath<MemberStatus> memberStatus = createEnum("memberStatus", MemberStatus.class);
+
+    public final StringPath password = createString("password");
 
     public final StringPath phoneNum = createString("phoneNum");
 
+    public final StringPath provider = createString("provider");
+
+    public final StringPath providerId = createString("providerId");
+
+    public final StringPath roles = createString("roles");
+
     public final StringPath username = createString("username");
 
-    public QMember(String variable) {
-        super(Member.class, forVariable(variable));
+    public QMemberSocial(String variable) {
+        super(MemberSocial.class, forVariable(variable));
     }
 
-    public QMember(Path<? extends Member> path) {
+    public QMemberSocial(Path<? extends MemberSocial> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QMember(PathMetadata metadata) {
-        super(Member.class, metadata);
+    public QMemberSocial(PathMetadata metadata) {
+        super(MemberSocial.class, metadata);
     }
 
 }

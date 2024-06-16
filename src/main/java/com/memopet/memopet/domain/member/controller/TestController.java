@@ -1,14 +1,17 @@
 package com.memopet.memopet.domain.member.controller;
 
+import com.memopet.memopet.global.common.service.AligoSmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class TestController {
+    private final AligoSmsService aligoSmsService;
     //private final EmailRabbitPublisher emailRabbitPublisher;
 
 //    @PostMapping("/pubsub")
@@ -28,5 +31,10 @@ public class TestController {
         log.info("INFO!!");
         log.warn("WARN!!");
         log.error("ERROR!!");
+    }
+
+    @GetMapping("/send-sms")
+    public String sendSms(@RequestParam String recipientPhone, @RequestParam String message) {
+        return aligoSmsService.sendSms(recipientPhone, message);
     }
 }

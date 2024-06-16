@@ -129,7 +129,7 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter {
 
             if(!refreshToken.isRevoked()) {
                 // created a new Authentication and access token
-                Authentication authentication = authService.createAuthenticationObject(refreshToken.getMember());
+                Authentication authentication = authService.createAuthenticationObject(refreshToken.getMemberSocial());
                 // SecurityContextHolder.getContext().setAuthentication(authentication);
                 //log.info("Create new accessToken ****");
                 newAccessToken = jwtTokenGenerator.generateAccessToken(authentication);

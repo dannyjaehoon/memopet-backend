@@ -2,6 +2,7 @@ package com.memopet.memopet.global.token;
 
 import com.memopet.memopet.domain.member.entity.Member;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.domain.member.repository.MemberSocialRepository;
 import com.memopet.memopet.domain.member.service.AuthService;
 import com.memopet.memopet.domain.member.service.LoginService;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
@@ -21,6 +22,7 @@ import java.util.Objects;
 public class JwtTokenUtils {
 
     private final MemberRepository memberRepository ;
+    private final MemberSocialRepository memberSocialRepository;
     public String getUserName(Jwt jwtToken){
         return jwtToken.getSubject();
     }
@@ -38,7 +40,7 @@ public class JwtTokenUtils {
     }
 
     public UserDetails userDetails(String email){
-        return memberRepository
+        return memberSocialRepository
                 .findMemberByEmail(email)
                 .map(UserInfoConfig::new)
                 .orElseThrow(()-> new BadRequestRuntimeException("UserEmail: "+email+" does not exist"));

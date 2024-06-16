@@ -28,7 +28,7 @@ public class QRefreshToken extends EntityPathBase<RefreshToken> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final QMember member;
+    public final QMemberSocial memberSocial;
 
     public final StringPath refreshToken = createString("refreshToken");
 
@@ -52,7 +52,7 @@ public class QRefreshToken extends EntityPathBase<RefreshToken> {
 
     public QRefreshToken(Class<? extends RefreshToken> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member"), inits.get("member")) : null;
+        this.memberSocial = inits.isInitialized("memberSocial") ? new QMemberSocial(forProperty("memberSocial")) : null;
     }
 
 }

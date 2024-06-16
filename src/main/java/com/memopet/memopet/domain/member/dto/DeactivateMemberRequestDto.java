@@ -15,10 +15,8 @@ public class DeactivateMemberRequestDto {
     @Email
     @NotBlank
     private String email;
-
     @NotBlank
     private String deactivationReason;
-
     private String deactivationReasonComment;
 
 }

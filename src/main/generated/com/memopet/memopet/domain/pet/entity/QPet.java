@@ -83,7 +83,7 @@ public class QPet extends EntityPathBase<Pet> {
 
     public QPet(Class<? extends Pet> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new com.memopet.memopet.domain.member.entity.QMember(forProperty("member"), inits.get("member")) : null;
+        this.member = inits.isInitialized("member") ? new com.memopet.memopet.domain.member.entity.QMember(forProperty("member")) : null;
         this.species = inits.isInitialized("species") ? new QSpecies(forProperty("species")) : null;
     }
 

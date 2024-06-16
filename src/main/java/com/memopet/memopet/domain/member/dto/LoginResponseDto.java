@@ -14,6 +14,8 @@ public class LoginResponseDto {
 
     private MemberStatus userStatus;
 
+    private String phoneNumYn;
+
     private String userRole;
 
     private int loginFailCount;

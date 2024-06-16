@@ -10,12 +10,9 @@ import java.util.UUID;
 
 public interface MemberRepository extends JpaRepository<Member, UUID>, CustomMemberRepository {
 
-    @Query("select m from Member m where m.email = :email and deletedDate IS NULL")
-    Optional<Member> findMemberByEmail(String email);
-
-    @Query("select m from Member m where m.username= :username and m.phoneNum = :phoneNum and deletedDate IS NULL")
-    Member findIdByUsernameAndPhoneNum(@Param("username") String username, @Param("phoneNum") String phoneNum);
-
     @Query("select m from Member m where m.memberId = :memberId and deletedDate IS NULL")
     Optional<Member> findMemberByMemberId(String memberId);
+
+    @Query("select m from Member m where m.phoneNum = :phoneNum and deletedDate IS NULL")
+    Optional<Member> findMemberByPhoneNum(String phoneNum);
 }

@@ -1,8 +1,10 @@
 package com.memopet.memopet.global.common.utils;
 
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.domain.member.repository.MemberSocialRepository;
 import com.memopet.memopet.domain.pet.repository.PetRepository;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,29 +19,30 @@ public class BusinessUtil {
 
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
+    private final MemberSocialRepository memberSocialRepository;
     private final String IS_MOBILE = "MOBILE";
     private final String IS_PHONE = "PHONE";
     private final String IS_TABLET = "TABLET";
     private final String IS_PC = "PC";
 
-    public Member getValidEmail(String email) {
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
-        if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
-        return memberByEmail.get();
+    public MemberSocial getValidEmail(String email) {
+        Optional<MemberSocial> memberSocialByEmail = memberSocialRepository.findMemberByEmail(email);
+        if(memberSocialByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
+        return memberSocialByEmail.get();
     }
 
     public void isAccountLock(String email) {
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        Optional<MemberSocial> memberByEmail = memberSocialRepository.findMemberByEmail(email);
         if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
-        Member member = memberByEmail.get();
-        if(member.getMemberStatus().equals(MemberStatus.LOCKED)) {
+        MemberSocial memberSocial = memberByEmail.get();
+        if(memberSocial.getMemberStatus().equals(MemberStatus.LOCKED)) {
             throw new BadRequestRuntimeException("Your account is locked because of 5 failed Login attempts");
         }
     }
 
     public void isValidEmail(String email) {
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        Optional<MemberSocial> memberByEmail = memberSocialRepository.findMemberByEmail(email);
         if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
     }
 

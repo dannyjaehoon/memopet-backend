@@ -9,9 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,6 +75,16 @@ public class  AuthController {
         return new RestResult(dataMap);
     }
 
+    @PostMapping("/sign-in/password-reset")
+    public RestResult resetMyPassword(@RequestBody MyPasswordRequestDto  myPasswordRequestDto) {
+        ResetPasswordResponseDto resetPasswordResponseDto = loginService.resetNewPassword(myPasswordRequestDto.getEmail());
+
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        dataMap.put("changeMyPasswordResponse", resetPasswordResponseDto);
+
+        return new RestResult(dataMap);
+    }
+
     /**
      * when a user tries to sign-up
      * @param signUpRequestDto
@@ -95,9 +102,5 @@ public class  AuthController {
         return new RestResult(dataMap);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_REFRESH_TOKEN')")
-    @PostMapping ("/refresh-token")
-    public ResponseEntity<?> getAccessToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
-        return ResponseEntity.ok(authService.getAccessTokenUsingRefreshToken(authorizationHeader));
-    }
+
 }

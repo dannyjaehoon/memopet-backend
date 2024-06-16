@@ -63,7 +63,7 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
             if (!userName.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
                 //Check if refreshToken isPresent in database and is valid
-                var isRefreshTokenValidInDatabase = refreshTokenRepo.findByRefreshToken(jwtRefreshToken.getTokenValue())
+                var isRefreshTokenValidInDatabase = refreshTokenRepo.findByAccessToken(jwtRefreshToken.getTokenValue())
                         .map(refreshTokenEntity -> !refreshTokenEntity.isRevoked())
                         .orElse(false);
 

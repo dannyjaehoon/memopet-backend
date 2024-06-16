@@ -6,7 +6,11 @@ import com.memopet.memopet.domain.member.dto.MemberInfoRequestDto;
 import com.memopet.memopet.domain.member.dto.MemberInfoResponseDto;
 import com.memopet.memopet.domain.member.dto.MemberProfileResponseDto;
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
+import com.memopet.memopet.domain.member.entity.RefreshToken;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.domain.member.repository.MemberSocialRepository;
+import com.memopet.memopet.domain.member.repository.RefreshTokenRepository;
 import com.memopet.memopet.domain.pet.entity.Comment;
 import com.memopet.memopet.domain.pet.entity.Memory;
 import com.memopet.memopet.domain.pet.entity.MemoryImage;
@@ -34,9 +38,11 @@ import java.util.Optional;
 public class MemberService  {
 
     private final MemberRepository memberRepository;
+    private final MemberSocialRepository memberSocialRepository;
     private final CommentRepository commentRepository;
     private final MemoryRepository memoryRepository;
     private final MemoryImageRepository memoryImageRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final S3Uploader s3Uploader;
 
     private final EntityManager em;
@@ -48,15 +54,34 @@ public class MemberService  {
      * @param deactivationReasonComment
      * @return
      */
+    @Transactional(readOnly = false)
     public DeactivateMemberResponseDto deactivateMember(String email, String deactivationReason, String deactivationReasonComment) {
-
-        // insert deleted_date, activated = false, deactivation_reason, deactivation_reason_comment
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        Optional<MemberSocial> memberByEmail = memberSocialRepository.findMemberByEmail(email);
         if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
-        Member member = memberByEmail.get();
+        MemberSocial memberSocial = memberByEmail.get();
 
+        Optional<Member> memberByMemberId = memberRepository.findMemberByMemberId(memberSocial.getMemberId());
+        Member member = memberByMemberId.get();
+        // deactivate the member entity
         member.deactivateMember(LocalDateTime.now(),deactivationReason,deactivationReasonComment, false);
+
+        List<MemberSocial> memberSocials = memberSocialRepository.findMemberByMemberId(member.getMemberId());
+
+
+        memberSocials.forEach(memorySocial -> {
+            memorySocial.deactivateMemberSocial(LocalDateTime.now());
+
+            // expired the refreshtoken
+            Optional<RefreshToken> byMemberIdToken = refreshTokenRepository.findByMemberId(memorySocial.getId());
+            if(byMemberIdToken.isPresent()) {
+                RefreshToken refreshToken = byMemberIdToken.get();
+                refreshToken.setRevoked(true);
+
+                refreshTokenRepository.save(refreshToken);
+            }
+
+        });
 
         // find pet info and insert deleted_date
         List<Pet> pets = member.getPets();
@@ -93,17 +118,16 @@ public class MemberService  {
 
     public MemberProfileResponseDto getMemberProfile(String email) {
 
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        Optional<MemberSocial> memberByEmail = memberSocialRepository.findMemberByEmail(email);
         if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
-        Member member = memberByEmail.get();
+        MemberSocial memberSocial = memberByEmail.get();
 
-        return MemberProfileResponseDto.builder().email(member.getEmail()).username(member.getUsername()).phoneNum(member.getPhoneNum()).build();
+        return MemberProfileResponseDto.builder().email(memberSocial.getEmail()).username(memberSocial.getUsername()).phoneNum(memberSocial.getPhoneNum()).build();
     }
 
     public MemberInfoResponseDto changeMemberInfo(MemberInfoRequestDto memberInfoRequestDto) {
-
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
+        Optional<MemberSocial> memberByEmail = memberSocialRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
         if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         memberRepository.UpdateMemberInfo(memberInfoRequestDto);
@@ -111,13 +135,13 @@ public class MemberService  {
         em.flush();
         em.clear();
 
-        Optional<Member> savedMemberByEmail = memberRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
-        Member savedmember = savedMemberByEmail.get();
+        Optional<MemberSocial> savedMemberByEmail = memberSocialRepository.findMemberByEmail(memberInfoRequestDto.getEmail());
+        MemberSocial memberSocial = savedMemberByEmail.get();
 
-        return MemberInfoResponseDto.builder().username(savedmember.getUsername()).phoneNum(savedmember.getPhoneNum()).email(savedmember.getEmail()).build();
+        return MemberInfoResponseDto.builder().username(memberSocial.getUsername()).phoneNum(memberSocial.getPhoneNum()).email(memberSocial.getEmail()).build();
     }
 
-    public Optional<Member> getMemberByEmail(String email) {
-        return memberRepository.findMemberByEmail(email);
+    public Optional<MemberSocial> getMemberByEmail(String email) {
+        return memberSocialRepository.findMemberByEmail(email);
     }
 }

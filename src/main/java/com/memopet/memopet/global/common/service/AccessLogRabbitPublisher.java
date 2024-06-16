@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class AccessLogRabbitPublisher {
     private final RabbitTemplate rabbitTemplate;
     private final DirectExchange directExchange;
+    private final ObjectMapper objectMapper;
 
     /**
      * Queue로 메시지를 발행
@@ -27,11 +28,10 @@ public class AccessLogRabbitPublisher {
     public void pubsubMessage(AccessLogDto accessLogDto) {
         //log.info("pubsubMessage received");
 
-        ObjectMapper mapper = new ObjectMapper();
 //        // Java 8에서 추가된 LocalDateTime 항목을 제대로 직렬화 또는 역직렬화를 못하는 현상 때문에 하는 조치
         String accessLogStr = "";
         try {
-            accessLogStr = new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(accessLogDto);
+            accessLogStr = objectMapper.registerModule(new JavaTimeModule()).writeValueAsString(accessLogDto);
         } catch (JsonProcessingException e) {
             throw new BadRequestRuntimeException("Problem with converting AccessLogDto to String during the process to save accessLog");
         }

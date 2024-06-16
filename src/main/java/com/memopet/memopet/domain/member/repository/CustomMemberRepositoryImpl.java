@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import static com.memopet.memopet.domain.member.entity.QMember.member;
+import static com.memopet.memopet.domain.member.entity.QMemberSocial.memberSocial;
 
 
 @Repository
@@ -26,29 +27,29 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     public void UpdateMemberInfo(MemberInfoRequestDto memberInfoRequestDto) {
 
         JPAUpdateClause clause  = queryFactory
-                .update(member);
+                .update(memberSocial);
         if(memberPasswordEq(passwordEncoder.encode(memberInfoRequestDto.getPassword())) != null) {
-            clause.set(member.password, passwordEncoder.encode(memberInfoRequestDto.getPassword()));
+            clause.set(memberSocial.password, passwordEncoder.encode(memberInfoRequestDto.getPassword()));
         }
         if(memberUsernameEq(memberInfoRequestDto.getUsername()) != null) {
-            clause.set(member.username, memberInfoRequestDto.getUsername());
+            clause.set(memberSocial.username, memberInfoRequestDto.getUsername());
         }
         if(memberPhoneNumEq(memberInfoRequestDto.getPhoneNum()) != null) {
-            clause.set(member.phoneNum, memberInfoRequestDto.getPhoneNum());
+            clause.set(memberSocial.phoneNum, memberInfoRequestDto.getPhoneNum());
         }
-        clause.where(member.email.eq(memberInfoRequestDto.getEmail()));
+        clause.where(memberSocial.email.eq(memberInfoRequestDto.getEmail()));
         clause.execute();
     }
 
     private BooleanExpression memberPhoneNumEq(String phoneNum) {
-        return phoneNum !=null? member.phoneNum.eq(phoneNum) : null;
+        return phoneNum !=null? memberSocial.phoneNum.eq(phoneNum) : null;
     }
 
     private BooleanExpression memberUsernameEq(String username) {
-        return username !=null? member.username.eq(username) : null;
+        return username !=null? memberSocial.username.eq(username) : null;
     }
 
     private BooleanExpression memberPasswordEq(String password) {
-        return password !=null? member.password.eq(password) : null;
+        return password !=null? memberSocial.password.eq(password) : null;
     }
 }

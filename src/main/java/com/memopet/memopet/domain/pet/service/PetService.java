@@ -1,7 +1,9 @@
 package com.memopet.memopet.domain.pet.service;
 
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.domain.member.repository.MemberSocialRepository;
 import com.memopet.memopet.domain.pet.dto.*;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
@@ -31,6 +33,7 @@ public class PetService {
     private final PetRepository petRepository;
     private final SpeciesRepository speciesRepository;
     private final MemberRepository memberRepository;
+    private final MemberSocialRepository memberSocialRepository;
     private final LikesRepository likesRepository;
     private final FollowRepository followRepository;
     private final CommentRepository commentRepository;
@@ -57,12 +60,13 @@ public class PetService {
         Species species = Species.builder().largeCategory("포유류").midCategory(petRequestDto.getPetSpecM()).smallCategory(petRequestDto.getPetSpecS()).build();
         Species savedSpecies = speciesRepository.save(species);
 
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(petRequestDto.getEmail());
+
+        Optional<Member> memberByEmail = memberRepository.findMemberByPhoneNum(petRequestDto.getPhoneNum());
         if(memberByEmail.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
         Member member = memberByEmail.get();
 
-        List<Pet> petInfoByEmail = petRepository.findPetInfoByEmail(petRequestDto.getEmail());
+        List<Pet> petInfoByEmail = petRepository.findPetInfoByPhoneNum(petRequestDto.getPhoneNum());
 
         if (petInfoByEmail.size()>4) throw new BadRequestRuntimeException("프로필은 5개 이하로 만들수있습니다.");
         PetStatus petStatus = petInfoByEmail.size()> 0 ? PetStatus.ACTIVE : PetStatus.DEACTIVE;
@@ -272,16 +276,20 @@ public class PetService {
     @Transactional(readOnly = false)
     public PetProfileResponseDto deletePetProfile(PetDeleteRequestDto petDeleteRequestDTO) {
         try {
-            Optional<Member> member = memberRepository.findMemberByEmail(petDeleteRequestDTO.getEmail());
-            if (member.isEmpty()) throw new UsernameNotFoundException("User Not Found");
+            Optional<MemberSocial> memberSocialOptional = memberSocialRepository.findMemberByEmail(petDeleteRequestDTO.getEmail());
+            if (memberSocialOptional.isEmpty()) throw new UsernameNotFoundException("User Not Found");
 
-            if (!passwordEncoder.matches(petDeleteRequestDTO.getPassword(), member.get().getPassword())) {
+            MemberSocial memberSocial = memberSocialOptional.get();
+            if (!passwordEncoder.matches(petDeleteRequestDTO.getPassword(), memberSocial.getPassword())) {
                 throw new BadCredentialsRuntimeException("Password is incorrect");
             }
+
+
             Pet deletePet = petRepository.getReferenceById(petDeleteRequestDTO.getPetId());
+            Optional<Member> memberByMemberId = memberRepository.findMemberByMemberId(memberSocial.getMemberId());
 
             // Attempt to delete the pet profile
-            boolean deletionSuccessful = petRepository.deleteAPet(member.get().getId(), petDeleteRequestDTO.getPetId());
+            boolean deletionSuccessful = petRepository.deleteAPet(memberByMemberId.get().getId(), petDeleteRequestDTO.getPetId());
 
             if (!deletionSuccessful) {
                 throw new BadRequestRuntimeException("Error occurred during the pet delection process");
@@ -329,12 +337,15 @@ public class PetService {
         }
     }
     public boolean validatePetRequest(String email, Long petId) {
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(email);
+        Optional<MemberSocial> memberByEmail = memberSocialRepository.findMemberByEmail(email);
         if(memberByEmail.isEmpty()) return false;
 
-        Member member = memberByEmail.get();
+        MemberSocial memberSocial = memberByEmail.get();
 
-        List<Pet> pets = member.getPets();
+        Optional<Member> memberOptional = memberRepository.findMemberByMemberId(memberSocial.getMemberId());
+
+        List<Pet> pets = memberOptional.get().getPets();
+
         for (Pet pet : pets) {
             if (pet.getId().equals(petId)&& pet.getPetStatus().equals(PetStatus.ACTIVE)) {
                 return true;

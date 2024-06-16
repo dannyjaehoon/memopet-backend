@@ -1,8 +1,10 @@
 package com.memopet.memopet.global.config;
 
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
 import com.memopet.memopet.domain.member.entity.MemberStatus;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.domain.member.repository.MemberSocialRepository;
 import com.memopet.memopet.domain.pet.entity.*;
 import com.memopet.memopet.domain.pet.repository.*;
 import com.memopet.memopet.global.common.entity.RecentSearch;
@@ -27,6 +29,7 @@ public class InitialUserInfo implements CommandLineRunner {
     // member test data insert
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final MemberSocialRepository memberSocialRepository;
     private final MemoryRepository memoryRepository;
     private final LikesRepository likesRepository;
     private final PetRepository petRepository;
@@ -38,43 +41,72 @@ public class InitialUserInfo implements CommandLineRunner {
     private final MemberCreationRabbitConsumer memberCreationRabbitConsumer;
     @Override
     public void run(String... args) throws Exception {
+        String memberId1 = memberCreationRabbitConsumer.generateUniqueId();
         Member member1 = Member.builder()
                 .username("이재훈")
-                .memberId(memberCreationRabbitConsumer.generateUniqueId())
-                .password(passwordEncoder.encode("123"))
-                .email("user@gmail.com")
-                .loginFailCount(0)
-                .phoneNum("01054232322")
-                .memberStatus(MemberStatus.NORMAL)
-                .roles("ROLE_USER")
-                .activated(true)
+                .memberId(memberId1)
+                .phoneNum("01052801436")
+                .agreeYn(true)
+                .agreeDate(LocalDateTime.now())
                 .build();
 
+        MemberSocial memberSocial1 = MemberSocial.builder()
+                .username("이재훈")
+                .memberId(memberId1)
+                .phoneNum("01052801436")
+                .email("user@gmail.com")
+                .password(passwordEncoder.encode("123"))
+                .memberStatus(MemberStatus.NORMAL)
+                .loginFailCount(0)
+                .lastLoginDate(LocalDateTime.now())
+                .roles("ROLE_USER")
+                .build();
+
+        String memberId2 = memberCreationRabbitConsumer.generateUniqueId();
         Member member2 = Member.builder()
                 .username("노재현")
-                .memberId(memberCreationRabbitConsumer.generateUniqueId())
-                .password(passwordEncoder.encode("123"))
-                .email("jae@gmail.com")
-                .loginFailCount(0)
+                .memberId(memberId2)
                 .phoneNum("01094232322")
-                .memberStatus(MemberStatus.NORMAL)
-                .roles("ROLE_USER")
-                .activated(true)
+                .agreeYn(true)
+                .agreeDate(LocalDateTime.now())
                 .build();
 
+        MemberSocial memberSocial2 = MemberSocial.builder()
+                .username("노재현")
+                .memberId(memberId2)
+                .phoneNum("01094232322")
+                .email("jae@gmail.com")
+                .password(passwordEncoder.encode("123"))
+                .memberStatus(MemberStatus.NORMAL)
+                .loginFailCount(0)
+                .lastLoginDate(LocalDateTime.now())
+                .roles("ROLE_USER")
+                .build();
+
+        String memberId3 = memberCreationRabbitConsumer.generateUniqueId();
         Member member3 = Member.builder()
                 .username("김형구")
-                .memberId(memberCreationRabbitConsumer.generateUniqueId())
-                .password(passwordEncoder.encode("123"))
-                .email("admin@gmail.com")
-                .loginFailCount(0)
+                .memberId(memberId3)
                 .phoneNum("01084232322")
-                .memberStatus(MemberStatus.NORMAL)
-                .roles("ROLE_ADMIN")
-                .activated(true)
+                .agreeYn(true)
+                .agreeDate(LocalDateTime.now())
                 .build();
 
+        MemberSocial memberSocial3 = MemberSocial.builder()
+                .username("김형구")
+                .memberId(memberId3)
+                .phoneNum("01084232322")
+                .email("admin@gmail.com")
+                .password(passwordEncoder.encode("123"))
+                .memberStatus(MemberStatus.NORMAL)
+                .loginFailCount(0)
+                .lastLoginDate(LocalDateTime.now())
+                .roles("ROLE_USER")
+                .build();
+
+
         memberRepository.saveAll(List.of(member1,member2,member3));
+        memberSocialRepository.saveAll(List.of(memberSocial1,memberSocial2,memberSocial3));
 
         Species species = Species.builder().largeCategory("포유류").midCategory("개").smallCategory("마티즈").build();
         Species species1 = Species.builder().largeCategory("포유류").midCategory("개").smallCategory("시바이누").build();

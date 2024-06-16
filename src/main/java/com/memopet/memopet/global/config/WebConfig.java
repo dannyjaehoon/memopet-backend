@@ -1,6 +1,7 @@
 package com.memopet.memopet.global.config;
 
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
 import com.memopet.memopet.domain.member.service.MemberService;
 import com.memopet.memopet.global.common.service.AccessLogRabbitPublisher;
 import com.memopet.memopet.global.common.service.ThreadLocalService;
@@ -93,7 +94,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 				final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 				final String username = userDetails.getUsername();
-				final Optional<Member> memberOptional = memberService.getMemberByEmail(username);
+				final Optional<MemberSocial> memberOptional = memberService.getMemberByEmail(username);
 
                 return memberOptional.orElse(null);
 

@@ -23,13 +23,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SocialLoginController {
     private final OauthService oauthService;
-    private final AuthService authService;
+
     @GetMapping("/login/oauth2/code/{socialLoginType}")
-    public RestResult socialLogin(@PathVariable(name = "socialLoginType") String socialLoginType, @RequestParam(name = "code") String code, HttpServletRequest request, HttpServletResponse response){
+    public RestResult socialLogin(@PathVariable(name = "socialLoginType") String socialLoginType, @RequestParam(name = "code") String code, HttpServletRequest request){
+        log.info("socialLogin start");
         SocialLoginResponseDto socialLoginResponseDto = oauthService.oAuthLogin(socialLoginType, code, request);
 
         Map<String, Object> dataMap = new LinkedHashMap<>();
-        dataMap.put("loginResponseDto", "loginResponseDto");
+        dataMap.put("loginResponseDto", socialLoginResponseDto);
         return new RestResult(dataMap);
     }
 }

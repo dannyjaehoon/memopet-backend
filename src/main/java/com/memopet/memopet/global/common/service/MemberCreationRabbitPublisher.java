@@ -1,13 +1,6 @@
 package com.memopet.memopet.global.common.service;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.memopet.memopet.domain.member.dto.MemberCreationDto;
-import com.memopet.memopet.domain.member.entity.Member;
-import com.memopet.memopet.global.common.dto.AccessLogDto;
-import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.DirectExchange;

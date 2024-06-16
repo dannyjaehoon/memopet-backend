@@ -25,8 +25,8 @@ public class RefreshToken {
     @Column(updatable = false)
     private LocalDateTime expiredAt;
     @ManyToOne
-    @JoinColumn(name = "memberId",referencedColumnName = "id")
-    private Member member;
+    @JoinColumn(name = "memberSocialId",referencedColumnName = "id")
+    private MemberSocial memberSocial;
 
     public void updateAccessToken(String accessToken) {
         this.accessToken = accessToken;

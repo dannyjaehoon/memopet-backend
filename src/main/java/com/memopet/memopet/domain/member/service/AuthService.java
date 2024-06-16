@@ -5,9 +5,11 @@ import com.memopet.memopet.domain.member.dto.LoginResponseDto;
 import com.memopet.memopet.domain.member.dto.MemberCreationDto;
 import com.memopet.memopet.domain.member.dto.SignUpRequestDto;
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
 import com.memopet.memopet.domain.member.entity.RefreshToken;
 import com.memopet.memopet.domain.member.mapper.MemberInfoMapper;
 import com.memopet.memopet.domain.member.repository.MemberRepository;
+import com.memopet.memopet.domain.member.repository.MemberSocialRepository;
 import com.memopet.memopet.domain.member.repository.RefreshTokenRepository;
 import com.memopet.memopet.global.common.exception.BadRequestRuntimeException;
 import com.memopet.memopet.global.common.service.MemberCreationRabbitPublisher;
@@ -23,6 +25,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
@@ -35,6 +38,7 @@ import java.util.Optional;
 public class AuthService  {
 
     private final MemberRepository memberRepository;
+    private final MemberSocialRepository memberSocialRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenGenerator jwtTokenGenerator;
@@ -55,37 +59,47 @@ public class AuthService  {
 
         log.info("[AuthService:registerUser]User Registration Started with :::{}", signUpDto.getEmail());
 
-        Optional<Member> memberByEmail = memberRepository.findMemberByEmail(signUpDto.getEmail());
-        if(memberByEmail.isPresent()) throw new BadRequestRuntimeException("User Already Exists");
+        Optional<MemberSocial> memberSocialByEmail = memberSocialRepository.findMemberByEmail(signUpDto.getEmail());
+        if(memberSocialByEmail.isPresent()) throw new BadRequestRuntimeException("User Already Exists");
 
-        Member member = memberInfoMapper.convertToEntity(signUpDto);
-        Authentication authentication = createAuthenticationObject(member);
+        // RabbitMQ 로 채번
+        String memberId = memberCreationRabbitPublisher.pubsubMessage();
+
+        // check if Member Entity does not exist
+        Optional<Member> memberByPhoneNum = memberRepository.findMemberByPhoneNum(signUpDto.getPhoneNum());
+
+        if(memberByPhoneNum.isEmpty()) {
+            Member member = memberInfoMapper.convertToMemberEntity(signUpDto, memberId);
+            memberRepository.save(member);
+        }
+
+        MemberCreationDto memberCreationDto = MemberCreationDto.builder()
+                .email(signUpDto.getEmail())
+                .username(signUpDto.getUsername())
+                .phoneNum(signUpDto.getPhoneNum())
+                .password(signUpDto.getPassword())
+                .memberId(memberId)
+                .roleDscCode(signUpDto.getRoleDscCode())
+                .build();
+
+        MemberSocial memberSocial = memberInfoMapper.convertToMemberSocialEntity(memberCreationDto);
+
+        memberSocialRepository.save(memberSocial);
+
+        Authentication authentication = createAuthenticationObject(memberSocial);
 
         // Generate a JWT token
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
 
-        MemberCreationDto memberCreationDto = MemberCreationDto.builder()
-                .email(member.getEmail())
-                .username(member.getUsername())
-                .phoneNum(member.getPhoneNum())
-                .password(member.getPassword())
-                .accessToken(accessToken).build();
+        saveRefreshToken(memberSocial, accessToken);
 
-        // RabbitMQ 로 채번
-        String memberId = memberCreationRabbitPublisher.pubsubMessage();
-        log.info("memberId : " + memberId);
-        member.setMemberId(memberId);
-
-        memberRepository.save(member);
-
-        saveRefreshToken(member, accessToken);
-
-        log.info("[AuthService:registerUser] User:{} Successfully registered",member.getUsername());
+        log.info("[AuthService:registerUser] User:{} Successfully registered",memberSocial.getUsername());
         return  LoginResponseDto.builder()
-                .username(member.getUsername())
-                .userStatus(member.getMemberStatus())
-                .userRole(member.getRoles() == "ROLE_USER" ? "GU" : "SA")
-                .loginFailCount(member.getLoginFailCount())
+                .username(memberSocial.getUsername())
+                .userStatus(memberSocial.getMemberStatus())
+                .userRole(memberSocial.getRoles() == "ROLE_USER" ? "GU" : "SA")
+                .loginFailCount(memberSocial.getLoginFailCount())
+                .phoneNumYn(memberSocial.getPhoneNum().isEmpty() ? "Y" : "N")
                 .accessToken(accessToken)
                 .build();
     }
@@ -93,7 +107,7 @@ public class AuthService  {
 
     @Transactional(readOnly = false)
     public LoginResponseDto getJWTTokensAfterAuthentication(Authentication authentication) {
-        Member savedmember = businessUtil.getValidEmail(authentication.getName());
+        MemberSocial savedmember = businessUtil.getValidEmail(authentication.getName());
         String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
         saveRefreshToken(savedmember, accessToken);
         log.info("[AuthService:userSignInAuth] Access token for user:{}, has been generated",savedmember.getUsername());
@@ -105,51 +119,22 @@ public class AuthService  {
                                 .accessToken(accessToken)
                                 .build();
     }
-    public void saveRefreshToken(Member member, String accessToken) {
-        RefreshToken refreshToken = jwtTokenGenerator.generateRefreshToken(member.getEmail());
+    public void saveRefreshToken(MemberSocial memberSocial, String accessToken) {
+        RefreshToken refreshToken = jwtTokenGenerator.generateRefreshToken(memberSocial.getEmail());
         refreshToken.setAccessToken(accessToken);
-        refreshToken.setMember(member);
+        refreshToken.setMemberSocial(memberSocial);
         refreshToken.setRevoked(false);
 
         refreshTokenRepository.save(refreshToken);
-
     }
 
 
-    public Object getAccessTokenUsingRefreshToken(String authorizationHeader) {
-        if(!authorizationHeader.startsWith("Bearer")){
-            throw new BadRequestRuntimeException("Please verify your token type");
-        }
 
-        final String refreshToken = authorizationHeader.substring(7);
-
-        //Find refreshToken from database and should not be revoked : Same thing can be done through filter.
-        var refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .filter(tokens-> !tokens.isRevoked())
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Refresh token revoked"));
-
-        Member savedmember = refreshTokenEntity.getMember();
-
-        //Now create the Authentication object
-        Authentication authentication =  createAuthenticationObject(savedmember);
-
-        //Use the authentication object to generate new accessToken as the Authentication object that we will have may not contain correct role.
-        String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
-
-        return  LoginResponseDto.builder()
-                                .username(savedmember.getUsername())
-                                .userStatus(savedmember.getMemberStatus())
-                                .userRole(savedmember.getRoles().equals("ROLE_USER") ? "GU" : "SA")
-                                .loginFailCount(savedmember.getLoginFailCount())
-                                .accessToken(accessToken)
-                                .build();
-
-    }
-    public Authentication createAuthenticationObject(Member member) {
+    public Authentication createAuthenticationObject(MemberSocial memberInfo) {
         // Extract user details from UserDetailsEntity
-        String username = member.getEmail();
-        String password = member.getPassword();
-        String roles = member.getRoles();
+        String username = memberInfo.getEmail();
+        String password = memberInfo.getPassword();
+        String roles = memberInfo.getRoles();
 
         // Extract authorities from roles (comma-separated)
         String[] roleArray = roles.split(",");

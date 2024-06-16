@@ -2,6 +2,8 @@ package com.memopet.memopet.domain.oauth2.service;
 
 
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
+import com.memopet.memopet.domain.member.entity.MemberStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +16,9 @@ import java.util.Map;
 
 public class OAuth2UserPrincipal implements OAuth2User, UserDetails {
 
-    private final Member member;
+    private final MemberSocial member;
 
-    public OAuth2UserPrincipal(Member userInfo) {
+    public OAuth2UserPrincipal(MemberSocial userInfo) {
         this.member = userInfo;
     }
 
@@ -37,7 +39,7 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return member.isActivated();
+        return member.getMemberStatus().equals(MemberStatus.NORMAL) ? false : true;
     }
 
     @Override

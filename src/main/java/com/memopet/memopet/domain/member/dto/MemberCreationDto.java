@@ -14,6 +14,6 @@ public class MemberCreationDto {
     private String password;
     private String email;
     private String phoneNum;
-    private String accessToken;
+    private String roleDscCode;
     private String memberId;
 }

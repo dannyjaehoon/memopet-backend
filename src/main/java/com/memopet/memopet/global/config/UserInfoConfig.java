@@ -1,6 +1,7 @@
 package com.memopet.memopet.global.config;
 
 import com.memopet.memopet.domain.member.entity.Member;
+import com.memopet.memopet.domain.member.entity.MemberSocial;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +12,7 @@ import java.util.Collection;
 
 @RequiredArgsConstructor
 public class UserInfoConfig implements UserDetails {
-    private final Member member;
+    private final MemberSocial member;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays
